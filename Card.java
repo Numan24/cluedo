@@ -1,4 +1,4 @@
-package cluedo;
+package Cluedo;
 
 
 /**
