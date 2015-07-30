@@ -23,4 +23,16 @@ public class Player {
 		this.hand.add(card);
 	}
 
+	/**
+	 * get the current options that the player has at their given position.
+	 * @return array of options
+	 */
+	public String[] getOptions() {
+		String[] options = new String[3];
+		options[0] = "Hello";
+		options[1] = "Yes";
+		options[2] = "okay";
+		return options;
+	}
+
 }

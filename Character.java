@@ -8,6 +8,10 @@ public class Character implements Card {
 		this.name = name;
 	}
 
+	/**
+	 * name of the character.
+	 * @return character name
+	 */
 	public String getName() {
 		return name;
 	}
