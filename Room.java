@@ -1,4 +1,4 @@
-package Cluedo;
+package cluedo;
 
 public class Room implements Card {
 	boolean hasStairs;

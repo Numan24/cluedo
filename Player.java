@@ -1,4 +1,4 @@
-package Cluedo;
+package cluedo;
 
 import java.util.*;
 
