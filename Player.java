@@ -7,7 +7,7 @@ import cluedo.cards.Card;
 
 public class Player {
 
-	String name;
+	private String name;
 	int roll;
 	private List<Card> hand;
 	private Position currentPosition;
@@ -63,6 +63,8 @@ public class Player {
 		
 	}
 
-
+	public String getName() {
+		return name;
+	}
 
 }

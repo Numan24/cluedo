@@ -70,7 +70,7 @@ public class Board {
 	 * 
 	 * @return the array for the board
 	 */
-	public char[][] createBoard() {
+	private char[][] createBoard() {
 		try {
 			Scanner scan = new Scanner(new File("board.txt"));
 			char[][] board = new char[24][25];
@@ -82,7 +82,7 @@ public class Board {
 			scan.close();
 			return board;
 		}catch(Exception e) {
-			System.out.println("Error"+ e);
+			System.out.println("Error reading file:  "+ e);
 		}
 		return null;
 	}
@@ -141,7 +141,7 @@ public class Board {
 	 * @return
 	 */
 	public String haveNextTurn(Player player) {
-		System.out.println(currentPlayer.name+"'s turn.");
+		System.out.println(currentPlayer.getName()+"'s turn.");
 		//Dice rolling
 		Random rand = new Random();
 		int roll = rand.nextInt(5)+1;
@@ -207,7 +207,7 @@ public class Board {
 	 */
 	public Player nextPlayer() {
 		int index = players.indexOf(currentPlayer);
-		if(index >= players.size()) {
+		if(index == players.size()-1) {
 			index = 0;
 		}
 		currentPlayer = players.get(index);
