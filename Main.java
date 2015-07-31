@@ -10,9 +10,10 @@ public class Main {
 		//create board
 		Board board = gameSetup();
 		boolean gameFinished = false;
+		Player player = board.getCurrentPlayer();
 		while(!gameFinished) {
-			Player player = board.nextPlayer();
 			board.haveNextTurn(player);
+			player = board.nextPlayer();
 			
 		}
 	}

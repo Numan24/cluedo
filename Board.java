@@ -197,7 +197,6 @@ public class Board {
 		default:
 			System.out.println("Invalid option");
 		}
-		
 	}
 
 	/**
@@ -206,11 +205,20 @@ public class Board {
 	 * @return the next player
 	 */
 	public Player nextPlayer() {
+		System.out.println("Current player: "+currentPlayer.getName());
 		int index = players.indexOf(currentPlayer);
 		if(index == players.size()-1) {
-			index = 0;
+			currentPlayer = players.get(0);
 		}
-		currentPlayer = players.get(index);
+		else {
+			currentPlayer = players.get(index+1);
+		}
+		
+		System.out.println("Current player: "+currentPlayer.getName());
+		return currentPlayer;
+	}
+	
+	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
 

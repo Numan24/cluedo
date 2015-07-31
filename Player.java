@@ -66,5 +66,13 @@ public class Player {
 	public String getName() {
 		return name;
 	}
+	
+	public boolean equals(Object o) {
+		if(o instanceof Player) {
+			Player player = (Player) o;
+			return name.equals(player.getName());
+		}
+		return false;
+	}
 
 }
