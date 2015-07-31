@@ -1,5 +1,6 @@
 package cluedo;
 
+import java.io.File;
 import java.util.*;
 
 import cluedo.cards.Card;
@@ -17,7 +18,7 @@ public class Board {
 	private List<Weapon> weapons = new ArrayList<Weapon>();
 	private List<Character> characters = new ArrayList<Character>();
 	
-	private int[][] board; // hard code board please
+	private char[][] board; // hard code board please
 	private Player[][] playerPositions;
 	
 	private Player currentPlayer;
@@ -30,6 +31,7 @@ public class Board {
 	public Board(List<Player> players) {
 		this.players = players;
 		currentPlayer = players.get(0);
+		board = createBoard();
 		
 		//weapons
 		weapons.add(new Weapon("Dagger"));
@@ -61,6 +63,28 @@ public class Board {
 		characters.add(new Character("The Reverand Green"));
 		characters.add(new Character("Mrs. Peacock"));
 		characters.add(new Character("Professor Plum"));
+	}
+	
+	/**
+	 * Creates the board array by reading from the board text file
+	 * 
+	 * @return the array for the board
+	 */
+	public char[][] createBoard() {
+		try {
+			Scanner scan = new Scanner(new File("board.txt"));
+			char[][] board = new char[24][25];
+			int index = 0;
+			while(scan.hasNextLine()) {
+				char[] line = scan.nextLine().toCharArray();
+				board[index] = line;
+			}
+			scan.close();
+			return board;
+		}catch(Exception e) {
+			System.out.println("Error"+ e);
+		}
+		return null;
 	}
 	
 	
