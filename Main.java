@@ -44,7 +44,6 @@ public class Main {
 			Player player = new Player(name);
 			players.add(player);
 		}
-		input.close();
 		return new Board(players);
 	}
 	

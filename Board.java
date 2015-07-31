@@ -117,6 +117,7 @@ public class Board {
 	 * @return
 	 */
 	public String haveNextTurn(Player player) {
+		System.out.println(currentPlayer.name+"'s turn.");
 		//Dice rolling
 		Random rand = new Random();
 		int roll = rand.nextInt(5)+1;
@@ -133,7 +134,6 @@ public class Board {
 		System.out.println(toPrint);
 		String option; 
 		option = input.next();
-		input.close();
 		calculatePlay(option);
 		return option;
 		
