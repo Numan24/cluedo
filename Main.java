@@ -4,12 +4,13 @@ import java.util.*;
 
 public class Main {
 
-
+	static boolean gameFinished = false;
+	
 	public static void main(String[] args) {
 		// ask for players
 		//create board
 		Board board = gameSetup();
-		boolean gameFinished = false;
+
 		Player player = board.getCurrentPlayer();
 		while(!gameFinished) {
 			board.haveNextTurn(player);
