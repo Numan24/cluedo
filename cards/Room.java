@@ -1,12 +1,12 @@
-package cluedo;
+package cluedo.cards;
 
 public class Room implements Card {
-	boolean hasStairs;
+	Room connectedTo;
 	String name;
 
-	public Room(String name, boolean hasStairs) {
+	public Room(String name, Room connectedTo) {
 		this.name = name;
-		this.hasStairs = hasStairs;
+		this.connectedTo = connectedTo;
 	}
 
 

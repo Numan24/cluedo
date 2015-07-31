@@ -1,4 +1,4 @@
-package cluedo;
+package cluedo.cards;
 
 public class Character implements Card {
 
