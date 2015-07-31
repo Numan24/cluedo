@@ -22,4 +22,10 @@ public class Weapon implements Card{
 		return false;
 	}
 
+	@Override
+	public String toString() {
+		return "Weapon [name=" + name + "]";
+	}
+	
+
 }

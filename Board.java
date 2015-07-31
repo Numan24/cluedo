@@ -10,9 +10,9 @@ import cluedo.cards.Weapon;
 
 public class Board {
 
-	private List<Card> win; // the cards 
+	private List<Card> win = new ArrayList<Card>(); // the cards 
 	
-	private List<Player> players; // players in the current game
+	private List<Player> players = new ArrayList<Player>(); // players in the current game
 	
 	private List<Room> rooms = new ArrayList<Room>();
 	private List<Weapon> weapons = new ArrayList<Weapon>();
@@ -63,6 +63,8 @@ public class Board {
 		characters.add(new Character("The Reverand Green"));
 		characters.add(new Character("Mrs. Peacock"));
 		characters.add(new Character("Professor Plum"));
+		
+		distributeCards();
 	}
 	
 	/**
@@ -73,13 +75,16 @@ public class Board {
 	private char[][] createBoard() {
 		try {
 			Scanner scan = new Scanner(new File("board.txt"));
-			char[][] board = new char[24][25];
+			System.out.println("hello?");
+			char[][] board = new char[25][25];
 			int index = 0;
 			while(scan.hasNextLine()) {
 				String s = scan.nextLine();
+				System.out.println(s);
 				if(s.startsWith("#")){continue;}
 				char[] line = scan.nextLine().toCharArray();
 				board[index] = line;
+				index++;
 			}
 			scan.close();
 			return board;
@@ -104,6 +109,10 @@ public class Board {
 		win.add(rooms.get(0));	
 		win.add(weapons.get(0));
 		win.add(characters.get(0));
+		
+		for(Card c: win){
+			System.out.println(c);
+		}
 		
 		allcards.addAll(rooms.subList(1, rooms.size()-1));
 		allcards.addAll(weapons.subList(1, weapons.size()-1));
@@ -195,9 +204,9 @@ public class Board {
 			break;
 		case "Accuse":
 			if(accusation()){
-				System.out.println(currentPlayer+" wins");
+				System.out.println(currentPlayer.getName()+" wins");
 				Main.gameFinished = true;
-			} else{System.out.println(currentPlayer+" loses");} 
+			} else{System.out.println(currentPlayer.getName()+" loses");} 
 			break;
 		default:
 			System.out.println("Invalid option");
@@ -277,7 +286,7 @@ public class Board {
 	 * @return the next player
 	 */
 	public Player nextPlayer() {
-		System.out.println("Current player: "+currentPlayer.getName());
+		//System.out.println("Current player: "+currentPlayer.getName());
 		int index = players.indexOf(currentPlayer);
 		if(index == players.size()-1) {
 			currentPlayer = players.get(0);
@@ -286,7 +295,7 @@ public class Board {
 			currentPlayer = players.get(index+1);
 		}
 		
-		System.out.println("Current player: "+currentPlayer.getName());
+		//System.out.println("Current player: "+currentPlayer.getName());
 		return currentPlayer;
 	}
 	

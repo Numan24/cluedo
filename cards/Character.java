@@ -26,4 +26,10 @@ public class Character implements Card {
 		return false;
 	}
 
+	@Override
+	public String toString() {
+		return "Character [name=" + name + "]";
+	}
+
+	
 }

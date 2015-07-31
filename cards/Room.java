@@ -27,4 +27,12 @@ public class Room implements Card {
 		}
 		return false;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Room [name=" + name + "]";
+	}
+	
+	
 }

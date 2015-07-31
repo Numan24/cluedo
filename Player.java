@@ -9,7 +9,7 @@ public class Player {
 
 	private String name;
 	int roll;
-	private List<Card> hand;
+	private List<Card> hand = new ArrayList<Card>();
 	private Position currentPosition;
 
 	public Player(String name) {
