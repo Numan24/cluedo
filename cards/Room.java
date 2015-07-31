@@ -13,6 +13,10 @@ public class Room implements Card {
 	public String getName() {
 		return name;
 	}
+	
+	public void setConnectedTo(Room r){
+		connectedTo = r;
+	}
 
 	public boolean equals(Object o) {
 		if(o instanceof Room) {

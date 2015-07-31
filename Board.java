@@ -30,6 +30,37 @@ public class Board {
 	public Board(List<Player> players) {
 		this.players = players;
 		currentPlayer = players.get(0);
+		
+		//weapons
+		weapons.add(new Weapon("Dagger"));
+		weapons.add(new Weapon("Revolver"));
+		weapons.add(new Weapon("Lead Pipe"));
+		weapons.add(new Weapon("Rope"));
+		weapons.add(new Weapon("Spanner"));
+		weapons.add(new Weapon("Candlestick"));
+		//rooms
+		rooms.add(new Room("Kitchen", null));
+		rooms.add(new Room("Ball Room", null));
+		rooms.add(new Room("Conservatory", null));
+		rooms.add(new Room("Billiard Room", null));
+		rooms.add(new Room("Library", null));
+		rooms.add(new Room("Study", null));
+		rooms.add(new Room("Hall", null));
+		rooms.add(new Room("Lounge", null));
+		rooms.add(new Room("Dining Room", null));
+		
+		rooms.get(0).setConnectedTo(rooms.get(5));
+		rooms.get(5).setConnectedTo(rooms.get(0));
+		rooms.get(2).setConnectedTo(rooms.get(7));
+		rooms.get(7).setConnectedTo(rooms.get(2));
+		
+		//characters
+		characters.add(new Character("Miss Scarlett"));
+		characters.add(new Character("Colonel Mustard"));
+		characters.add(new Character("Mrs. White"));
+		characters.add(new Character("The Reverand Green"));
+		characters.add(new Character("Mrs. Peacock"));
+		characters.add(new Character("Professor Plum"));
 	}
 	
 	
