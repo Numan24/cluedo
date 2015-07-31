@@ -1,5 +1,11 @@
 package cluedo.action;
 
-public class Enter implements Action {
+import cluedo.Board;
+
+public class Enter extends Action {
+
+	public Enter(Board board) {
+		super(board);
+	}
 
 }
