@@ -34,7 +34,11 @@ public class Player {
 	}
 	
 	public boolean isValidMove(Position newPos){
-		return false;
+		//STILL NEED TO CHECK FOR OK POSITION ON BOARD, TOO.
+		if(Math.abs(newPos.row() - currentPosition.row()) + Math.abs(newPos.col()-currentPosition.col()) > roll){
+			return false;
+		}
+		return true;
 	}
 	
 
@@ -52,6 +56,11 @@ public class Player {
 
 	public Position getCurrentPosition() {
 		return currentPosition;
+	}
+
+	public void setRoll(int roll) {
+		this.roll = roll;
+		
 	}
 
 

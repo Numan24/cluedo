@@ -13,9 +13,9 @@ public class Board {
 	
 	private List<Player> players; // players in the current game
 	
-	private List<Room> rooms;
-	private List<Weapon> weapons;
-	private List<Character> characters;
+	private List<Room> rooms = new ArrayList<Room>();
+	private List<Weapon> weapons = new ArrayList<Weapon>();
+	private List<Character> characters = new ArrayList<Character>();
 	
 	private int[][] board; // hard code board please
 	private Player[][] playerPositions;
@@ -117,6 +117,12 @@ public class Board {
 	 * @return
 	 */
 	public String haveNextTurn(Player player) {
+		//Dice rolling
+		Random rand = new Random();
+		int roll = rand.nextInt(5)+1;
+		currentPlayer.setRoll(roll);
+		System.out.println("You rolled a "+roll);
+		
 		String[] options = player.getOptions();
 		Scanner input = new Scanner(System.in);
 		String toPrint = "Please select an option: ";
