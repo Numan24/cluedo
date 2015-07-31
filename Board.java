@@ -76,6 +76,8 @@ public class Board {
 			char[][] board = new char[24][25];
 			int index = 0;
 			while(scan.hasNextLine()) {
+				String s = scan.nextLine();
+				if(s.startsWith("#")){continue;}
 				char[] line = scan.nextLine().toCharArray();
 				board[index] = line;
 			}
