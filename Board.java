@@ -97,6 +97,7 @@ public class Board {
 		Player p = playerPositions[oldPos.row()][oldPos.col()];
 		playerPositions[newPos.row()][newPos.col()] = p;
 		playerPositions[oldPos.row()][oldPos.col()] = null;
+		p.move(newPos);
 	}
 	
 	/**
@@ -132,20 +133,35 @@ public class Board {
 		
 	}
 
+	
+	public Player playerAt(Position p){
+		return playerPositions[p.row()][p.col()];
+	}
+	
+	
 	/**
 	 * Determine what happens for a given option.
 	 * 
 	 * @param option - the option selected by the player
 	 */
 	private void calculatePlay(String option) {
+		Scanner sc = new Scanner(System.in);
 		switch(option) {
-		case "Hello":
-			System.out.println("Hello");
+		case "Move":
+			// uhhhhh
+			System.out.println("Choose new coords to move to 'x y'");
+			Position toMoveTo = new Position(sc.nextInt(), sc.nextInt());
+			while(!currentPlayer.isValidMove(toMoveTo)){
+				System.out.println("Invalid Move.");
+				System.out.println("Choose new coords to move to 'x y'");
+				toMoveTo = new Position(sc.nextInt(), sc.nextInt());
+			}
+			move(currentPlayer.getCurrentPosition(), toMoveTo);
 			break;
-		case "Yes":
+		case "Guess":
 			System.out.println("Yes");
 			break;
-		case "Okay":
+		case "Accuse":
 			System.out.println("Okay");
 			break;
 		default:

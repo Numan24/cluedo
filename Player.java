@@ -8,8 +8,9 @@ import cluedo.cards.Card;
 public class Player {
 
 	String name;
+	int roll;
 	private List<Card> hand;
-	int xPos, yPos;
+	private Position currentPosition;
 
 	public Player(String name) {
 		this.name = name;
@@ -27,19 +28,15 @@ public class Player {
 		this.hand.add(card);
 	}
 	
-	/**
-	 * Changes character x and y depending on direction given.
-	 * @param Direction d. The direction to move the char in.
-	 */
-	public void move(Direction d){
-		switch(d){
-		case NORTH:	yPos--; break;
-		case EAST:	xPos++; break;
-		case SOUTH:	yPos++; break;
-		case WEST:	xPos--; break;
-		default:	System.out.println("Invalid Direction");
-		}
+
+	public void move(Position p){
+			currentPosition = p;
 	}
+	
+	public boolean isValidMove(Position newPos){
+		return false;
+	}
+	
 
 	/**
 	 * get the current options that the player has at their given position.
@@ -52,5 +49,11 @@ public class Player {
 		options[2] = "Move";
 		return options;
 	}
+
+	public Position getCurrentPosition() {
+		return currentPosition;
+	}
+
+
 
 }
