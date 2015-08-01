@@ -34,8 +34,12 @@ public class Player {
 		currentPosition = p;
 	}
 	
+	/**
+	 * checks player has rolled high enough number to move as many steps as new position is away.
+	 * @param newPos - position to try move to
+	 * @return boolean - where it is a valid move
+	 */
 	public boolean isValidMove(Position newPos){
-		//STILL NEED TO CHECK FOR OK POSITION ON BOARD, TOO.
 		if(Math.abs(newPos.row() - currentPosition.row()) + Math.abs(newPos.col()-currentPosition.col()) > roll){
 			return false;
 		}

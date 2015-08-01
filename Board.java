@@ -140,14 +140,20 @@ public class Board {
 		}
 	}
 	
+	public void setStartingLocations(){
+
+	}
 	
 	public Player[][] setPlayerPositions(){
 		Player[][] board = new Player[25][25];
-		int index = 0;
-		for(Player p: players){
-			board[index][index] = p;
-			p.move(new Position(index, index));
-			index++;
+		Position[] positions = {
+				new Position(0,7), new Position(0,16), new Position(7,23),
+				new Position(17,23), new Position(24,9), new Position(18,0)
+		};		
+		
+		for(int i=0; i < players.size(); i++){
+			board[positions[i].row()][positions[i].col()] = players.get(i);
+			players.get(i).move(positions[i]);
 		}
 		return board;
 	}
@@ -258,6 +264,11 @@ public class Board {
 			} else{
 				System.out.println("Incorrect accusation! "+currentPlayer.getName()+" loses");
 				players.remove(currentPlayer);
+				//If all other players have lost.
+				if(players.size()==1){
+					System.out.println(players.get(0).getName()+" wins!");
+					Main.gameFinished = true;
+				}
 			} 
 			break;
 		case "hand":
