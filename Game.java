@@ -23,6 +23,7 @@ public class Game {
 	
 	public Game(List<Player> players) {
 		this.players = players;
+		currentPlayer = players.get(0);
 		
 		//weapons
 		weapons.add(new Weapon("Dagger"));
@@ -60,6 +61,12 @@ public class Game {
 		board = new Board(players);
 	}
 	
+	public void play() {
+		board.redraw();
+		haveNextTurn(currentPlayer);
+		currentPlayer = nextPlayer();
+	}
+	
 	/**
 	 * Have turn for a player
 	 * 
@@ -67,11 +74,6 @@ public class Game {
 	 * @return
 	 */
 	public String haveNextTurn(Player player) {
-		if(players.size()==1){
-			System.out.println(players.get(0).getName()+" wins!");
-			Main.gameFinished = true;
-		}
-		board.redraw();
 		System.out.println(currentPlayer.getName()+"'s turn.");
 		//Dice rolling
 		Random rand = new Random();
@@ -109,50 +111,58 @@ public class Game {
 	 * Determine what happens for a given option.
 	 * 
 	 * @param option - the option selected by the player
+	 * @return 0 is a fail 1 is a pass and 2 is display hand
 	 */
 	private int calculatePlay(String option) {
 		option = option.toLowerCase();
 		switch(option) {
 		case "move":
-			System.out.println("Player pos: "+currentPlayer.getCurrentPosition());
-			Move playerMove = new Move(this, currentPlayer);
-			while(!playerMove.isValid()){
-				System.out.println("Unsuccessful Movement.");
-				playerMove = new Move(this, currentPlayer);
-			}
-			board.move(playerMove.getOldPosition(), playerMove.getNewPosition());
+			doMove();
 			break;
 		case "guess":
 			//currentPlayer.setRoom(rooms.get(0));
-			if(currentPlayer.getRoom() != null) {
-				Guess guess = new Guess(this, currentPlayer);
-				guess.isValid();
-				break;
-			}
-			else {System.out.println("Must be in a room to make a suggestion!");}
+			doGuess();
 			break;
 		case "accuse":
-			Accuse playerAccusation = new Accuse(this, currentPlayer);
-			if(playerAccusation.isValid()){
-				System.out.println("Correct accusation! "+currentPlayer.getName()+" wins");
-				Main.gameFinished = true;
-			} else{
-				System.out.println("Incorrect accusation! "+currentPlayer.getName()+" loses");
-				players.remove(currentPlayer);
-				//If all other players have lost.
-				if(players.size()==1){
-					System.out.println(players.get(0).getName()+" wins!");
-					Main.gameFinished = true;
-				}
-			} 
+			doAccuse();
 			break;
 		case "hand":
 			currentPlayer.displayHand();
 			return 2;
 		default:
-			return 0;
+			return 0; // an invalid option was passed so fail by returning 0
 		}
 		return 1;
+	}
+	
+	
+	public void doMove() {
+		System.out.println("Player pos: "+currentPlayer.getCurrentPosition());
+		Move playerMove = new Move(this, currentPlayer);
+		while(!playerMove.isValid()){
+			System.out.println("Unsuccessful Movement.");
+			playerMove = new Move(this, currentPlayer);
+		}
+		board.move(playerMove.getOldPosition(), playerMove.getNewPosition());
+	}
+	
+	public void doGuess() {
+		if(currentPlayer.getRoom() != null) {
+			Guess guess = new Guess(this, currentPlayer);
+			guess.isValid();
+		}
+		else {System.out.println("Must be in a room to make a suggestion!");}
+	}
+	
+	public void doAccuse() {
+		Accuse playerAccusation = new Accuse(this, currentPlayer);
+		if(playerAccusation.isValid()){
+			System.out.println("Correct accusation! \n"+currentPlayer.getName()+" wins!");
+			Main.gameFinished = true;
+		} else{
+			System.out.println("Incorrect accusation! "+currentPlayer.getName()+" loses");
+			players.remove(currentPlayer);
+		} 
 	}
 	
 	
@@ -164,12 +174,21 @@ public class Game {
 	public Player nextPlayer() {
 		int index = players.indexOf(currentPlayer);
 		if(index == players.size()-1) {
-			currentPlayer = players.get(0);
+			return players.get(0);
 		}
 		else {
-			currentPlayer = players.get(index+1);
+			return players.get(index+1);
 		}
-		return currentPlayer;
+	}
+	
+	public Player nextPlayer(Player player) {
+		int index = players.indexOf(player);
+		if(index == players.size()-1) {
+			return players.get(0);
+		}
+		else {
+			return players.get(index+1);
+		}
 	}
 	
 	
@@ -195,10 +214,10 @@ public class Game {
 		allcards.addAll(rooms.subList(1, rooms.size()-1));
 		allcards.addAll(weapons.subList(1, weapons.size()-1));
 		allcards.addAll(characters.subList(1, characters.size()-1));
-		
+		Player p = currentPlayer;
 		for(Card c: allcards){
-			Player p = nextPlayer();
 			p.addCard(c);
+			p = nextPlayer(p);
 		}
 	}
 	

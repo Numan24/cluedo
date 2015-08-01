@@ -5,21 +5,24 @@ import java.util.*;
 public class Main {
 
 	static boolean gameFinished = false;
-	static Game game;
 	
 	public static void main(String[] args) {
-		// ask for players
-		//create board
 		ArrayList<Player> players = gameSetup();
-		game = new Game(players);
-		Player player = game.getCurrentPlayer();
+		Game game = new Game(players);
+		
+		// game loop
 		while(!gameFinished) {
-//			board.redraw();
-			game.haveNextTurn(player);
-			player = game.nextPlayer();
-			
+			//board.redraw();
+			game.play();
+			if(game.getPlayers().size() == 1){
+				System.out.println("Game Over!\n"+game.getPlayers().get(0).getName()+" has won!");
+				gameFinished = true;
+				continue;
+			}
 		}
 	}
+
+
 
 
 	/**
