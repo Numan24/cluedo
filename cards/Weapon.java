@@ -24,7 +24,7 @@ public class Weapon implements Card{
 
 	@Override
 	public String toString() {
-		return "Weapon [name=" + name + "]";
+		return "[" +name+ "]";
 	}
 	
 

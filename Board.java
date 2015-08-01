@@ -34,8 +34,10 @@ public class Board {
 	public Board(List<Player> players) {
 		this.players = players;
 		currentPlayer = players.get(0);
+		
 		setBoard(createBoard());
 		playerPositions = setPlayerPositions();
+		
 		//weapons
 		getWeapons().add(new Weapon("Dagger"));
 		getWeapons().add(new Weapon("Revolver"));
@@ -58,6 +60,7 @@ public class Board {
 		getRooms().get(5).setConnectedTo(getRooms().get(0));
 		getRooms().get(2).setConnectedTo(getRooms().get(7));
 		getRooms().get(7).setConnectedTo(getRooms().get(2));
+		
 		
 		//characters
 		getCharacters().add(new Character("Miss Scarlett"));
@@ -198,11 +201,17 @@ public class Board {
 		String option; 
 		option = input.next();
 		int valid = calculatePlay(option);
-		while(valid == 0) {
+		while(valid == 0 || valid == 2) {
+			if(valid == 0){
 			System.out.println("Invalid option");
 			System.out.println("Please enter a new option");
 			option = input.next();
 			valid = calculatePlay(option);
+			}
+			else {
+				option = input.next();
+				valid = calculatePlay(option);
+			}
 		}
 		return option;
 		
@@ -222,7 +231,7 @@ public class Board {
 	private int calculatePlay(String option) {
 		option.toLowerCase();
 		switch(option) {
-		case "Move":
+		case "move":
 			System.out.println("Player pos: "+currentPlayer.getCurrentPosition());
 			Move playerMove = new Move(this, currentPlayer);
 			while(!playerMove.isValid()){
@@ -231,23 +240,36 @@ public class Board {
 			}
 			move(playerMove.getOldPosition(), playerMove.getNewPosition());
 			break;
-		case "Guess":
-			if(currentPlayer.inRoom(this)){
-				Guess playerGuess = new Guess(this, currentPlayer);
+		case "guess":
+			currentPlayer.setRoom(rooms.get(0));
+			if(currentPlayer.getRoom() != null) {
+				Guess guess = new Guess(this, currentPlayer);
+				for(Player p : players) {
+					if(p.equals(currentPlayer)){continue;}
+					for(Card c : p.getHand()) {
+						for(Card card : guess.getCards()) {
+							if(card.equals(c)) {
+								System.out.println(p.getName()+" has one of the cards\n");
+								return 1;
+							}
+						}
+						
+					}
+				}
+				break;
 			}
-			else{
-				System.out.println("You must be in a room to guess.");
-				return 0;
-			}
-			System.out.println("Yes");
+			else {System.out.println("Must be in a room to make a suggestion!");}
 			break;
-		case "Accuse":
+		case "accuse":
 			Accuse playerAccusation = new Accuse(this, currentPlayer);
 			if(playerAccusation.isValid()){
 				System.out.println("Correct accusation! "+currentPlayer.getName()+" wins");
 				Main.gameFinished = true;
 			} else{System.out.println("Incorrect accusation! "+currentPlayer.getName()+" loses");} 
 			break;
+		case "hand":
+			currentPlayer.displayHand();
+			return 2;
 		default:
 			return 0;
 		}

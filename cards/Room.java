@@ -31,7 +31,7 @@ public class Room implements Card {
 
 	@Override
 	public String toString() {
-		return "Room [name=" + name + "]";
+		return "[" +name+ "]";
 	}
 	
 	

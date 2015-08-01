@@ -28,7 +28,7 @@ public class Character implements Card {
 
 	@Override
 	public String toString() {
-		return "Character [name=" + name + "]";
+		return "[" +name+ "]";
 	}
 
 	
