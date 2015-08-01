@@ -86,7 +86,7 @@ public class Board {
 			int index = 0;
 			while(scan.hasNextLine()) {
 				String s = scan.nextLine();
-				if(s.startsWith("#")){continue;}
+				if(s.startsWith("#")){continue;} // skip commented lines
 				char[] line = s.toCharArray();
 				board[index] = line;
 				index++;
@@ -100,7 +100,7 @@ public class Board {
 	}
 	
 	
-	private void redraw(){
+	public void redraw(){
 		for(int i = 0; i < getBoard().length; i++){
 			for(int j = 0; j < getBoard()[0].length; j++){
 				if(playerPositions[i][j]==null){
@@ -184,9 +184,7 @@ public class Board {
 			System.out.println(players.get(0).getName()+" wins!");
 			Main.gameFinished = true;
 		}
-		redraw();
-		
-		
+
 		System.out.println(currentPlayer.getName()+"'s turn.");
 		//Dice rolling
 		Random rand = new Random();

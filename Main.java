@@ -13,6 +13,7 @@ public class Main {
 
 		Player player = board.getCurrentPlayer();
 		while(!gameFinished) {
+			board.redraw();
 			board.haveNextTurn(player);
 			player = board.nextPlayer();
 			
