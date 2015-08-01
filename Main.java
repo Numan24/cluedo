@@ -43,6 +43,13 @@ public class Main {
 			
 			System.out.println("Enter name for player number "+i+":");
 			String name = input.next();
+			for(Player p : players) {
+				while(p.getName().equals(name)) {
+					System.out.println("Name already in use");
+					System.out.println("Enter new name: ");
+					name = input.next();
+				}
+			}
 			Player player = new Player(name);
 			players.add(player);
 		}

@@ -252,7 +252,6 @@ public class Board {
 								return 1;
 							}
 						}
-						
 					}
 				}
 				break;

@@ -47,11 +47,9 @@ public class Player {
 	 * @return array of options
 	 */
 	public String[] getOptions() {
-		String[] options = new String[4];
-		options[0] = "Guess";
-		options[1] = "Accuse";
-		options[2] = "Move";
-		options[3] = "Hand";
+		String[] options;
+		if(room == null) {options = new String[]{"Accuse", "Move", "Hand"};}
+		else {options = new String[]{"Guess", "Accuse", "Move", "Hand"};}
 		return options;
 	}
 	
