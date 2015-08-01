@@ -41,12 +41,12 @@ public class Accuse extends Action {
 		}
 		
 		
-		System.out.println("Guess a Room: [Library, Kitchen, Ballroom, Billiard Room, Conservatory, Study, Hall, Dining Room]");
+		System.out.println("Guess a Room: [Library, Kitchen, Ball Room, Billiard Room, Conservatory, Study, Hall, Dining Room]");
 		String room = sc.nextLine();
 		Room roomGuess = validRoom(room);
 		while(roomGuess==null){
 			System.out.println("Invalid Room.");
-			System.out.println("Guess a Room: [Library, Kitchen, Ballroom, Billiard Room, Conservatory, Study, Hall, Dining Room]");
+			System.out.println("Guess a Room: [Library, Kitchen, Ball Room, Billiard Room, Conservatory, Study, Hall, Dining Room]");
 			room = sc.nextLine();
 			roomGuess = validRoom(room);
 		}
