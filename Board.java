@@ -33,7 +33,7 @@ public class Board {
 	public Board(List<Player> players) {
 		this.players = players;
 		currentPlayer = players.get(0);
-		board = createBoard();
+		setBoard(createBoard());
 		playerPositions = setPlayerPositions();
 		//weapons
 		getWeapons().add(new Weapon("Dagger"));
@@ -97,11 +97,11 @@ public class Board {
 	
 	
 	private void redraw(){
-		for(int i = 0; i < board.length; i++){
-			for(int j = 0; j < board[0].length; j++){
+		for(int i = 0; i < getBoard().length; i++){
+			for(int j = 0; j < getBoard()[0].length; j++){
 				if(playerPositions[i][j]==null){
-					System.out.print(board[i][j]+" ");
-				} else{System.out.print("~ ");}
+					System.out.print(getBoard()[i][j]+" ");
+				} else{System.out.print(players.indexOf(playerPositions[i][j])+1 +" ");}
 			}
 			System.out.print("\n");
 		}
@@ -142,6 +142,7 @@ public class Board {
 		int index = 0;
 		for(Player p: players){
 			board[index][index] = p;
+			p.move(new Position(index, index));
 			index++;
 		}
 		return board;
@@ -282,6 +283,14 @@ public class Board {
 
 	public void setRooms(List<Room> rooms) {
 		this.rooms = rooms;
+	}
+
+	public char[][] getBoard() {
+		return board;
+	}
+
+	public void setBoard(char[][] board) {
+		this.board = board;
 	}
 
 }

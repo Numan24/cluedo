@@ -26,17 +26,25 @@ public class Move extends Action {
 		Scanner sc = new Scanner(System.in);
 		oldPosition = player.getCurrentPosition();
 		System.out.println("Choose new coords to move to 'x y'");
-		newPosition = new Position(sc.nextInt(), sc.nextInt());
+		int x = sc.nextInt();
+		int y = sc.nextInt();
+		newPosition = new Position(y, x);
 		while(!player.isValidMove(newPosition)){
 				System.out.println("Invalid Move.");
 				System.out.println("Choose new coords to move to 'x y'");
-				newPosition = new Position(sc.nextInt(), sc.nextInt());
+				x = sc.nextInt();
+				y = sc.nextInt();
+				newPosition = new Position(y, x);
 		}
 	}
 	
 	public boolean isValid(){
+		System.out.println("NEW PLAYER POSITION: "+newPosition.toString());
 		if(!player.isValidMove(newPosition)){return false;}
-		// FINISH THIS.
+		if(board.getBoard()[newPosition.row()][newPosition.col()]=='X'){
+			System.out.println("Cannot move on X positions.");
+			return false;
+		}
 		return true;
 	}
 
