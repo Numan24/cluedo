@@ -138,12 +138,15 @@ public class Game {
 	
 	public void doMove() {
 		System.out.println("Player pos: "+currentPlayer.getCurrentPosition());
-		Move playerMove = new Move(this, currentPlayer);
-		while(!playerMove.isValid()){
-			System.out.println("Unsuccessful Movement.");
-			playerMove = new Move(this, currentPlayer);
+		for(int i= currentPlayer.getRoll(); i > 0; i--){
+			System.out.println("You have "+i+" rolls left.");
+			Move playerMove = new Move(this, currentPlayer);
+			while(!playerMove.isValid()){
+				System.out.println("Unsuccessful Movement.");
+				playerMove = new Move(this, currentPlayer);
+			}
+			board.move(playerMove.getOldPosition(), playerMove.getNewPosition());
 		}
-		board.move(playerMove.getOldPosition(), playerMove.getNewPosition());
 	}
 	
 	public void doGuess() {

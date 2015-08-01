@@ -8,7 +8,7 @@ import cluedo.cards.Room;
 public class Player {
 
 	private String name;
-	int roll;
+	private int roll;
 	private List<Card> hand = new ArrayList<Card>();
 	private Position currentPosition;
 	private Room room;
@@ -69,6 +69,11 @@ public class Player {
 		return currentPosition;
 	}
 
+	
+	public int getRoll(){
+		return this.roll;
+	}
+	
 	public void setRoll(int roll) {
 		this.roll = roll;
 		

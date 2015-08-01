@@ -31,17 +31,34 @@ public class Move extends Action {
 	public void setup(){
 		Scanner sc = new Scanner(System.in);
 		oldPosition = player.getCurrentPosition();
-		System.out.println("Choose new coords to move to 'x y'");
-		int x = sc.nextInt();
-		int y = sc.nextInt();
-		newPosition = new Position(y, x);
-		while(!player.isValidMove(newPosition)){
+		System.out.println("Choose a direction to move. [N, S, W, E]");
+		String direction = sc.next();
+		newPosition = moveDirection(direction);
+		System.out.println("new pos: "+newPosition);
+		while(newPosition==null || !player.isValidMove(newPosition)){
 				System.out.println("Invalid Move.");
-				System.out.println("Choose new coords to move to 'x y'");
-				x = sc.nextInt();
-				y = sc.nextInt();
-				newPosition = new Position(y, x);
+				System.out.println("Choose a direction to move. [N, S, W, E]");
+				direction = sc.next();
+				newPosition = moveDirection(direction);
 		}
+	}
+	
+	public Position moveDirection(String direction){
+		switch(direction){
+			case  "N": 
+				return new Position(player.getCurrentPosition().row()-1, player.getCurrentPosition().col());			
+			case  "S": 
+				return new Position(player.getCurrentPosition().row()+1, player.getCurrentPosition().col());	
+			case  "W": 
+				return new Position(player.getCurrentPosition().row(), player.getCurrentPosition().col()-1);		
+			case  "E": 
+				return new Position(player.getCurrentPosition().row(), player.getCurrentPosition().col()+1);	
+			default: 
+				System.out.println("Invalid direction.");
+				newPosition = null;
+				setup();
+		}
+		return null;
 	}
 	
 	/**
