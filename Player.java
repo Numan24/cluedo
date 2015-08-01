@@ -29,7 +29,7 @@ public class Player {
 	
 
 	public void move(Position p){
-			currentPosition = p;
+		currentPosition = p;
 	}
 	
 	public boolean isValidMove(Position newPos){

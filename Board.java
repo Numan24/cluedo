@@ -3,6 +3,7 @@ package cluedo;
 import java.io.File;
 import java.util.*;
 
+import cluedo.action.Accuse;
 import cluedo.action.Move;
 import cluedo.cards.Card;
 import cluedo.cards.Character;
@@ -35,35 +36,35 @@ public class Board {
 		board = createBoard();
 		
 		//weapons
-		weapons.add(new Weapon("Dagger"));
-		weapons.add(new Weapon("Revolver"));
-		weapons.add(new Weapon("Lead Pipe"));
-		weapons.add(new Weapon("Rope"));
-		weapons.add(new Weapon("Spanner"));
-		weapons.add(new Weapon("Candlestick"));
+		getWeapons().add(new Weapon("Dagger"));
+		getWeapons().add(new Weapon("Revolver"));
+		getWeapons().add(new Weapon("Lead Pipe"));
+		getWeapons().add(new Weapon("Rope"));
+		getWeapons().add(new Weapon("Spanner"));
+		getWeapons().add(new Weapon("Candlestick"));
 		//rooms
-		rooms.add(new Room("Kitchen", null));
-		rooms.add(new Room("Ball Room", null));
-		rooms.add(new Room("Conservatory", null));
-		rooms.add(new Room("Billiard Room", null));
-		rooms.add(new Room("Library", null));
-		rooms.add(new Room("Study", null));
-		rooms.add(new Room("Hall", null));
-		rooms.add(new Room("Lounge", null));
-		rooms.add(new Room("Dining Room", null));
+		getRooms().add(new Room("Kitchen", null));
+		getRooms().add(new Room("Ball Room", null));
+		getRooms().add(new Room("Conservatory", null));
+		getRooms().add(new Room("Billiard Room", null));
+		getRooms().add(new Room("Library", null));
+		getRooms().add(new Room("Study", null));
+		getRooms().add(new Room("Hall", null));
+		getRooms().add(new Room("Lounge", null));
+		getRooms().add(new Room("Dining Room", null));
 		
-		rooms.get(0).setConnectedTo(rooms.get(5));
-		rooms.get(5).setConnectedTo(rooms.get(0));
-		rooms.get(2).setConnectedTo(rooms.get(7));
-		rooms.get(7).setConnectedTo(rooms.get(2));
+		getRooms().get(0).setConnectedTo(getRooms().get(5));
+		getRooms().get(5).setConnectedTo(getRooms().get(0));
+		getRooms().get(2).setConnectedTo(getRooms().get(7));
+		getRooms().get(7).setConnectedTo(getRooms().get(2));
 		
 		//characters
-		characters.add(new Character("Miss Scarlett"));
-		characters.add(new Character("Colonel Mustard"));
-		characters.add(new Character("Mrs. White"));
-		characters.add(new Character("The Reverand Green"));
-		characters.add(new Character("Mrs. Peacock"));
-		characters.add(new Character("Professor Plum"));
+		getCharacters().add(new Character("Miss Scarlett"));
+		getCharacters().add(new Character("Colonel Mustard"));
+		getCharacters().add(new Character("Mrs. White"));
+		getCharacters().add(new Character("The Reverand Green"));
+		getCharacters().add(new Character("Mrs. Peacock"));
+		getCharacters().add(new Character("Professor Plum"));
 		
 		distributeCards();
 	}
@@ -103,21 +104,21 @@ public class Board {
 	public void distributeCards(){
 		ArrayList<Card> allcards = new ArrayList<Card>();
 		
-		Collections.shuffle(rooms);
-		Collections.shuffle(weapons);
-		Collections.shuffle(characters);
+		Collections.shuffle(getRooms());
+		Collections.shuffle(getWeapons());
+		Collections.shuffle(getCharacters());
 		
-		win.add(rooms.get(0));	
-		win.add(weapons.get(0));
-		win.add(characters.get(0));
+		win.add(getRooms().get(0));	
+		win.add(getWeapons().get(0));
+		win.add(getCharacters().get(0));
 		
 		for(Card c: win){
 			System.out.println(c);
 		}
 		
-		allcards.addAll(rooms.subList(1, rooms.size()-1));
-		allcards.addAll(weapons.subList(1, weapons.size()-1));
-		allcards.addAll(characters.subList(1, characters.size()-1));
+		allcards.addAll(getRooms().subList(1, getRooms().size()-1));
+		allcards.addAll(getWeapons().subList(1, getWeapons().size()-1));
+		allcards.addAll(getCharacters().subList(1, getCharacters().size()-1));
 		
 		for(Card c: allcards){
 			Player p = nextPlayer();
@@ -190,105 +191,30 @@ public class Board {
 
 		switch(option) {
 		case "Move":
-			move();
+			currentPlayer.move(new Position(0,0)); //FOR TESTING. SHOULD BE REMOVED.
+			System.out.println("Player pos: "+currentPlayer.getCurrentPosition());
+			Move playerMove = new Move(this, currentPlayer);
+			while(!playerMove.isValid()){
+				System.out.println("Unsuccessful Movement.");
+				playerMove = new Move(this, currentPlayer);
+			}
 			break;
 		case "Guess":
 			System.out.println("Yes");
 			break;
 		case "Accuse":
-			if(accusation()){
-				System.out.println(currentPlayer.getName()+" wins");
+			Accuse playerAccusation = new Accuse(this, currentPlayer);
+			if(playerAccusation.isValid()){
+				System.out.println("Correct accusation! "+currentPlayer.getName()+" wins");
 				Main.gameFinished = true;
-			} else{System.out.println(currentPlayer.getName()+" loses");} 
+			} else{System.out.println("Incorrect accusation! "+currentPlayer.getName()+" loses");} 
 			break;
 		default:
 			System.out.println("Invalid option");
 		}
 	}
 	
-	public void move(){
-		Scanner sc = new Scanner(System.in);
-		Move playerMove = null;
-		Position toMoveTo = null;
-		while(playerMove==null){
-			System.out.println("Choose new coords to move to 'x y'");
-			toMoveTo = new Position(sc.nextInt(), sc.nextInt());
-			while(!currentPlayer.isValidMove(toMoveTo)){
-				System.out.println("Invalid Move.");
-				System.out.println("Choose new coords to move to 'x y'");
-				toMoveTo = new Position(sc.nextInt(), sc.nextInt());
-			}
-			playerMove = new Move(this, currentPlayer, currentPlayer.getCurrentPosition(), toMoveTo);
-			if(!playerMove.isValid()){playerMove = null;}
-		}
-		move(currentPlayer.getCurrentPosition(), toMoveTo);
-	}
-	
-	public boolean accusation(){
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
-		String weapon = sc.nextLine();
-		Weapon weaponGuess = validWeapon(weapon);
-		while(weaponGuess==null){
-			System.out.println("Invalid Weapon.");
-			System.out.println("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
-			weapon = sc.nextLine();
-			weaponGuess = validWeapon(weapon);
-		}
-		
-		
-		System.out.println("Guess a Room: [Library, Kitchen, Ballroom, Billiard Room, Conservatory, Study, Hall, Dining Room]");
-		String room = sc.nextLine();
-		Room roomGuess = validRoom(room);
-		while(roomGuess==null){
-			System.out.println("Invalid Room.");
-			System.out.println("Guess a Room: [Library, Kitchen, Ballroom, Billiard Room, Conservatory, Study, Hall, Dining Room]");
-			room = sc.nextLine();
-			roomGuess = validRoom(room);
-		}
-		
-		
-		
-		System.out.println("Guess a Character: [Miss Scarlett, Colonel Mustard, Mrs. White, The Reverand Green, Mrs. Peacock, Professor Plum]");
-		String character = sc.nextLine();
-		Character charGuess = validChar(character);
-		while(charGuess==null){
-			System.out.println("Invalid Character.");
-			System.out.println("Guess a Character: [Miss Scarlett, Colonel Mustard, Mrs. White, The Reverand Green, Mrs. Peacock, Professor Plum]");
-			character = sc.nextLine();
-			charGuess = validChar(character);
-		}
-		
-		List<Card> guess = new ArrayList<Card>();
-		guess.add(roomGuess);
-		guess.add(weaponGuess);
-		guess.add(charGuess);
-		return checkGuess(guess);
-		
-	}
-	
-	
-	
-	private Weapon validWeapon(String guess) {
-		for(Weapon w: weapons){
-			if(w.getName().equals(guess)){return w;}
-		}
-		return null;
-	}
-	
-	private Room validRoom(String guess) {
-		for(Room r: rooms){
-			if(r.getName().equals(guess)){return r;}
-		}
-		return null;
-	}
-	
-	private Character validChar(String guess) {
-		for(Character c: characters){
-			if(c.getName().equals(guess)){return c;}
-		}
-		return null;
-	}
+
 
 	/**
 	 * Find next player to have a turn.
@@ -311,6 +237,30 @@ public class Board {
 	
 	public Player getCurrentPlayer() {
 		return currentPlayer;
+	}
+
+	public List<Weapon> getWeapons() {
+		return weapons;
+	}
+
+	public void setWeapons(List<Weapon> weapons) {
+		this.weapons = weapons;
+	}
+
+	public List<Character> getCharacters() {
+		return characters;
+	}
+
+	public void setCharacters(List<Character> characters) {
+		this.characters = characters;
+	}
+
+	public List<Room> getRooms() {
+		return rooms;
+	}
+
+	public void setRooms(List<Room> rooms) {
+		this.rooms = rooms;
 	}
 
 }

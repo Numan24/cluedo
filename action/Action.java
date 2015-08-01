@@ -4,8 +4,8 @@ import cluedo.*;
 
 public abstract class Action {
 
-	private Board board;
-	private Player player;
+	protected Board board;
+	protected Player player;
 	
 	public Action(Board board, Player player) {
 		this.board = board;
