@@ -9,4 +9,8 @@ public class Enter extends Action {
 		super(board, player);
 	}
 
+	
+	public boolean isValid() {
+		return false;
+	}
 }

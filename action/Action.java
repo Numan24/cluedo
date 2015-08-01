@@ -11,4 +11,6 @@ public abstract class Action {
 		this.board = board;
 		this.player = player;
 	}
+	
+	public abstract boolean isValid();
 }

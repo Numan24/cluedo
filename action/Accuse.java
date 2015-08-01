@@ -70,21 +70,21 @@ public class Accuse extends Action {
 	
 	private Weapon validWeapon(String guess) {
 		for(Weapon w: board.getWeapons()){
-			if(w.getName().equals(guess)){return w;}
+			if(w.getName().toLowerCase().equals(guess.toLowerCase())){return w;}
 		}
 		return null;
 	}
 	
 	private Room validRoom(String guess) {
 		for(Room r: board.getRooms()){
-			if(r.getName().equals(guess)){return r;}
+			if(r.getName().toLowerCase().equals(guess.toLowerCase())){return r;}
 		}
 		return null;
 	}
 	
 	private Character validChar(String guess) {
 		for(Character c: board.getCharacters()){
-			if(c.getName().equals(guess)){return c;}
+			if(c.getName().toLowerCase().equals(guess.toLowerCase())){return c;}
 		}
 		return null;
 	}

@@ -228,7 +228,7 @@ public class Board {
 	 * @param option - the option selected by the player
 	 */
 	private int calculatePlay(String option) {
-		option.toLowerCase();
+		option = option.toLowerCase();
 		switch(option) {
 		case "move":
 			System.out.println("Player pos: "+currentPlayer.getCurrentPosition());
@@ -240,20 +240,10 @@ public class Board {
 			move(playerMove.getOldPosition(), playerMove.getNewPosition());
 			break;
 		case "guess":
-			currentPlayer.setRoom(rooms.get(0));
+			//currentPlayer.setRoom(rooms.get(0));
 			if(currentPlayer.getRoom() != null) {
 				Guess guess = new Guess(this, currentPlayer);
-				for(Player p : players) {
-					if(p.equals(currentPlayer)){continue;}
-					for(Card c : p.getHand()) {
-						for(Card card : guess.getCards()) {
-							if(card.equals(c)) {
-								System.out.println(p.getName()+" has one of the cards\n");
-								return 1;
-							}
-						}
-					}
-				}
+				guess.isValid();
 				break;
 			}
 			else {System.out.println("Must be in a room to make a suggestion!");}
@@ -297,6 +287,10 @@ public class Board {
 	
 	public Player getCurrentPlayer() {
 		return currentPlayer;
+	}
+	
+	public List<Player> getPlayers() {
+		return players;
 	}
 
 	public List<Weapon> getWeapons() {

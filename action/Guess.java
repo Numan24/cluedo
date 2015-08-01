@@ -63,5 +63,20 @@ public class Guess extends Action {
 	public List<Card> getCards() {
 		return guess;
 	}
+	
+	public boolean isValid() {
+		for(Player p : board.getPlayers()) {
+			if(p.equals(board.getCurrentPlayer())){continue;}
+			for(Card c : p.getHand()) {
+				for(Card card : guess) {
+					if(card.equals(c)) {
+						System.out.println(p.getName()+" has one of the cards\n");
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 
 }
