@@ -196,7 +196,13 @@ public class Board {
 		System.out.println(toPrint);
 		String option; 
 		option = input.next();
-		calculatePlay(option);
+		int valid = calculatePlay(option);
+		while(valid == 0) {
+			System.out.println("Invalid option");
+			System.out.println("Please enter a new option");
+			option = input.next();
+			valid = calculatePlay(option);
+		}
 		return option;
 		
 	}
@@ -212,8 +218,8 @@ public class Board {
 	 * 
 	 * @param option - the option selected by the player
 	 */
-	private void calculatePlay(String option) {
-
+	private int calculatePlay(String option) {
+		option.toLowerCase();
 		switch(option) {
 		case "Move":
 			System.out.println("Player pos: "+currentPlayer.getCurrentPosition());
@@ -235,8 +241,9 @@ public class Board {
 			} else{System.out.println("Incorrect accusation! "+currentPlayer.getName()+" loses");} 
 			break;
 		default:
-			System.out.println("Invalid option");
+			return 0;
 		}
+		return 1;
 	}
 	
 
