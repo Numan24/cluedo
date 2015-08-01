@@ -180,6 +180,10 @@ public class Board {
 	 * @return
 	 */
 	public String haveNextTurn(Player player) {
+		if(players.size()==1){
+			System.out.println(players.get(0).getName()+" wins!");
+			Main.gameFinished = true;
+		}
 		redraw();
 		
 		
