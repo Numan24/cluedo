@@ -5,17 +5,18 @@ import java.util.*;
 public class Main {
 
 	static boolean gameFinished = false;
+	static Game game;
 	
 	public static void main(String[] args) {
 		// ask for players
 		//create board
-		Board board = gameSetup();
-
-		Player player = board.getCurrentPlayer();
+		ArrayList<Player> players = gameSetup();
+		game = new Game(players);
+		Player player = game.getCurrentPlayer();
 		while(!gameFinished) {
-			board.redraw();
-			board.haveNextTurn(player);
-			player = board.nextPlayer();
+//			board.redraw();
+			game.haveNextTurn(player);
+			player = game.nextPlayer();
 			
 		}
 	}
@@ -27,7 +28,7 @@ public class Main {
 	 * 
 	 * @return - board for the game with the players
 	 */
-	private static Board gameSetup() {
+	private static ArrayList<Player> gameSetup() {
 		int numPlayers;
 		Scanner input = new Scanner(System.in);
 		System.out.println("Cluedo");
@@ -39,7 +40,7 @@ public class Main {
 			System.out.println("Please enter a number between 2 and 6.");
 			numPlayers = input.nextInt();
 		}
-		List<Player> players = new ArrayList<Player>();
+		ArrayList<Player> players = new ArrayList<Player>();
 		for(int i = 1; i <= numPlayers; i++) {
 			
 			System.out.println("Enter name for player number "+i+":");
@@ -54,7 +55,7 @@ public class Main {
 			Player player = new Player(name);
 			players.add(player);
 		}
-		return new Board(players);
+		return players;
 	}
 	
 }
