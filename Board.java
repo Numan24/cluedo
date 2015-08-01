@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.*;
 
 import cluedo.action.Accuse;
+import cluedo.action.Guess;
 import cluedo.action.Move;
 import cluedo.cards.Card;
 import cluedo.cards.Character;
@@ -231,6 +232,13 @@ public class Board {
 			move(playerMove.getOldPosition(), playerMove.getNewPosition());
 			break;
 		case "Guess":
+			if(currentPlayer.inRoom(this)){
+				Guess playerGuess = new Guess(this, currentPlayer);
+			}
+			else{
+				System.out.println("You must be in a room to guess.");
+				return 0;
+			}
 			System.out.println("Yes");
 			break;
 		case "Accuse":

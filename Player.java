@@ -40,6 +40,15 @@ public class Player {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @param b - the board
+	 * @return true if player is on a position that is a room, otherwise false.
+	 */
+	public boolean inRoom(Board b){
+		char c =  b.getBoard()[currentPosition.row()][currentPosition.col()];
+		return c!= 'X' && c!= 'O';
+	}
 
 	/**
 	 * get the current options that the player has at their given position.

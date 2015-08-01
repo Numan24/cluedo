@@ -22,6 +22,11 @@ public class Accuse extends Action {
 
 	}
 	
+
+	/**
+	 * Asks user for a weapon, room and character until they pick a valid one of each. 
+	 * Saves resulting 3 cards into array.
+	 */
 	public void setup(){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");

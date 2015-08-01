@@ -22,6 +22,11 @@ public class Move extends Action {
 		setup();
 	}
 
+
+	/**
+	 * Asks user for coordinates and tries to set new position to given coords if it
+	 * is a valid move.
+	 */
 	public void setup(){
 		Scanner sc = new Scanner(System.in);
 		oldPosition = player.getCurrentPosition();
@@ -38,6 +43,10 @@ public class Move extends Action {
 		}
 	}
 	
+	/**
+	 * checks if moving to new position is valid. (Can't move on rooms).
+	 * @return boolean. true if valid move, otherwise false.
+	 */
 	public boolean isValid(){
 		System.out.println("NEW PLAYER POSITION: "+newPosition.toString());
 		if(!player.isValidMove(newPosition)){return false;}
