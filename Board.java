@@ -39,36 +39,36 @@ public class Board {
 		playerPositions = setPlayerPositions();
 		
 		//weapons
-		getWeapons().add(new Weapon("Dagger"));
-		getWeapons().add(new Weapon("Revolver"));
-		getWeapons().add(new Weapon("Lead Pipe"));
-		getWeapons().add(new Weapon("Rope"));
-		getWeapons().add(new Weapon("Spanner"));
-		getWeapons().add(new Weapon("Candlestick"));
+		weapons.add(new Weapon("Dagger"));
+		weapons.add(new Weapon("Revolver"));
+		weapons.add(new Weapon("Lead Pipe"));
+		weapons.add(new Weapon("Rope"));
+		weapons.add(new Weapon("Spanner"));
+		weapons.add(new Weapon("Candlestick"));
 		//rooms
-		getRooms().add(new Room("Kitchen", null));
-		getRooms().add(new Room("Ball Room", null));
-		getRooms().add(new Room("Conservatory", null));
-		getRooms().add(new Room("Billiard Room", null));
-		getRooms().add(new Room("Library", null));
-		getRooms().add(new Room("Study", null));
-		getRooms().add(new Room("Hall", null));
-		getRooms().add(new Room("Lounge", null));
-		getRooms().add(new Room("Dining Room", null));
+		rooms.add(new Room("Kitchen", null));
+		rooms.add(new Room("Ball Room", null));
+		rooms.add(new Room("Conservatory", null));
+		rooms.add(new Room("Billiard Room", null));
+		rooms.add(new Room("Library", null));
+		rooms.add(new Room("Study", null));
+		rooms.add(new Room("Hall", null));
+		rooms.add(new Room("Lounge", null));
+		rooms.add(new Room("Dining Room", null));
 		
-		getRooms().get(0).setConnectedTo(getRooms().get(5));
-		getRooms().get(5).setConnectedTo(getRooms().get(0));
-		getRooms().get(2).setConnectedTo(getRooms().get(7));
-		getRooms().get(7).setConnectedTo(getRooms().get(2));
+		rooms.get(0).setConnectedTo(rooms.get(5));
+		rooms.get(5).setConnectedTo(rooms.get(0));
+		rooms.get(2).setConnectedTo(rooms.get(7));
+		rooms.get(7).setConnectedTo(rooms.get(2));
 		
 		
 		//characters
-		getCharacters().add(new Character("Miss Scarlett"));
-		getCharacters().add(new Character("Colonel Mustard"));
-		getCharacters().add(new Character("Mrs. White"));
-		getCharacters().add(new Character("The Reverand Green"));
-		getCharacters().add(new Character("Mrs. Peacock"));
-		getCharacters().add(new Character("Professor Plum"));
+		characters.add(new Character("Miss Scarlett"));
+		characters.add(new Character("Colonel Mustard"));
+		characters.add(new Character("Mrs. White"));
+		characters.add(new Character("The Reverand Green"));
+		characters.add(new Character("Mrs. Peacock"));
+		characters.add(new Character("Professor Plum"));
 		
 		distributeCards();
 		setPlayerPositions();
@@ -118,21 +118,21 @@ public class Board {
 	public void distributeCards(){
 		ArrayList<Card> allcards = new ArrayList<Card>();
 		
-		Collections.shuffle(getRooms());
-		Collections.shuffle(getWeapons());
-		Collections.shuffle(getCharacters());
+		Collections.shuffle(rooms);
+		Collections.shuffle(weapons);
+		Collections.shuffle(characters);
 		
-		win.add(getRooms().get(0));	
-		win.add(getWeapons().get(0));
-		win.add(getCharacters().get(0));
+		win.add(rooms.get(0));	
+		win.add(weapons.get(0));
+		win.add(characters.get(0));
 		
 		for(Card c: win){
 			System.out.println(c);
 		}
 		
-		allcards.addAll(getRooms().subList(1, getRooms().size()-1));
-		allcards.addAll(getWeapons().subList(1, getWeapons().size()-1));
-		allcards.addAll(getCharacters().subList(1, getCharacters().size()-1));
+		allcards.addAll(rooms.subList(1, rooms.size()-1));
+		allcards.addAll(weapons.subList(1, weapons.size()-1));
+		allcards.addAll(characters.subList(1, characters.size()-1));
 		
 		for(Card c: allcards){
 			Player p = nextPlayer();
@@ -194,7 +194,6 @@ public class Board {
 		Scanner input = new Scanner(System.in);
 		String toPrint = "Please select an option: ";
 		for(String option : options) {
-			
 			toPrint += "["+option+"] ";
 		}
 		System.out.println(toPrint);
@@ -265,7 +264,10 @@ public class Board {
 			if(playerAccusation.isValid()){
 				System.out.println("Correct accusation! "+currentPlayer.getName()+" wins");
 				Main.gameFinished = true;
-			} else{System.out.println("Incorrect accusation! "+currentPlayer.getName()+" loses");} 
+			} else{
+				System.out.println("Incorrect accusation! "+currentPlayer.getName()+" loses");
+				players.remove(currentPlayer);
+			} 
 			break;
 		case "hand":
 			currentPlayer.displayHand();
