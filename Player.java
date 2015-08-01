@@ -2,7 +2,6 @@ package cluedo;
 
 import java.util.*;
 
-import cluedo.Main.Direction;
 import cluedo.cards.Card;
 
 public class Player {

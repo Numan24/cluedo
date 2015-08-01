@@ -49,5 +49,4 @@ public class Main {
 		return new Board(players);
 	}
 	
-	public enum Direction{NORTH, EAST, SOUTH, WEST;}
 }

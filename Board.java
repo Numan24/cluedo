@@ -3,6 +3,7 @@ package cluedo;
 import java.io.File;
 import java.util.*;
 
+import cluedo.action.Move;
 import cluedo.cards.Card;
 import cluedo.cards.Character;
 import cluedo.cards.Room;
@@ -186,18 +187,10 @@ public class Board {
 	 * @param option - the option selected by the player
 	 */
 	private void calculatePlay(String option) {
-		Scanner sc = new Scanner(System.in);
+
 		switch(option) {
 		case "Move":
-			// uhhhhh
-			System.out.println("Choose new coords to move to 'x y'");
-			Position toMoveTo = new Position(sc.nextInt(), sc.nextInt());
-			while(!currentPlayer.isValidMove(toMoveTo)){
-				System.out.println("Invalid Move.");
-				System.out.println("Choose new coords to move to 'x y'");
-				toMoveTo = new Position(sc.nextInt(), sc.nextInt());
-			}
-			move(currentPlayer.getCurrentPosition(), toMoveTo);
+			move();
 			break;
 		case "Guess":
 			System.out.println("Yes");
@@ -213,6 +206,23 @@ public class Board {
 		}
 	}
 	
+	public void move(){
+		Scanner sc = new Scanner(System.in);
+		Move playerMove = null;
+		Position toMoveTo = null;
+		while(playerMove==null){
+			System.out.println("Choose new coords to move to 'x y'");
+			toMoveTo = new Position(sc.nextInt(), sc.nextInt());
+			while(!currentPlayer.isValidMove(toMoveTo)){
+				System.out.println("Invalid Move.");
+				System.out.println("Choose new coords to move to 'x y'");
+				toMoveTo = new Position(sc.nextInt(), sc.nextInt());
+			}
+			playerMove = new Move(this, currentPlayer, currentPlayer.getCurrentPosition(), toMoveTo);
+			if(!playerMove.isValid()){playerMove = null;}
+		}
+		move(currentPlayer.getCurrentPosition(), toMoveTo);
+	}
 	
 	public boolean accusation(){
 		Scanner sc = new Scanner(System.in);
