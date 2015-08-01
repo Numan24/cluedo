@@ -34,7 +34,7 @@ public class Board {
 		this.players = players;
 		currentPlayer = players.get(0);
 		board = createBoard();
-		
+		playerPositions = setPlayerPositions();
 		//weapons
 		getWeapons().add(new Weapon("Dagger"));
 		getWeapons().add(new Weapon("Revolver"));
@@ -67,6 +67,7 @@ public class Board {
 		getCharacters().add(new Character("Professor Plum"));
 		
 		distributeCards();
+		setPlayerPositions();
 	}
 	
 	/**
@@ -77,14 +78,12 @@ public class Board {
 	private char[][] createBoard() {
 		try {
 			Scanner scan = new Scanner(new File("board.txt"));
-			System.out.println("hello?");
 			char[][] board = new char[25][25];
 			int index = 0;
 			while(scan.hasNextLine()) {
 				String s = scan.nextLine();
-				System.out.println(s);
 				if(s.startsWith("#")){continue;}
-				char[] line = scan.nextLine().toCharArray();
+				char[] line = s.toCharArray();
 				board[index] = line;
 				index++;
 			}
@@ -96,6 +95,17 @@ public class Board {
 		return null;
 	}
 	
+	
+	private void redraw(){
+		for(int i = 0; i < board.length; i++){
+			for(int j = 0; j < board[0].length; j++){
+				if(playerPositions[i][j]==null){
+					System.out.print(board[i][j]+" ");
+				} else{System.out.print("~ ");}
+			}
+			System.out.print("\n");
+		}
+	}
 	
     /**
      * Shuffles cards randomly and distributes to all players as well as deciding the winning 3 cards.
@@ -126,6 +136,17 @@ public class Board {
 		}
 	}
 	
+	
+	public Player[][] setPlayerPositions(){
+		Player[][] board = new Player[25][25];
+		int index = 0;
+		for(Player p: players){
+			board[index][index] = p;
+			index++;
+		}
+		return board;
+	}
+	
 	/**
 	 * takes two positions and moves player at old position to new position.
 	 * @param oldPos & newPos - the positions to move player from.
@@ -154,6 +175,9 @@ public class Board {
 	 * @return
 	 */
 	public String haveNextTurn(Player player) {
+		redraw();
+		
+		
 		System.out.println(currentPlayer.getName()+"'s turn.");
 		//Dice rolling
 		Random rand = new Random();
@@ -191,13 +215,13 @@ public class Board {
 
 		switch(option) {
 		case "Move":
-			currentPlayer.move(new Position(0,0)); //FOR TESTING. SHOULD BE REMOVED.
 			System.out.println("Player pos: "+currentPlayer.getCurrentPosition());
 			Move playerMove = new Move(this, currentPlayer);
 			while(!playerMove.isValid()){
 				System.out.println("Unsuccessful Movement.");
 				playerMove = new Move(this, currentPlayer);
 			}
+			move(playerMove.getOldPosition(), playerMove.getNewPosition());
 			break;
 		case "Guess":
 			System.out.println("Yes");
@@ -222,7 +246,6 @@ public class Board {
 	 * @return the next player
 	 */
 	public Player nextPlayer() {
-		//System.out.println("Current player: "+currentPlayer.getName());
 		int index = players.indexOf(currentPlayer);
 		if(index == players.size()-1) {
 			currentPlayer = players.get(0);
@@ -230,8 +253,6 @@ public class Board {
 		else {
 			currentPlayer = players.get(index+1);
 		}
-		
-		//System.out.println("Current player: "+currentPlayer.getName());
 		return currentPlayer;
 	}
 	

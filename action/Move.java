@@ -8,8 +8,8 @@ import cluedo.Position;
 
 public class Move extends Action {
 
-	Position newPosition;
-	Position oldPosition;
+	private Position newPosition;
+	private Position oldPosition;
 	
 	public Move(Board board, Player player, Position oldPosition, Position newPosition) {
 		super(board, player);
@@ -39,5 +39,22 @@ public class Move extends Action {
 		// FINISH THIS.
 		return true;
 	}
+
+	public Position getNewPosition() {
+		return newPosition;
+	}
+
+	public void setNewPosition(Position newPosition) {
+		this.newPosition = newPosition;
+	}
+
+	public Position getOldPosition() {
+		return oldPosition;
+	}
+
+	public void setOldPosition(Position oldPosition) {
+		this.oldPosition = oldPosition;
+	}
+	
 
 }
