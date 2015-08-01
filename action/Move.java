@@ -34,7 +34,6 @@ public class Move extends Action {
 		System.out.println("Choose a direction to move. [N, S, W, E]");
 		String direction = sc.next();
 		newPosition = moveDirection(direction);
-		System.out.println("new pos: "+newPosition);
 		while(newPosition==null || !player.isValidMove(newPosition)){
 				System.out.println("Invalid Move.");
 				System.out.println("Choose a direction to move. [N, S, W, E]");
@@ -45,7 +44,7 @@ public class Move extends Action {
 	
 	public Position moveDirection(String direction){
 		switch(direction){
-			case  "N": 
+			case  "N": 				
 				return new Position(player.getCurrentPosition().row()-1, player.getCurrentPosition().col());			
 			case  "S": 
 				return new Position(player.getCurrentPosition().row()+1, player.getCurrentPosition().col());	
@@ -55,8 +54,6 @@ public class Move extends Action {
 				return new Position(player.getCurrentPosition().row(), player.getCurrentPosition().col()+1);	
 			default: 
 				System.out.println("Invalid direction.");
-				newPosition = null;
-				setup();
 		}
 		return null;
 	}
@@ -66,8 +63,16 @@ public class Move extends Action {
 	 * @return boolean. true if valid move, otherwise false.
 	 */
 	public boolean isValid(){
-		System.out.println("NEW PLAYER POSITION: "+newPosition.toString());
 		if(!player.isValidMove(newPosition)){return false;}
+
+		if(newPosition.row()>=game.getBoard().length || newPosition.row()<0){
+			System.out.println("Please choose a valid y position.");
+			return false;
+		}
+		if(newPosition.col()>=game.getBoard()[0].length || newPosition.col()<0){
+			System.out.println("Please choose a valid x position.");
+			return false;
+		}
 		if(game.getBoard()[newPosition.row()][newPosition.col()]=='X'){
 			System.out.println("Cannot move on X positions.");
 			return false;

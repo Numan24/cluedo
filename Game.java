@@ -146,6 +146,7 @@ public class Game {
 				playerMove = new Move(this, currentPlayer);
 			}
 			board.move(playerMove.getOldPosition(), playerMove.getNewPosition());
+			System.out.println("Your new position: "+playerMove.getNewPosition());
 		}
 	}
 	
