@@ -54,6 +54,9 @@ public class Move extends Action {
 			System.out.println("Cannot move on X positions.");
 			return false;
 		}
+		if(board.getPlayerPositions()[newPosition.row()][newPosition.col()]!=null){
+			System.out.println("There is already a player in this position!");
+		}
 		return true;
 	}
 

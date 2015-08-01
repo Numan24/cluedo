@@ -331,4 +331,8 @@ public class Board {
 		this.board = board;
 	}
 
+	public Player[][] getPlayerPositions() {
+		return playerPositions;
+	}
+
 }
