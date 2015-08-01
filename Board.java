@@ -3,14 +3,6 @@ package cluedo;
 import java.io.File;
 import java.util.*;
 
-import cluedo.action.Accuse;
-import cluedo.action.Guess;
-import cluedo.action.Move;
-import cluedo.cards.Card;
-import cluedo.cards.Character;
-import cluedo.cards.Room;
-import cluedo.cards.Weapon;
-
 public class Board {
 
 

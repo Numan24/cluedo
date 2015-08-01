@@ -4,11 +4,11 @@ import cluedo.*;
 
 public abstract class Action {
 
-	protected Board board;
+	protected Game game;
 	protected Player player;
 	
-	public Action(Board board, Player player) {
-		this.board = board;
+	public Action(Game game, Player player) {
+		this.game = game;
 		this.player = player;
 	}
 	

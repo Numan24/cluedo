@@ -57,6 +57,7 @@ public class Game {
 		characters.add(new Character("Professor Plum"));
 		
 		distributeCards();
+		board = new Board(players);
 	}
 	
 	/**
@@ -70,7 +71,7 @@ public class Game {
 			System.out.println(players.get(0).getName()+" wins!");
 			Main.gameFinished = true;
 		}
-
+		board.redraw();
 		System.out.println(currentPlayer.getName()+"'s turn.");
 		//Dice rolling
 		Random rand = new Random();
@@ -114,24 +115,24 @@ public class Game {
 		switch(option) {
 		case "move":
 			System.out.println("Player pos: "+currentPlayer.getCurrentPosition());
-			Move playerMove = new Move(board, currentPlayer);
+			Move playerMove = new Move(this, currentPlayer);
 			while(!playerMove.isValid()){
 				System.out.println("Unsuccessful Movement.");
-				playerMove = new Move(board, currentPlayer);
+				playerMove = new Move(this, currentPlayer);
 			}
 			board.move(playerMove.getOldPosition(), playerMove.getNewPosition());
 			break;
 		case "guess":
 			//currentPlayer.setRoom(rooms.get(0));
 			if(currentPlayer.getRoom() != null) {
-				Guess guess = new Guess(board, currentPlayer);
+				Guess guess = new Guess(this, currentPlayer);
 				guess.isValid();
 				break;
 			}
 			else {System.out.println("Must be in a room to make a suggestion!");}
 			break;
 		case "accuse":
-			Accuse playerAccusation = new Accuse(board, currentPlayer);
+			Accuse playerAccusation = new Accuse(this, currentPlayer);
 			if(playerAccusation.isValid()){
 				System.out.println("Correct accusation! "+currentPlayer.getName()+" wins");
 				Main.gameFinished = true;
@@ -243,5 +244,16 @@ public class Game {
 	public void setRooms(List<Room> rooms) {
 		this.rooms = rooms;
 	}
+	
+	public List<Player> getPlayers() {
+		return players;
+	}
 
+	public char[][] getBoard() {
+		return board.getBoard();
+	}
+	
+	public Player[][] getPlayerPositions() {
+		return board.getPlayerPositions();
+	}
 }

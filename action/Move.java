@@ -3,6 +3,7 @@ package cluedo.action;
 import java.util.Scanner;
 
 import cluedo.Board;
+import cluedo.Game;
 import cluedo.Player;
 import cluedo.Position;
 
@@ -11,14 +12,14 @@ public class Move extends Action {
 	private Position newPosition;
 	private Position oldPosition;
 	
-	public Move(Board board, Player player, Position oldPosition, Position newPosition) {
-		super(board, player);
+	public Move(Game game, Player player, Position oldPosition, Position newPosition) {
+		super(game, player);
 		this.newPosition = newPosition;
 		this.oldPosition = oldPosition;
 	}
 	
-	public Move(Board board, Player currentPlayer) {
-		super(board, currentPlayer);
+	public Move(Game game, Player currentPlayer) {
+		super(game, currentPlayer);
 		setup();
 	}
 
@@ -50,11 +51,11 @@ public class Move extends Action {
 	public boolean isValid(){
 		System.out.println("NEW PLAYER POSITION: "+newPosition.toString());
 		if(!player.isValidMove(newPosition)){return false;}
-		if(board.getBoard()[newPosition.row()][newPosition.col()]=='X'){
+		if(game.getBoard()[newPosition.row()][newPosition.col()]=='X'){
 			System.out.println("Cannot move on X positions.");
 			return false;
 		}
-		if(board.getPlayerPositions()[newPosition.row()][newPosition.col()]!=null){
+		if(game.getPlayerPositions()[newPosition.row()][newPosition.col()]!=null){
 			System.out.println("There is already a player in this position!");
 		}
 		return true;

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import cluedo.Board;
+import cluedo.Game;
 import cluedo.Player;
 import cluedo.cards.Card;
 import cluedo.cards.Character;
@@ -16,8 +17,8 @@ public class Accuse extends Action {
 	private List<Card> guess = new ArrayList<Card>();
 	
 	
-	public Accuse(Board board, Player player) {
-		super(board, player);
+	public Accuse(Game game, Player player) {
+		super(game, player);
 		setup();
 
 	}
@@ -69,28 +70,28 @@ public class Accuse extends Action {
 	}
 	
 	private Weapon validWeapon(String guess) {
-		for(Weapon w: board.getWeapons()){
+		for(Weapon w: game.getWeapons()){
 			if(w.getName().toLowerCase().equals(guess.toLowerCase())){return w;}
 		}
 		return null;
 	}
 	
 	private Room validRoom(String guess) {
-		for(Room r: board.getRooms()){
+		for(Room r: game.getRooms()){
 			if(r.getName().toLowerCase().equals(guess.toLowerCase())){return r;}
 		}
 		return null;
 	}
 	
 	private Character validChar(String guess) {
-		for(Character c: board.getCharacters()){
+		for(Character c: game.getCharacters()){
 			if(c.getName().toLowerCase().equals(guess.toLowerCase())){return c;}
 		}
 		return null;
 	}
 
 	public boolean isValid() {
-		return board.checkGuess(guess);
+		return game.checkGuess(guess);
 	}
 
 }
