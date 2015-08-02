@@ -136,6 +136,7 @@ public class Game {
 			valid = calculatePlay(option);
 			}
 			else {
+				System.out.println(toPrint);
 				option = input.next();
 				valid = calculatePlay(option);
 			}
@@ -174,11 +175,23 @@ public class Game {
 			break;
 		case "leave":
 			doLeave();
+			board.redraw();
+			return 2;
+		case "stairs":
+			doStairs();
+			board.redraw();
 			return 2;
 		default:
 			return 0; // an invalid option was passed so fail by returning 0
 		}
 		return 1; 
+	}
+	
+	public void doStairs(){
+		Room current = currentPlayer.getRoom();
+		Room destination = current.getConnectedTo();
+		board.move(currentPlayer.getCurrentPosition(), destination.getDoors().get(0).getPosition());
+		currentPlayer.setRoom(destination);
 	}
 	
 	public void doLeave(){
