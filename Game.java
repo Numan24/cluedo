@@ -166,19 +166,26 @@ public class Game {
 		case "hand":
 			currentPlayer.displayHand();
 			return 2;
-			
+		case "enter":
+			doEnter();
+			break;
 		default:
 			return 0; // an invalid option was passed so fail by returning 0
 		}
-		return 1;
+		return 1; 
 	}
 	
+	public void doEnter(){
+		
+	}
 	
 	public void doMove() {
 		System.out.println("Player pos: "+currentPlayer.getCurrentPosition());
 		for(int i= currentPlayer.getRoll(); i > 0; i--){
 			System.out.println("You have "+i+" rolls left.");
 			Move playerMove = new Move(this, currentPlayer);
+			//if player chooses to stop moving.
+			if(currentPlayer.getRoll()==0){break;}
 			while(!playerMove.isValid()){
 				System.out.println("Unsuccessful Movement.");
 				playerMove = new Move(this, currentPlayer);

@@ -33,8 +33,12 @@ public class Move extends Action {
 	public void setup(){
 		Scanner sc = new Scanner(System.in);
 		oldPosition = player.getCurrentPosition();
-		System.out.println("Choose a direction to move. [N, S, W, E]");
+		System.out.println("Choose a direction to move [N, S, W, E] or X to stop moving.");
 		String direction = sc.next();
+		if(direction.equals("x")||direction.equals("X")){
+			player.setRoll(0);
+			return;
+		}
 		newPosition = moveDirection(direction);
 		while(newPosition==null || !player.isValidMove(newPosition)){
 				System.out.println("Invalid Move.");
