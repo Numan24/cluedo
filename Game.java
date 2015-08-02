@@ -166,7 +166,14 @@ public class Game {
 			currentPlayer.displayHand();
 			return 2;
 		case "enter":
-			doEnter();
+			for(Tile t: currentPlayer.adjacentTiles()) {
+				if(t instanceof DoorTile) {
+					doEnter(t);
+				}
+			}
+			break;
+		case "leave":
+			doLeave();
 			break;
 		default:
 			return 0; // an invalid option was passed so fail by returning 0
@@ -174,8 +181,32 @@ public class Game {
 		return 1; 
 	}
 	
-	public void doEnter(){
+	public void doLeave(){
+		Room r = currentPlayer.getRoom();
+		//NEED TO SET TO POSITION BEFORE ENTERING.
+		currentPlayer.setRoom(null);
+	}
+
+	public void doEnter(Tile t){
+		DoorTile tile = (DoorTile) t;
+		Room room = tile.getRoom();
+		room.addPlayer(currentPlayer);
+		currentPlayer.setRoom(tile.getRoom());
 		
+		//NEED TO REMOVE FROM CURRENT POSITION AND SHIT
+		
+		System.out.println("You are now in the "+currentPlayer.getRoom().getName());
+		System.out.println("Do you want to make a guess? [Y / N]");
+		Scanner sc = new Scanner(System.in);
+		String answer = sc.next();
+		while(!(answer.equalsIgnoreCase("Y") || answer.equalsIgnoreCase("N"))){
+			System.out.println("Invalid choice. Please try again.");
+			answer = sc.next();
+		}
+		if(answer.equalsIgnoreCase("Y")){
+			doGuess();
+			
+		}
 	}
 	
 	public void doMove() {
@@ -206,7 +237,7 @@ public class Game {
 					answer = sc.next();
 				}
 				if(answer.equalsIgnoreCase("Y")){
-					calculatePlay("enter");
+					doEnter(t);
 					break;
 				}
 				else{break;}
@@ -300,7 +331,6 @@ public class Game {
 		return envelope.containsAll(guess);
 	}
 	
-
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
