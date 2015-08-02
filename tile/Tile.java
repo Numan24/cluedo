@@ -1,10 +1,12 @@
 package cluedo.tile;
 
 import cluedo.Player;
+import cluedo.Position;
 
 public abstract class Tile {
 
-	private final int x,y;
+	protected final int x;
+	protected final int y;
 	private Player player;
 	
 	public Tile(int x, int y) {
@@ -16,6 +18,10 @@ public abstract class Tile {
 		return player;
 	}
 
+	public Position getPosition(){
+		return new Position(y,x);
+	}
+	
 	public void setPlayer(Player player) {
 		this.player = player;
 	}

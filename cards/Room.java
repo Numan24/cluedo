@@ -82,5 +82,9 @@ public class Room implements Card {
 		return doorID;
 	}
 	
+	public List<RoomTile> getRoomTiles(){
+		return roomTiles;
+	}
+	
 	
 }

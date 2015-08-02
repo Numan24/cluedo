@@ -13,6 +13,7 @@ public class Player {
 	private List<Card> hand = new ArrayList<Card>();
 	private Position currentPosition;
 	private Room room;
+	private DoorTile lastDoorEntered;
 	private final Game game;
 
 	public Player(String name, Game game) {
@@ -58,13 +59,17 @@ public class Player {
 		List<Tile> adjacent = adjacentTiles();
 		opts.add("Accuse");
 		opts.add("Hand");
-		opts.add("Move");
-		if(room != null) {
+		if(room==null){
+			opts.add("Move");
+		}
+		else {
+			opts.add("Leave");
 			opts.add("Guess");
 			if(room.getConnectedTo() != null) {
 				opts.add("Stairs: "+room.getConnectedTo().getName());
 			}
 		}
+		
 		for(Tile t: adjacent) {
 			if(t instanceof DoorTile) {
 				DoorTile dt = (DoorTile) t;
@@ -126,6 +131,14 @@ public class Player {
 
 	public void setRoom(Room room) {
 		this.room = room;
+	}
+
+	public DoorTile getLastDoorEntered() {
+		return lastDoorEntered;
+	}
+
+	public void setLastDoorEntered(DoorTile lastDoorEntered) {
+		this.lastDoorEntered = lastDoorEntered;
 	}
 
 }

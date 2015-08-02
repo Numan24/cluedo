@@ -1,5 +1,6 @@
 package cluedo.tile;
 
+import cluedo.Position;
 import cluedo.cards.Room;
 
 public class RoomTile extends Tile {
@@ -19,4 +20,5 @@ public class RoomTile extends Tile {
 	public String toString() {
 		return room.getId()+"";
 	}
+	
 }

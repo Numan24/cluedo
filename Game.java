@@ -185,14 +185,18 @@ public class Game {
 		Room r = currentPlayer.getRoom();
 		//NEED TO SET TO POSITION BEFORE ENTERING.
 		currentPlayer.setRoom(null);
+		board.move(currentPlayer.getCurrentPosition(), currentPlayer.getLastDoorEntered().getPosition());
+		
 	}
 
 	public void doEnter(Tile t){
 		DoorTile tile = (DoorTile) t;
 		Room room = tile.getRoom();
+		RoomTile roomTile = room.getRoomTiles().get(0);
 		room.addPlayer(currentPlayer);
 		currentPlayer.setRoom(tile.getRoom());
-		
+		currentPlayer.setLastDoorEntered(tile);
+		board.move(currentPlayer.getCurrentPosition(), roomTile.getPosition());
 		//NEED TO REMOVE FROM CURRENT POSITION AND SHIT
 		
 		System.out.println("You are now in the "+currentPlayer.getRoom().getName());
