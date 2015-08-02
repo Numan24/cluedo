@@ -157,7 +157,6 @@ public class Game {
 			doMove();
 			break;
 		case "guess":
-			//currentPlayer.setRoom(rooms.get(0));
 			doGuess();
 			break;
 		case "accuse":
@@ -193,6 +192,26 @@ public class Game {
 			board.move(playerMove.getOldPosition(), playerMove.getNewPosition());
 			board.redraw();
 			System.out.println("Your new position: "+playerMove.getNewPosition());
+		}
+		
+		//==== THIS IS UGLY AND I AM SORRY ========
+		for(Tile t: currentPlayer.adjacentTiles()) {
+			if(t instanceof DoorTile) {
+				Scanner sc = new Scanner(System.in);
+				DoorTile dt = (DoorTile) t;
+				System.out.println("Would you like to enter: "+dt.getRoom().getName()+" [Y / N]");
+				String answer = sc.next();
+				while(!(answer.equalsIgnoreCase("Y") || answer.equalsIgnoreCase("N"))){
+					System.out.println("Invalid choice. Please try again.");
+					answer = sc.next();
+				}
+				if(answer.equalsIgnoreCase("Y")){
+					calculatePlay("enter");
+					break;
+				}
+				else{break;}
+				
+			}
 		}
 	}
 	
