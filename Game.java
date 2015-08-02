@@ -174,7 +174,7 @@ public class Game {
 			break;
 		case "leave":
 			doLeave();
-			break;
+			return 2;
 		default:
 			return 0; // an invalid option was passed so fail by returning 0
 		}
