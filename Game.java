@@ -9,6 +9,7 @@ import cluedo.cards.Card;
 import cluedo.cards.Character;
 import cluedo.cards.Room;
 import cluedo.cards.Weapon;
+import cluedo.tile.*;
 
 public class Game {
 	
@@ -21,8 +22,8 @@ public class Game {
 	private List<Weapon> weapons = new ArrayList<Weapon>();
 	private List<Character> characters = new ArrayList<Character>();
 	
-	public Game(List<Player> players) {
-		this.players = players;
+	public Game() {
+		players = gameSetup();
 		currentPlayer = players.get(0);
 		
 		//weapons
@@ -33,15 +34,16 @@ public class Game {
 		weapons.add(new Weapon("Spanner"));
 		weapons.add(new Weapon("Candlestick"));
 		//rooms
-		rooms.add(new Room("Kitchen", null));
-		rooms.add(new Room("Ball Room", null));
-		rooms.add(new Room("Conservatory", null));
-		rooms.add(new Room("Billiard Room", null));
-		rooms.add(new Room("Library", null));
-		rooms.add(new Room("Study", null));
-		rooms.add(new Room("Hall", null));
-		rooms.add(new Room("Lounge", null));
-		rooms.add(new Room("Dining Room", null));
+		rooms.add(new Room("Kitchen", null, 'K', 'U'));
+		rooms.add(new Room("Ball Room", null, 'B', 'T'));
+		rooms.add(new Room("Conservatory", null, 'C', 'R'));
+		rooms.add(new Room("Billiard Room", null, 'I', 'Q'));
+		rooms.add(new Room("Library", null, 'A', 'P'));
+		rooms.add(new Room("Study", null, 'S', 'Z'));
+		rooms.add(new Room("Hall", null, 'H', 'Y'));
+		rooms.add(new Room("Lounge", null, 'L', 'W'));
+		rooms.add(new Room("Dining Room", null, 'D', 'V'));
+		rooms.add(new Room ("Swimming Pool", null, 'X', 'G'));
 		
 		rooms.get(0).setConnectedTo(rooms.get(5));
 		rooms.get(5).setConnectedTo(rooms.get(0));
@@ -58,7 +60,38 @@ public class Game {
 		characters.add(new Character("Professor Plum"));
 		
 		distributeCards();
-		board = new Board(players);
+		board = new Board(players,this);
+	}
+	
+	
+	private ArrayList<Player> gameSetup() {
+		int numPlayers;
+		Scanner input = new Scanner(System.in);
+		System.out.println("Cluedo");
+		System.out.println("============");
+		System.out.println("");
+		System.out.println("How many players? (2-6) ");
+		numPlayers = input.nextInt();
+		while(numPlayers > 6 || numPlayers < 2) {
+			System.out.println("Please enter a number between 2 and 6.");
+			numPlayers = input.nextInt();
+		}
+		ArrayList<Player> players = new ArrayList<Player>();
+		for(int i = 1; i <= numPlayers; i++) {
+			
+			System.out.println("Enter name for player number "+i+":");
+			String name = input.next();
+			for(Player p : players) {
+				while(p.getName().equals(name)) {
+					System.out.println("Name already in use");
+					System.out.println("Enter new name: ");
+					name = input.next();
+				}
+			}
+			Player player = new Player(name, this);
+			players.add(player);
+		}
+		return players;
 	}
 	
 	public void play() {
@@ -75,21 +108,25 @@ public class Game {
 	 */
 	public String haveNextTurn(Player player) {
 		System.out.println(currentPlayer.getName()+"'s turn.");
+		
 		//Dice rolling
 		Random rand = new Random();
 		int roll = rand.nextInt(5)+1;
 		currentPlayer.setRoll(roll);
 		System.out.println("You rolled a "+roll);
 		
-		String[] options = player.getOptions();
+		List<String> options = player.getOptions();
+		
 		Scanner input = new Scanner(System.in);
 		String toPrint = "Please select an option: ";
 		for(String option : options) {
 			toPrint += "["+option+"] ";
 		}
 		System.out.println(toPrint);
+		
 		String option; 
 		option = input.next();
+		
 		int valid = calculatePlay(option);
 		while(valid == 0 || valid == 2) {
 			if(valid == 0){
@@ -129,6 +166,7 @@ public class Game {
 		case "hand":
 			currentPlayer.displayHand();
 			return 2;
+			
 		default:
 			return 0; // an invalid option was passed so fail by returning 0
 		}
@@ -146,6 +184,7 @@ public class Game {
 				playerMove = new Move(this, currentPlayer);
 			}
 			board.move(playerMove.getOldPosition(), playerMove.getNewPosition());
+			board.redraw();
 			System.out.println("Your new position: "+playerMove.getNewPosition());
 		}
 	}
@@ -272,7 +311,7 @@ public class Game {
 		return players;
 	}
 
-	public char[][] getBoard() {
+	public Tile[][] getBoard() {
 		return board.getBoard();
 	}
 	

@@ -3,6 +3,9 @@ package cluedo;
 import java.io.File;
 import java.util.*;
 
+import cluedo.cards.Room;
+import cluedo.tile.*;
+
 public class Board {
 
 
@@ -11,8 +14,10 @@ public class Board {
 	
 
 	
-	private char[][] board; // hard code board please
+	private Tile[][] board; // hard code board please
 	private Player[][] playerPositions;
+	
+	private Game game;
 	
 
 	
@@ -20,14 +25,11 @@ public class Board {
 	 * Construct a board from a list of players
 	 * @param players - list of players in the game
 	 */
-	public Board(List<Player> players) {
+	public Board(List<Player> players, Game game) {
 		this.players = players;
-		
-		setBoard(createBoard());
+		this.game = game;
+		board = createBoard();
 		playerPositions = setPlayerPositions();
-		
-
-		setPlayerPositions();
 	}
 	
 	/**
@@ -35,16 +37,18 @@ public class Board {
 	 * 
 	 * @return the array for the board
 	 */
-	private char[][] createBoard() {
+	private Tile[][] createBoard() {
 		try {
-			Scanner scan = new Scanner(new File("board.txt"));
-			char[][] board = new char[25][25];
+			Scanner scan = new Scanner(new File("board V2.txt"));
+			Tile[][] board = new Tile[25][24];
 			int index = 0;
 			while(scan.hasNextLine()) {
 				String s = scan.nextLine();
 				if(s.startsWith("#")){continue;} // skip commented lines
 				char[] line = s.toCharArray();
-				board[index] = line;
+				for(int i = 0; i < line.length; i++) {
+					board[index][i] = createTile(line[i], i, index);
+				}
 				index++;
 			}
 			scan.close();
@@ -56,12 +60,49 @@ public class Board {
 	}
 	
 	
+	private Tile createTile(char c, int x, int y) {
+		if(c == 'O'){return new FloorTile(x,y);}
+		char[] roomID = {'X','S','H','L','D','K','B','C','I','A'};
+		for(char room: roomID) {
+			if(c == room) {
+				List<Room> rooms = game.getRooms();
+				for(Room r: rooms) {
+					if(c == r.getId()) {
+						RoomTile tile = new RoomTile(x,y,r);
+						r.addTile(tile);
+						return tile;
+					}
+				}
+			}
+		}
+		char[] doorID = {'Z','Y','W','V','U','T','R','Q','P'};
+		for(char door: doorID) {
+			if(c == door) {
+				List<Room> rooms = game.getRooms();
+				for(Room r: rooms) {
+					if(c == r.getDoorID()) {
+						DoorTile tile = new DoorTile(x,y,r);
+						r.addDoor(tile);
+						return tile;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	public void redraw(){
-		for(int i = 0; i < getBoard().length; i++){
+		for(int i = 0; i < board.length; i++){
 			for(int j = 0; j < getBoard()[0].length; j++){
 				if(playerPositions[i][j]==null){
-					System.out.print(getBoard()[i][j]+" ");
-				} else{System.out.print(players.indexOf(playerPositions[i][j])+1 +" ");}
+					Tile current = board[i][j];
+					if(current instanceof FloorTile) {System.out.print("O");}
+					else if(current instanceof RoomTile){System.out.print("X");}
+					else if(current instanceof DoorTile) {
+						DoorTile dt = (DoorTile) current;
+						System.out.print(dt.getRoom().getId());
+					}
+				} else{System.out.print(players.indexOf(playerPositions[i][j])+1 +"");}
 			}
 			System.out.print("\n");
 		}
@@ -101,16 +142,18 @@ public class Board {
 		return players;
 	}
 
-	public char[][] getBoard() {
+	public Tile[][] getBoard() {
 		return board;
 	}
 
-	public void setBoard(char[][] board) {
-		this.board = board;
-	}
 
 	public Player[][] getPlayerPositions() {
 		return playerPositions;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
+		
 	}
 
 }

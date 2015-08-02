@@ -1,11 +1,13 @@
 package cluedo.action;
 
+import java.util.List;
 import java.util.Scanner;
 
 import cluedo.Board;
 import cluedo.Game;
 import cluedo.Player;
 import cluedo.Position;
+import cluedo.tile.*;
 
 public class Move extends Action {
 
@@ -42,7 +44,9 @@ public class Move extends Action {
 		}
 	}
 	
+
 	public Position moveDirection(String direction){
+		direction = direction.toUpperCase();
 		switch(direction){
 			case  "N": 				
 				return new Position(player.getCurrentPosition().row()-1, player.getCurrentPosition().col());			
@@ -73,10 +77,10 @@ public class Move extends Action {
 			System.out.println("Please choose a valid x position.");
 			return false;
 		}
-		if(game.getBoard()[newPosition.row()][newPosition.col()]=='X'){
-			System.out.println("Cannot move on X positions.");
-			return false;
-		}
+//		if(game.getBoard()[newPosition.row()][newPosition.col()]=='X'){
+//			System.out.println("Cannot move on X positions.");
+//			return false;
+//		}
 		if(game.getPlayerPositions()[newPosition.row()][newPosition.col()]!=null){
 			System.out.println("There is already a player in this position!");
 		}

@@ -4,6 +4,7 @@ import java.util.*;
 
 import cluedo.cards.Card;
 import cluedo.cards.Room;
+import cluedo.tile.*;
 
 public class Player {
 
@@ -12,9 +13,11 @@ public class Player {
 	private List<Card> hand = new ArrayList<Card>();
 	private Position currentPosition;
 	private Room room;
+	private final Game game;
 
-	public Player(String name) {
+	public Player(String name, Game game) {
 		this.name = name;
+		this.game = game;
 	}
 
 	public List<Card> getHand() {
@@ -50,13 +53,39 @@ public class Player {
 	 * get the current options that the player has at their given position.
 	 * @return array of options
 	 */
-	public String[] getOptions() {
-		String[] options;
-		if(room == null) {options = new String[]{"Accuse", "Move", "Hand"};}
-		else {options = new String[]{"Guess", "Accuse", "Move", "Hand"};}
-		return options;
+	public List<String> getOptions() {
+		List<String> opts = new ArrayList<String>();
+		List<Tile> adjacent = adjacentTiles();
+		opts.add("Accuse");
+		opts.add("Hand");
+		opts.add("Move");
+		if(room != null) {
+			opts.add("Guess");
+			if(room.getConnectedTo() != null) {
+				opts.add("Stairs: "+room.getConnectedTo().getName());
+			}
+		}
+		for(Tile t: adjacent) {
+			if(t instanceof DoorTile) {
+				DoorTile dt = (DoorTile) t;
+				opts.add("Enter: "+dt.getRoom().getName());
+				}
+		}
+		return opts;
 	}
 	
+	public List<Tile> adjacentTiles() {
+		Tile[][] board = game.getBoard();
+		int x = currentPosition.col();
+		int y = currentPosition.row();
+		List<Tile> tiles = new ArrayList<Tile>();
+		if(x < 23){tiles.add(board[y][x+1]);}
+		if(x > 0){tiles.add(board[y][x-1]);}
+		if(y < 24){tiles.add(board[y+1][x]);}
+		if(y > 0){tiles.add(board[y-1][x]);}
+		return tiles;
+	}
+
 	public void displayHand() {
 		String toPrint = "";
 		for(Card c: hand) {

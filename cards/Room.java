@@ -1,14 +1,41 @@
 package cluedo.cards;
 
-public class Room implements Card {
-	Room connectedTo;
-	String name;
+import java.util.ArrayList;
+import java.util.List;
 
-	public Room(String name, Room connectedTo) {
+import cluedo.Player;
+import cluedo.tile.*;
+
+public class Room implements Card {
+	
+	private Room connectedTo;
+	private String name;
+	
+	private List<Player> players = new ArrayList<Player>();
+	private List<RoomTile> roomTiles = new ArrayList<RoomTile>();
+	private List<DoorTile> doors = new ArrayList<DoorTile>();
+	
+	private final char id;
+	private final char doorID;
+
+	public Room(String name, Room connectedTo, char id, char doorID) {
 		this.name = name;
 		this.connectedTo = connectedTo;
+		this. id = id;
+		this.doorID = doorID;
 	}
-
+	
+	public void addTile(RoomTile tile) {
+		roomTiles.add(tile);
+	}
+	
+	public void addPlayer(Player p) {
+		players.add(p);
+	}
+	
+	public List<Player> getPlayers() {
+		return players;
+	}
 
 	public String getName() {
 		return name;
@@ -16,6 +43,10 @@ public class Room implements Card {
 	
 	public void setConnectedTo(Room r){
 		connectedTo = r;
+	}
+	
+	public Room getConnectedTo() {
+		return connectedTo;
 	}
 
 	public boolean equals(Object o) {
@@ -27,11 +58,28 @@ public class Room implements Card {
 		}
 		return false;
 	}
-
+	
+	public char getId() {
+		return id;
+	}
+	
+	public void addDoor(DoorTile door) {
+		doors.add(door);
+	}
+	
+	public List<DoorTile> getDoors() {
+		return doors;
+	}
+ 
 
 	@Override
 	public String toString() {
 		return "[" +name+ "]";
+	}
+
+	
+	public char getDoorID() {
+		return doorID;
 	}
 	
 	
