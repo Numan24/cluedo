@@ -38,17 +38,6 @@ public class Player {
 		currentPosition = p;
 	}
 	
-	/**
-	 * checks player has rolled high enough number to move as many steps as new position is away.
-	 * @param newPos - position to try move to
-	 * @return boolean - where it is a valid move
-	 */
-	public boolean isValidMove(Position newPos){
-		if(Math.abs(newPos.row() - currentPosition.row()) + Math.abs(newPos.col()-currentPosition.col()) > roll){
-			return false;
-		}
-		return true;
-	}
 
 	/**
 	 * get the current options that the player has at their given position.
@@ -59,10 +48,13 @@ public class Player {
 		List<Tile> adjacent = adjacentTiles();
 		opts.add("Accuse");
 		opts.add("Hand");
-		if(room==null && roll != 0){
+		if(room==null){
 			opts.add("Move");
 		}
-		else {
+		if(roll != 0) {
+			opts.add("Move");
+		}
+		if(room != null) {
 			opts.add("Guess");
 			if(roll != 0){
 				opts.add("Leave");
@@ -81,7 +73,7 @@ public class Player {
 	}
 	
 	public List<Tile> adjacentTiles() {
-		Tile[][] board = game.getBoard();
+		Tile[][] board = game.getBoardArray();
 		int x = currentPosition.col();
 		int y = currentPosition.row();
 		List<Tile> tiles = new ArrayList<Tile>();

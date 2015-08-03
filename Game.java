@@ -172,11 +172,19 @@ public class Game {
 			currentPlayer.displayHand();
 			return 2;
 		case "enter":
+			Enter enter = null;
 			for(Tile t: currentPlayer.adjacentTiles()) {
 				if(t instanceof DoorTile) {
-					doEnter(t);
+					DoorTile dt = (DoorTile) t;
+					enter = new Enter(this, currentPlayer, dt);
 				}
 			}
+			if(enter == null){
+				System.out.println("Cannot enter anything from here!");
+				return 2;
+			}
+			enter.run();
+			board.redraw();
 			return 2;
 		case "leave":
 			doLeave();
@@ -228,17 +236,6 @@ public class Game {
 		//NEED TO REMOVE FROM CURRENT POSITION AND SHIT
 		
 		System.out.println("You are now in the "+currentPlayer.getRoom().getName());
-//		System.out.println("Do you want to make a guess? [Y / N]");
-//		Scanner sc = new Scanner(System.in);
-//		String answer = sc.next();
-//		while(!(answer.equalsIgnoreCase("Y") || answer.equalsIgnoreCase("N"))){
-//			System.out.println("Invalid choice. Please try again.");
-//			answer = sc.next();
-//		}
-//		if(answer.equalsIgnoreCase("Y")){
-//			doGuess();
-//			
-//		}
 	}
 	
 
@@ -360,8 +357,12 @@ public class Game {
 		return players;
 	}
 
-	public Tile[][] getBoard() {
+	public Tile[][] getBoardArray() {
 		return board.getBoard();
+	}
+	
+	public Board getBoard() {
+		return board;
 	}
 	
 	public Player[][] getPlayerPositions() {

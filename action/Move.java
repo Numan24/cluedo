@@ -31,12 +31,12 @@ public class Move extends Action {
 		while(player.getRoll()!=0){
 			System.out.println("Choose a direction to move [N, S, W, E] or X to stop moving.");
 			String direction = sc.next();
-			if(direction.equals("x")||direction.equals("X")){
+			if(direction.equalsIgnoreCase("x")){
 				player.setRoll(0);
 				return;
 			}
 			newPosition = moveDirection(direction);
-			while(newPosition==null || !player.isValidMove(newPosition)){
+			while(newPosition==null || !isValid()){
 					System.out.println("Invalid Move.");
 					System.out.println("Choose a direction to move. [N, S, W, E]");
 					direction = sc.next();
@@ -44,6 +44,7 @@ public class Move extends Action {
 			}
 			board.move(oldPosition, newPosition);
 			player.setRoll(player.getRoll()-1);
+			oldPosition = newPosition;
 			board.redraw();
 		}
 	}
@@ -72,13 +73,12 @@ public class Move extends Action {
 	 */
 	public boolean isValid(){
 		if(newPosition==null){return false;}
-		if(!player.isValidMove(newPosition)){return false;}
 
-		if(newPosition.row()>=game.getBoard().length || newPosition.row()<0){
+		if(newPosition.row()>=game.getBoardArray().length || newPosition.row()<0){
 			System.out.println("Please choose a valid y position.");
 			return false;
 		}
-		if(newPosition.col()>=game.getBoard()[0].length || newPosition.col()<0){
+		if(newPosition.col()>=game.getBoardArray()[0].length || newPosition.col()<0){
 			System.out.println("Please choose a valid x position.");
 			return false;
 		}
