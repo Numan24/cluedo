@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import cluedo.Board;
 import cluedo.Game;
+import cluedo.Main;
 import cluedo.Player;
 import cluedo.cards.Card;
 import cluedo.cards.Character;
@@ -19,8 +20,6 @@ public class Accuse extends Action {
 	
 	public Accuse(Game game, Player player) {
 		super(game, player);
-		setup();
-
 	}
 	
 
@@ -92,6 +91,18 @@ public class Accuse extends Action {
 
 	public boolean isValid() {
 		return game.checkGuess(guess);
+	}
+
+
+	public boolean outcome() {
+		if(isValid()){
+			System.out.println("Correct accusation! \n"+player.getName()+" wins!");
+			return true;
+		} else{
+			System.out.println("Incorrect accusation! "+player.getName()+" loses");
+			return false;
+		} 
+		
 	}
 
 }

@@ -13,16 +13,11 @@ public class Move extends Action {
 
 	private Position newPosition;
 	private Position oldPosition;
-	
-	public Move(Game game, Player player, Position oldPosition, Position newPosition) {
+	private Board board;
+	public Move(Game game, Player player, Board board, Position oldPosition) {
 		super(game, player);
-		this.newPosition = newPosition;
 		this.oldPosition = oldPosition;
-	}
-	
-	public Move(Game game, Player currentPlayer) {
-		super(game, currentPlayer);
-		setup();
+		this.board = board;
 	}
 
 
@@ -31,20 +26,25 @@ public class Move extends Action {
 	 * is a valid move.
 	 */
 	public void setup(){
+		System.out.println("Player pos: "+oldPosition);
 		Scanner sc = new Scanner(System.in);
-		oldPosition = player.getCurrentPosition();
-		System.out.println("Choose a direction to move [N, S, W, E] or X to stop moving.");
-		String direction = sc.next();
-		if(direction.equals("x")||direction.equals("X")){
-			player.setRoll(0);
-			return;
-		}
-		newPosition = moveDirection(direction);
-		while(newPosition==null || !player.isValidMove(newPosition)){
-				System.out.println("Invalid Move.");
-				System.out.println("Choose a direction to move. [N, S, W, E]");
-				direction = sc.next();
-				newPosition = moveDirection(direction);
+		while(player.getRoll()!=0){
+			System.out.println("Choose a direction to move [N, S, W, E] or X to stop moving.");
+			String direction = sc.next();
+			if(direction.equals("x")||direction.equals("X")){
+				player.setRoll(0);
+				return;
+			}
+			newPosition = moveDirection(direction);
+			while(newPosition==null || !player.isValidMove(newPosition)){
+					System.out.println("Invalid Move.");
+					System.out.println("Choose a direction to move. [N, S, W, E]");
+					direction = sc.next();
+					newPosition = moveDirection(direction);
+			}
+			board.move(oldPosition, newPosition);
+			player.setRoll(player.getRoll()-1);
+			board.redraw();
 		}
 	}
 	
@@ -71,6 +71,7 @@ public class Move extends Action {
 	 * @return boolean. true if valid move, otherwise false.
 	 */
 	public boolean isValid(){
+		if(newPosition==null){return false;}
 		if(!player.isValidMove(newPosition)){return false;}
 
 		if(newPosition.row()>=game.getBoard().length || newPosition.row()<0){

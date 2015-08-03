@@ -97,7 +97,7 @@ public class Game {
 	
 	public void play() {
 		board.redraw();
-		haveNextTurn(currentPlayer);
+		haveNextTurn();
 		currentPlayer = nextPlayer();
 	}
 	
@@ -107,7 +107,7 @@ public class Game {
 	 * @param player - player that is having a turn
 	 * @return
 	 */
-	public String haveNextTurn(Player player) {
+	public void haveNextTurn() {
 		System.out.println(currentPlayer.getName()+"'s turn.");
 		
 		//Dice rolling
@@ -116,7 +116,7 @@ public class Game {
 		currentPlayer.setRoll(roll);
 		System.out.println("You rolled a "+roll);
 		
-		List<String> options = player.getOptions();
+		List<String> options = currentPlayer.getOptions();
 		
 		Scanner input = new Scanner(System.in);
 		String toPrint = "Please select an option: ";
@@ -137,12 +137,16 @@ public class Game {
 			valid = calculatePlay(option);
 			}
 			else {
+				options = currentPlayer.getOptions();
+				toPrint = "Please select an option: ";
+				for(String option2 : options) {
+					toPrint += "["+option2+"] ";
+				}
 				System.out.println(toPrint);
 				option = input.next();
 				valid = calculatePlay(option);
 			}
 		}
-		return option;
 		
 	}
 	
@@ -157,7 +161,7 @@ public class Game {
 		switch(option) {
 		case "move":
 			doMove();
-			break;
+			return 2;
 		case "guess":
 			doGuess();
 			break;
@@ -173,7 +177,7 @@ public class Game {
 					doEnter(t);
 				}
 			}
-			break;
+			return 2;
 		case "leave":
 			doLeave();
 			board.redraw();
@@ -186,6 +190,11 @@ public class Game {
 			return 0; // an invalid option was passed so fail by returning 0
 		}
 		return 1; 
+	}
+	
+	public void doMove(){
+		Move move = new Move(this, currentPlayer, board, currentPlayer.getCurrentPosition());
+		move.setup();
 	}
 	
 	public void doStairs(){
@@ -219,55 +228,20 @@ public class Game {
 		//NEED TO REMOVE FROM CURRENT POSITION AND SHIT
 		
 		System.out.println("You are now in the "+currentPlayer.getRoom().getName());
-		System.out.println("Do you want to make a guess? [Y / N]");
-		Scanner sc = new Scanner(System.in);
-		String answer = sc.next();
-		while(!(answer.equalsIgnoreCase("Y") || answer.equalsIgnoreCase("N"))){
-			System.out.println("Invalid choice. Please try again.");
-			answer = sc.next();
-		}
-		if(answer.equalsIgnoreCase("Y")){
-			doGuess();
-			
-		}
+//		System.out.println("Do you want to make a guess? [Y / N]");
+//		Scanner sc = new Scanner(System.in);
+//		String answer = sc.next();
+//		while(!(answer.equalsIgnoreCase("Y") || answer.equalsIgnoreCase("N"))){
+//			System.out.println("Invalid choice. Please try again.");
+//			answer = sc.next();
+//		}
+//		if(answer.equalsIgnoreCase("Y")){
+//			doGuess();
+//			
+//		}
 	}
 	
-	public void doMove() {
-		System.out.println("Player pos: "+currentPlayer.getCurrentPosition());
-		for(int i= currentPlayer.getRoll(); i > 0; i--){
-			System.out.println("You have "+i+" rolls left.");
-			Move playerMove = new Move(this, currentPlayer);
-			//if player chooses to stop moving.
-			if(currentPlayer.getRoll()==0){break;}
-			while(!playerMove.isValid()){
-				System.out.println("Unsuccessful Movement.");
-				playerMove = new Move(this, currentPlayer);
-			}
-			board.move(playerMove.getOldPosition(), playerMove.getNewPosition());
-			board.redraw();
-			System.out.println("Your new position: "+playerMove.getNewPosition());
-		}
-		
-		//==== THIS IS UGLY AND I AM SORRY ========
-		for(Tile t: currentPlayer.adjacentTiles()) {
-			if(t instanceof DoorTile) {
-				Scanner sc = new Scanner(System.in);
-				DoorTile dt = (DoorTile) t;
-				System.out.println("Would you like to enter: "+dt.getRoom().getName()+" [Y / N]");
-				String answer = sc.next();
-				while(!(answer.equalsIgnoreCase("Y") || answer.equalsIgnoreCase("N"))){
-					System.out.println("Invalid choice. Please try again.");
-					answer = sc.next();
-				}
-				if(answer.equalsIgnoreCase("Y")){
-					doEnter(t);
-					break;
-				}
-				else{break;}
-				
-			}
-		}
-	}
+
 	
 	public void doGuess() {
 		if(currentPlayer.getRoom() != null) {
@@ -279,13 +253,9 @@ public class Game {
 	
 	public void doAccuse() {
 		Accuse playerAccusation = new Accuse(this, currentPlayer);
-		if(playerAccusation.isValid()){
-			System.out.println("Correct accusation! \n"+currentPlayer.getName()+" wins!");
-			Main.gameFinished = true;
-		} else{
-			System.out.println("Incorrect accusation! "+currentPlayer.getName()+" loses");
-			players.remove(currentPlayer);
-		} 
+		playerAccusation.setup();
+		if(!playerAccusation.outcome()){Main.gameFinished=true;}
+		else{players.remove(currentPlayer);}
 	}
 	
 	
