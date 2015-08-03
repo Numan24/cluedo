@@ -59,17 +59,18 @@ public class Player {
 		List<Tile> adjacent = adjacentTiles();
 		opts.add("Accuse");
 		opts.add("Hand");
-		if(room==null){
+		if(room==null && roll != 0){
 			opts.add("Move");
 		}
 		else {
-			opts.add("Leave");
 			opts.add("Guess");
-			if(room.getConnectedTo() != null) {
-				opts.add("Stairs: "+room.getConnectedTo().getName());
+			if(roll != 0){
+				opts.add("Leave");
+				if(room.getConnectedTo() != null) {
+					opts.add("Stairs: "+room.getConnectedTo().getName());
+				}
 			}
 		}
-		
 		for(Tile t: adjacent) {
 			if(t instanceof DoorTile) {
 				DoorTile dt = (DoorTile) t;

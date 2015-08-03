@@ -3,6 +3,7 @@ package cluedo;
 import java.util.*;
 
 import cluedo.action.Accuse;
+import cluedo.action.Enter;
 import cluedo.action.Guess;
 import cluedo.action.Move;
 import cluedo.cards.Card;
@@ -205,7 +206,12 @@ public class Game {
 	public void doEnter(Tile t){
 		DoorTile tile = (DoorTile) t;
 		Room room = tile.getRoom();
+		int index = 0;
 		RoomTile roomTile = room.getRoomTiles().get(0);
+		while(room.getRoomTiles().get(index).getPlayer() != null) {
+			roomTile = room.getRoomTiles().get(index);
+			index++;
+		}
 		room.addPlayer(currentPlayer);
 		currentPlayer.setRoom(tile.getRoom());
 		currentPlayer.setLastDoorEntered(tile);
