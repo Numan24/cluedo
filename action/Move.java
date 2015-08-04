@@ -21,18 +21,6 @@ public class Move extends Action {
 		this.board = board;
 	}
 
-	
-	/**
-	 * This is the constructor used in the leave class for making a player leave a room. 
-	 * Idk if this is gross.
-	 */
-	public Move(Game game, Player player, Position oldPosition, Position newPosition){
-		super(game, player);
-		this.board= game.getBoard();
-		this.oldPosition = oldPosition;
-		this.newPosition = newPosition;
-	}
-
 	/**
 	 * Asks user for coordinates and tries to set new position to given coords if it
 	 * is a valid move.
