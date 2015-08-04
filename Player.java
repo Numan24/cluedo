@@ -70,7 +70,7 @@ public class Player {
 				}
 			}
 		}
-		if(roll != 0) {
+		if(roll != 0 && room==null) {
 			for(Tile t: adjacent) {
 				if(t instanceof DoorTile) {
 					DoorTile dt = (DoorTile) t;

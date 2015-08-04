@@ -70,18 +70,20 @@ public class Move extends Action {
 	 * @return boolean. true if valid move, otherwise false.
 	 */
 	public boolean isValid(){
+		if(newPosition.row()>=game.getBoardArray().length || newPosition.row()<0){
+			System.out.println("Please choose a valid position.");
+			return false;
+		}
+		if(newPosition.col()>=game.getBoardArray()[0].length || newPosition.col()<0){
+			System.out.println("Please choose a valid position.");
+			return false;
+		}
+		
 		if(!(game.getBoardArray()[newPosition.row()][newPosition.col()] instanceof FloorTile)) {
 			return false;
 		}
 
-		if(newPosition.row()>=game.getBoardArray().length || newPosition.row()<0){
-			System.out.println("Please choose a valid y position.");
-			return false;
-		}
-		if(newPosition.col()>=game.getBoardArray()[0].length || newPosition.col()<0){
-			System.out.println("Please choose a valid x position.");
-			return false;
-		}
+
 //		if(game.getBoard()[newPosition.row()][newPosition.col()]=='X'){
 //			System.out.println("Cannot move on X positions.");
 //			return false;

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import cluedo.Game;
+import cluedo.Input;
 import cluedo.Player;
 import cluedo.cards.Room;
 import cluedo.tile.DoorTile;
@@ -20,10 +21,8 @@ public class Leave extends Action{
 	}
 
 	public void run() {
-		System.out.println("Which door would you like to leave from? ");
 		displayDoors();
-		Scanner input = new Scanner(System.in);
-		int door = input.nextInt();
+		int door = Input.getInt("Which door would you like to leave from? ");
 		DoorTile dt = room.getDoors().get(door-1);
 		List<Tile> tiles = adjacentTiles(dt);
 		for(Tile t: tiles) {
@@ -42,6 +41,7 @@ public class Leave extends Action{
 		int index = 1;
 		for(DoorTile d: room.getDoors()) {
 			toPrint += "[Door "+index+"]";
+			index++;
 		}
 		System.out.println(toPrint);
 	}
