@@ -15,24 +15,27 @@ public class Enter extends Action {
 		super(game, player);
 		this.tile = tile;
 	}
-	
+
 	public void run() {
 		Room room = tile.getRoom();
 		int index = 0;
 		RoomTile roomTile = room.getRoomTiles().get(0);
-		while(room.getRoomTiles().get(index).getPlayer() != null) {
-			roomTile = room.getRoomTiles().get(index);
+		while(roomTile.getPlayer() != null) {
 			index++;
+			roomTile = room.getRoomTiles().get(index);
 		}
 		room.addPlayer(player);
+		roomTile.setPlayer(player);
 		player.setRoom(tile.getRoom());
 		player.setLastDoorEntered(tile);
 		game.getBoard().move(player.getCurrentPosition(), roomTile.getPosition());
 		System.out.println("You are now in the "+player.getRoom().getName());
+		player.setRoll(0);
 	}
 
-	
+
 	public boolean isValid() {
-		return false;
+
+		return player.getRoll() > 0;
 	}
 }

@@ -15,10 +15,12 @@ public class Player {
 	private Room room;
 	private DoorTile lastDoorEntered;
 	private final Game game;
+	private boolean hasLost;
 
 	public Player(String name, Game game) {
 		this.name = name;
 		this.game = game;
+		this.hasLost = false;
 	}
 
 	public List<Card> getHand() {
@@ -32,12 +34,20 @@ public class Player {
 	public void addCard(Card card) {
 		this.hand.add(card);
 	}
-	
+
 
 	public void move(Position p){
 		currentPosition = p;
 	}
-	
+
+	public boolean hasLost() {
+		return hasLost;
+	}
+
+	public void lost(boolean b) {
+		hasLost = b;
+	}
+
 
 	/**
 	 * get the current options that the player has at their given position.
@@ -48,10 +58,7 @@ public class Player {
 		List<Tile> adjacent = adjacentTiles();
 		opts.add("Accuse");
 		opts.add("Hand");
-		if(room==null){
-			opts.add("Move");
-		}
-		if(roll != 0) {
+		if(room==null && roll != 0){
 			opts.add("Move");
 		}
 		if(room != null) {
@@ -63,15 +70,20 @@ public class Player {
 				}
 			}
 		}
-		for(Tile t: adjacent) {
-			if(t instanceof DoorTile) {
-				DoorTile dt = (DoorTile) t;
-				opts.add("Enter: "+dt.getRoom().getName());
-				}
+		if(roll != 0) {
+			for(Tile t: adjacent) {
+				if(t instanceof DoorTile) {
+					DoorTile dt = (DoorTile) t;
+					opts.add("Enter: "+dt.getRoom().getName());
+					}
+			}
+		}
+		if(roll == 0){
+			opts.add("End");
 		}
 		return opts;
 	}
-	
+
 	public List<Tile> adjacentTiles() {
 		Tile[][] board = game.getBoardArray();
 		int x = currentPosition.col();
@@ -96,20 +108,20 @@ public class Player {
 		return currentPosition;
 	}
 
-	
+
 	public int getRoll(){
 		return this.roll;
 	}
-	
+
 	public void setRoll(int roll) {
 		this.roll = roll;
-		
+
 	}
 
 	public String getName() {
 		return name;
 	}
-	
+
 	public boolean equals(Object o) {
 		if(o instanceof Player) {
 			Player player = (Player) o;

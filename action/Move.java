@@ -25,14 +25,12 @@ public class Move extends Action {
 	 * Asks user for coordinates and tries to set new position to given coords if it
 	 * is a valid move.
 	 */
-	public void setup(){
-		System.out.println("Player pos: "+oldPosition);
+	public void run(){
 		Scanner sc = new Scanner(System.in);
 		while(player.getRoll()!=0){
 			System.out.println("Choose a direction to move [N, S, W, E] or X to stop moving.");
 			String direction = sc.next();
 			if(direction.equalsIgnoreCase("x")){
-				player.setRoll(0);
 				return;
 			}
 			newPosition = moveDirection(direction);
@@ -48,31 +46,33 @@ public class Move extends Action {
 			board.redraw();
 		}
 	}
-	
+
 
 	public Position moveDirection(String direction){
 		direction = direction.toUpperCase();
 		switch(direction){
-			case  "N": 				
-				return new Position(player.getCurrentPosition().row()-1, player.getCurrentPosition().col());			
-			case  "S": 
-				return new Position(player.getCurrentPosition().row()+1, player.getCurrentPosition().col());	
-			case  "W": 
-				return new Position(player.getCurrentPosition().row(), player.getCurrentPosition().col()-1);		
-			case  "E": 
-				return new Position(player.getCurrentPosition().row(), player.getCurrentPosition().col()+1);	
-			default: 
+			case  "N":
+				return new Position(player.getCurrentPosition().row()-1, player.getCurrentPosition().col());
+			case  "S":
+				return new Position(player.getCurrentPosition().row()+1, player.getCurrentPosition().col());
+			case  "W":
+				return new Position(player.getCurrentPosition().row(), player.getCurrentPosition().col()-1);
+			case  "E":
+				return new Position(player.getCurrentPosition().row(), player.getCurrentPosition().col()+1);
+			default:
 				System.out.println("Invalid direction.");
 		}
 		return null;
 	}
-	
+
 	/**
 	 * checks if moving to new position is valid. (Can't move on rooms).
 	 * @return boolean. true if valid move, otherwise false.
 	 */
 	public boolean isValid(){
-		if(newPosition==null){return false;}
+		if(!(game.getBoardArray()[newPosition.row()][newPosition.col()] instanceof FloorTile)) {
+			return false;
+		}
 
 		if(newPosition.row()>=game.getBoardArray().length || newPosition.row()<0){
 			System.out.println("Please choose a valid y position.");
@@ -107,6 +107,6 @@ public class Move extends Action {
 	public void setOldPosition(Position oldPosition) {
 		this.oldPosition = oldPosition;
 	}
-	
+
 
 }

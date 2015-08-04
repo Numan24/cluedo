@@ -5,7 +5,9 @@ import java.util.*;
 import cluedo.action.Accuse;
 import cluedo.action.Enter;
 import cluedo.action.Guess;
+import cluedo.action.Leave;
 import cluedo.action.Move;
+import cluedo.action.Stairs;
 import cluedo.cards.Card;
 import cluedo.cards.Character;
 import cluedo.cards.Room;
@@ -13,20 +15,20 @@ import cluedo.cards.Weapon;
 import cluedo.tile.*;
 
 public class Game {
-	
+
 	private Board board;
 	private List<Player> players;
 	private Player currentPlayer;
-	private List<Card> envelope = new ArrayList<Card>(); // the cards 
-	
+	private List<Card> envelope = new ArrayList<Card>(); // the cards
+
 	private List<Room> rooms = new ArrayList<Room>();
 	private List<Weapon> weapons = new ArrayList<Weapon>();
 	private List<Character> characters = new ArrayList<Character>();
-	
+
 	public Game() {
 		players = gameSetup();
 		currentPlayer = players.get(0);
-		
+
 		//weapons
 		weapons.add(new Weapon("Dagger"));
 		weapons.add(new Weapon("Revolver"));
@@ -45,13 +47,13 @@ public class Game {
 		rooms.add(new Room("Lounge", null, 'L', 'W'));
 		rooms.add(new Room("Dining Room", null, 'D', 'V'));
 		rooms.add(new Room ("Swimming Pool", null, 'X', 'G'));
-		
+
 		rooms.get(0).setConnectedTo(rooms.get(5));
 		rooms.get(5).setConnectedTo(rooms.get(0));
 		rooms.get(2).setConnectedTo(rooms.get(7));
 		rooms.get(7).setConnectedTo(rooms.get(2));
-		
-		
+
+
 		//characters
 		characters.add(new Character("Miss Scarlett"));
 		characters.add(new Character("Colonel Mustard"));
@@ -59,29 +61,26 @@ public class Game {
 		characters.add(new Character("The Reverand Green"));
 		characters.add(new Character("Mrs. Peacock"));
 		characters.add(new Character("Professor Plum"));
-		
+
 		distributeCards();
 		board = new Board(players,this);
 	}
-	
-	
+
+
 	private ArrayList<Player> gameSetup() {
 		int numPlayers;
 		Scanner input = new Scanner(System.in);
 		System.out.println("Cluedo");
 		System.out.println("============");
 		System.out.println("");
-		System.out.println("How many players? (2-6) ");
-		numPlayers = input.nextInt();
-		while(numPlayers > 6 || numPlayers < 2) {
-			System.out.println("Please enter a number between 2 and 6.");
+		numPlayers = Input.getInt("How many players? (3-6) ");
+		while(numPlayers > 6 || numPlayers < 3) {
+			System.out.println("Please enter a number between 3 and 6.");
 			numPlayers = input.nextInt();
 		}
 		ArrayList<Player> players = new ArrayList<Player>();
 		for(int i = 1; i <= numPlayers; i++) {
-			
-			System.out.println("Enter name for player number "+i+":");
-			String name = input.next();
+			String name = Input.getString("Enter name for player number "+i+":");
 			for(Player p : players) {
 				while(p.getName().equals(name)) {
 					System.out.println("Name already in use");
@@ -94,40 +93,43 @@ public class Game {
 		}
 		return players;
 	}
-	
+
 	public void play() {
 		board.redraw();
 		haveNextTurn();
 		currentPlayer = nextPlayer();
+		while(currentPlayer.hasLost()) {
+			currentPlayer = nextPlayer();
+		}
 	}
-	
+
 	/**
 	 * Have turn for a player
-	 * 
+	 *
 	 * @param player - player that is having a turn
 	 * @return
 	 */
 	public void haveNextTurn() {
 		System.out.println(currentPlayer.getName()+"'s turn.");
-		
+
 		//Dice rolling
 		Random rand = new Random();
-		int roll = rand.nextInt(5)+1;
+		int roll = 20;//rand.nextInt(6)+1;
 		currentPlayer.setRoll(roll);
 		System.out.println("You rolled a "+roll);
-		
+
 		List<String> options = currentPlayer.getOptions();
-		
+
 		Scanner input = new Scanner(System.in);
 		String toPrint = "Please select an option: ";
 		for(String option : options) {
 			toPrint += "["+option+"] ";
 		}
 		System.out.println(toPrint);
-		
-		String option; 
+
+		String option;
 		option = input.next();
-		
+
 		int valid = calculatePlay(option);
 		while(valid == 0 || valid == 2) {
 			if(valid == 0){
@@ -147,12 +149,12 @@ public class Game {
 				valid = calculatePlay(option);
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Determine what happens for a given option.
-	 * 
+	 *
 	 * @param option - the option selected by the player
 	 * @return 0 is a fail 1 is a pass and 2 is display hand
 	 */
@@ -183,8 +185,10 @@ public class Game {
 				System.out.println("Cannot enter anything from here!");
 				return 2;
 			}
-			enter.run();
-			board.redraw();
+			if(enter.isValid()){
+				enter.run();
+				board.redraw();
+			}
 			return 2;
 		case "leave":
 			doLeave();
@@ -194,52 +198,32 @@ public class Game {
 			doStairs();
 			board.redraw();
 			return 2;
+
+		case "end":
+			return 1;
 		default:
 			return 0; // an invalid option was passed so fail by returning 0
 		}
-		return 1; 
+		return 1;
 	}
-	
+
 	public void doMove(){
 		Move move = new Move(this, currentPlayer, board, currentPlayer.getCurrentPosition());
-		move.setup();
+		move.run();
 	}
-	
+
 	public void doStairs(){
 		Room current = currentPlayer.getRoom();
 		Room destination = current.getConnectedTo();
-		board.move(currentPlayer.getCurrentPosition(), destination.getDoors().get(0).getPosition());
-		currentPlayer.setRoom(destination);
+		Stairs stairs = new Stairs(this, currentPlayer, destination);
+		stairs.run();
 	}
-	
+
 	public void doLeave(){
-		Room r = currentPlayer.getRoom();
-		//NEED TO SET TO POSITION BEFORE ENTERING.
-		currentPlayer.setRoom(null);
-		board.move(currentPlayer.getCurrentPosition(), currentPlayer.getLastDoorEntered().getPosition());
-		
+		Leave leave = new Leave(this, currentPlayer, currentPlayer.getRoom());
+		leave.run();
 	}
 
-	public void doEnter(Tile t){
-		DoorTile tile = (DoorTile) t;
-		Room room = tile.getRoom();
-		int index = 0;
-		RoomTile roomTile = room.getRoomTiles().get(0);
-		while(room.getRoomTiles().get(index).getPlayer() != null) {
-			roomTile = room.getRoomTiles().get(index);
-			index++;
-		}
-		room.addPlayer(currentPlayer);
-		currentPlayer.setRoom(tile.getRoom());
-		currentPlayer.setLastDoorEntered(tile);
-		board.move(currentPlayer.getCurrentPosition(), roomTile.getPosition());
-		//NEED TO REMOVE FROM CURRENT POSITION AND SHIT
-		
-		System.out.println("You are now in the "+currentPlayer.getRoom().getName());
-	}
-	
-
-	
 	public void doGuess() {
 		if(currentPlayer.getRoom() != null) {
 			Guess guess = new Guess(this, currentPlayer);
@@ -247,18 +231,18 @@ public class Game {
 		}
 		else {System.out.println("Must be in a room to make a suggestion!");}
 	}
-	
+
 	public void doAccuse() {
 		Accuse playerAccusation = new Accuse(this, currentPlayer);
 		playerAccusation.setup();
-		if(!playerAccusation.outcome()){Main.gameFinished=true;}
-		else{players.remove(currentPlayer);}
+		if(playerAccusation.outcome()){Main.gameFinished=true;}
+		else{currentPlayer.lost(true);}
 	}
-	
-	
+
+
 	/**
 	 * Find next player to have a turn.
-	 * 
+	 *
 	 * @return the next player
 	 */
 	public Player nextPlayer() {
@@ -270,7 +254,7 @@ public class Game {
 			return players.get(index+1);
 		}
 	}
-	
+
 	public Player nextPlayer(Player player) {
 		int index = players.indexOf(player);
 		if(index == players.size()-1) {
@@ -280,27 +264,27 @@ public class Game {
 			return players.get(index+1);
 		}
 	}
-	
-	
+
+
     /**
      * Shuffles cards randomly and distributes to all players as well as deciding the winning 3 cards.
-     * 
+     *
      */
 	public void distributeCards(){
 		ArrayList<Card> allcards = new ArrayList<Card>();
-		
+
 		Collections.shuffle(rooms);
 		Collections.shuffle(weapons);
 		Collections.shuffle(characters);
-		
-		envelope.add(rooms.get(0));	
+
+		envelope.add(rooms.get(0));
 		envelope.add(weapons.get(0));
 		envelope.add(characters.get(0));
-		
+
 		for(Card c: envelope){
 			System.out.println(c);
 		}
-		
+
 		allcards.addAll(rooms.subList(1, rooms.size()-1));
 		allcards.addAll(weapons.subList(1, weapons.size()-1));
 		allcards.addAll(characters.subList(1, characters.size()-1));
@@ -310,17 +294,17 @@ public class Game {
 			p = nextPlayer(p);
 		}
 	}
-	
+
 	/**
 	 * Check to see if a guess was correct.
-	 * 
+	 *
 	 * @param guess - the cards that the player guessed.
 	 * @return
 	 */
 	public boolean checkGuess(List<Card> guess) {
 		return envelope.containsAll(guess);
 	}
-	
+
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
@@ -328,7 +312,7 @@ public class Game {
 	public void setCurrentPlayer(Player currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
-	
+
 	public List<Weapon> getWeapons() {
 		return weapons;
 	}
@@ -352,7 +336,7 @@ public class Game {
 	public void setRooms(List<Room> rooms) {
 		this.rooms = rooms;
 	}
-	
+
 	public List<Player> getPlayers() {
 		return players;
 	}
@@ -360,11 +344,11 @@ public class Game {
 	public Tile[][] getBoardArray() {
 		return board.getBoard();
 	}
-	
+
 	public Board getBoard() {
 		return board;
 	}
-	
+
 	public Player[][] getPlayerPositions() {
 		return board.getPlayerPositions();
 	}
