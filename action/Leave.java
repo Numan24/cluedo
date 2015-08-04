@@ -27,8 +27,7 @@ public class Leave extends Action{
 		List<Tile> tiles = adjacentTiles(dt);
 		for(Tile t: tiles) {
 			if(t instanceof FloorTile) {
-				Move move = new Move(game, player, player.getCurrentPosition(), t.getPosition());
-				if(move.isValid()){
+				if(t.getPlayer()==null){
 					game.getBoard().move(player.getCurrentPosition(), t.getPosition());
 					player.setRoom(null);
 					room.removePlayer(player);
