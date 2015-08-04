@@ -14,12 +14,24 @@ public class Move extends Action {
 	private Position newPosition;
 	private Position oldPosition;
 	private Board board;
+	
 	public Move(Game game, Player player, Board board, Position oldPosition) {
 		super(game, player);
 		this.oldPosition = oldPosition;
 		this.board = board;
 	}
 
+	
+	/**
+	 * This is the constructor used in the leave class for making a player leave a room. 
+	 * Idk if this is gross.
+	 */
+	public Move(Game game, Player player, Position oldPosition, Position newPosition){
+		super(game, player);
+		this.board= game.getBoard();
+		this.oldPosition = oldPosition;
+		this.newPosition = newPosition;
+	}
 
 	/**
 	 * Asks user for coordinates and tries to set new position to given coords if it
@@ -82,14 +94,10 @@ public class Move extends Action {
 		if(!(game.getBoardArray()[newPosition.row()][newPosition.col()] instanceof FloorTile)) {
 			return false;
 		}
-
-
-//		if(game.getBoard()[newPosition.row()][newPosition.col()]=='X'){
-//			System.out.println("Cannot move on X positions.");
-//			return false;
-//		}
+		
 		if(game.getPlayerPositions()[newPosition.row()][newPosition.col()]!=null){
 			System.out.println("There is already a player in this position!");
+			return false;
 		}
 		return true;
 	}
