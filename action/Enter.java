@@ -35,10 +35,11 @@ public class Enter extends Action {
 			roomTile = room.getRoomTiles().get(index);
 		}
 		
-		room.addPlayer(player); // add the player to the room
-		roomTile.setPlayer(player); // add the player to the tile in the room
-		player.setRoom(tile.getRoom()); //tell the player the are in the room 
-		game.getBoard().move(player.getCurrentPosition(), roomTile.getPosition()); // move the player to the room
+		//update player, room and room tiles
+		room.addPlayer(player);
+		roomTile.setPlayer(player); 
+		player.setRoom(tile.getRoom()); 
+		game.getBoard().move(player.getCurrentPosition(), roomTile.getPosition());
 		
 		System.out.println("You are now in the "+player.getRoom().getName());
 		player.setRoll(0); // turn is over after entering a room so the roll is now 0

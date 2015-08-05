@@ -35,6 +35,11 @@ public class Room implements Card {
 
 	public void removePlayer(Player p) {
 		players.remove(p);
+		for(RoomTile t : roomTiles) {
+			if(t.getPlayer().equals(p)) {
+				t.setPlayer(null);
+			}
+		}
 	}
 
 	public List<Player> getPlayers() {
