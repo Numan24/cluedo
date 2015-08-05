@@ -37,6 +37,19 @@ public class Guess extends Action {
 		guess.add(player.getRoom());
 		guess.add(weaponGuess);
 		guess.add(charGuess);
+		
+		
+		
+		for(Player p : game.getPlayers()) {
+			if(p.equals(game.getCurrentPlayer())){continue;}
+			for(Card c : p.getHand()) {
+				for(Card card : guess) {
+					if(card.equals(c)) {
+						System.out.println(p.getName()+" has one of the cards\n");
+					}
+				}
+			}
+		}
 	}
 
 	private Weapon validWeapon(String guess) {
@@ -58,18 +71,7 @@ public class Guess extends Action {
 	}
 
 	public boolean isValid() {
-		for(Player p : game.getPlayers()) {
-			if(p.equals(game.getCurrentPlayer())){continue;}
-			for(Card c : p.getHand()) {
-				for(Card card : guess) {
-					if(card.equals(c)) {
-						System.out.println(p.getName()+" has one of the cards\n");
-						return true;
-					}
-				}
-			}
-		}
-		return false;
+		return true;
 	}
 
 	public boolean endsTurn(){
