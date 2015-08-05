@@ -3,8 +3,11 @@ package cluedo;
 import java.util.*;
 
 import cluedo.action.Accuse;
+import cluedo.action.Action;
+import cluedo.action.End;
 import cluedo.action.Enter;
 import cluedo.action.Guess;
+import cluedo.action.Hand;
 import cluedo.action.Leave;
 import cluedo.action.Move;
 import cluedo.action.Stairs;
@@ -15,6 +18,8 @@ import cluedo.cards.Weapon;
 import cluedo.tile.*;
 
 public class Game {
+
+	
 
 	private Board board;
 	private List<Player> players;
@@ -69,14 +74,11 @@ public class Game {
 
 	private ArrayList<Player> gameSetup() {
 		int numPlayers;
-		Scanner input = new Scanner(System.in);
 		System.out.println("Cluedo");
-		System.out.println("============");
-		System.out.println("");
+		System.out.println("============\n");
 		numPlayers = Input.getInt("How many players? (3-6) ");
 		while(numPlayers > 6 || numPlayers < 3) {
-			System.out.println("Please enter a number between 3 and 6.");
-			numPlayers = input.nextInt();
+			numPlayers = Input.getInt("Please enter a number between 3 and 6.");
 		}
 		ArrayList<Player> players = new ArrayList<Player>();
 		for(int i = 1; i <= numPlayers; i++) {
@@ -84,8 +86,7 @@ public class Game {
 			for(Player p : players) {
 				while(p.getName().equals(name)) {
 					System.out.println("Name already in use");
-					System.out.println("Enter new name: ");
-					name = input.next();
+					name = Input.getString("Enter new name: ");
 				}
 			}
 			Player player = new Player(name, this);
@@ -114,42 +115,34 @@ public class Game {
 
 		//Dice rolling
 		Random rand = new Random();
-		int roll = 20;//rand.nextInt(6)+1;
+		int roll = rand.nextInt(6)+1;
 		currentPlayer.setRoll(roll);
 		System.out.println("You rolled a "+roll);
 
 		List<String> options = currentPlayer.getOptions();
 
-		Scanner input = new Scanner(System.in);
 		String toPrint = "Please select an option: ";
 		for(String option : options) {
 			toPrint += "["+option+"] ";
 		}
-		System.out.println(toPrint);
-
 		String option;
-		option = input.next();
+		option = Input.getString(toPrint);
 
-		int valid = calculatePlay(option);
-		while(valid == 0 || valid == 2) {
-			if(valid == 0){
+		Action act = calculatePlay(option);
+		while(act == null){ // while the action is null get another option
 			System.out.println("Invalid option");
-			System.out.println("Please enter a new option");
-			option = input.next();
-			valid = calculatePlay(option);
-			}
-			else {
-				options = currentPlayer.getOptions();
-				toPrint = "Please select an option: ";
-				for(String option2 : options) {
-					toPrint += "["+option2+"] ";
-				}
-				System.out.println(toPrint);
-				option = input.next();
-				valid = calculatePlay(option);
-			}
+			option = Input.getString("Please enter a new option");
+			act = calculatePlay(option);
 		}
-
+		while(!act.endsTurn()) { // if the action does not end the turn then get another option
+			options = currentPlayer.getOptions();
+			toPrint = "Please select an option: ";
+			for(String option2 : options) {
+				toPrint += "["+option2+"] ";
+			}
+			option = Input.getString(toPrint);
+			act = calculatePlay(option);
+		}
 	}
 
 	/**
@@ -158,86 +151,99 @@ public class Game {
 	 * @param option - the option selected by the player
 	 * @return 0 is a fail 1 is a pass and 2 is display hand
 	 */
-	private int calculatePlay(String option) {
+	private Action calculatePlay(String option) {
 		option = option.toLowerCase();
 		switch(option) {
 		case "move":
-			doMove();
-			return 2;
+			return doAction(new Move(this, currentPlayer, board));
 		case "guess":
-			doGuess();
-			break;
+			return doAction(new Guess(this, currentPlayer));
 		case "accuse":
-			doAccuse();
-			break;
+			return doAction(new Accuse(this, currentPlayer));
 		case "hand":
-			currentPlayer.displayHand();
-			return 2;
+			return doAction(new Hand(this, currentPlayer));
 		case "enter":
-			Enter enter = null;
-			for(Tile t: currentPlayer.adjacentTiles()) {
-				if(t instanceof DoorTile) {
-					DoorTile dt = (DoorTile) t;
-					enter = new Enter(this, currentPlayer, dt);
-				}
-			}
-			if(enter == null){
-				System.out.println("Cannot enter anything from here!");
-				return 2;
-			}
-			if(enter.isValid()){
-				enter.run();
-				board.redraw();
-			}
-			return 2;
+			return doAction(new Enter(this, currentPlayer));
 		case "leave":
-			doLeave();
-			board.redraw();
-			return 2;
+			return doAction(new Leave(this, currentPlayer));
 		case "stairs":
-			doStairs();
-			board.redraw();
-			return 2;
-
+			return doAction(new Stairs(this, currentPlayer));
 		case "end":
-			return 1;
+			return doAction(new End(this, currentPlayer));
 		default:
-			return 0; // an invalid option was passed so fail by returning 0
+			return null; // an invalid option was passed so fail by returning 0
 		}
-		return 1;
 	}
 
-	public void doMove(){
-		Move move = new Move(this, currentPlayer, board, currentPlayer.getCurrentPosition());
-		move.run();
+	private Action doAction(Action act) {
+		if(act.isValid()) {
+			act.run();
+			return act;
+		}
+		return null;
+
+
 	}
 
-	public void doStairs(){
-		Room current = currentPlayer.getRoom();
-		Room destination = current.getConnectedTo();
-		Stairs stairs = new Stairs(this, currentPlayer, destination);
-		stairs.run();
-	}
+//	public Action doMove(){
+//		if(currentPlayer.getRoom() != null){return null;}
+//		Move move = new Move(this, currentPlayer, board, currentPlayer.getCurrentPosition());
+//		move.run();
+//		return move;
+//	}
 
-	public void doLeave(){
-		Leave leave = new Leave(this, currentPlayer, currentPlayer.getRoom());
-		leave.run();
-	}
-
-	public void doGuess() {
+	public Action doGuess() {
 		if(currentPlayer.getRoom() != null) {
-			Guess guess = new Guess(this, currentPlayer);
+			Action guess = new Guess(this, currentPlayer);
 			guess.isValid();
+			return guess;
 		}
-		else {System.out.println("Must be in a room to make a suggestion!");}
+		else {
+			System.out.println("Must be in a room to make a suggestion!");
+			return null;
+		}
 	}
 
-	public void doAccuse() {
+	public Action doAccuse() {
 		Accuse playerAccusation = new Accuse(this, currentPlayer);
-		playerAccusation.setup();
-		if(playerAccusation.outcome()){Main.gameFinished=true;}
-		else{currentPlayer.lost(true);}
+		playerAccusation.run();
+		if(playerAccusation.isValid()) {
+			Main.gameFinished = true;
+			System.out.println("Correct accusation! \n"+currentPlayer.getName()+" wins!");
+
+		}
+		else {
+			currentPlayer.lost(true);
+		}
+		return playerAccusation;
 	}
+//
+//	private Action doHand() {
+//		Hand hand = new Hand(this, currentPlayer);
+//		if(!hand.isValid()) {
+//
+//		}
+//		hand.run();
+//		return hand;
+//	}
+//
+//	public void doStairs(){
+//		if(currentPlayer.getRoom() == null){return;}
+//		Room current = currentPlayer.getRoom();
+//		Room destination = current.getConnectedTo();
+//		Stairs stairs = new Stairs(this, currentPlayer, destination);
+//		stairs.run();
+//	}
+//
+//	public void doLeave(){
+//		if(currentPlayer.getRoom() == null){return;}
+//		Leave leave = new Leave(this, currentPlayer, currentPlayer.getRoom());
+//		leave.run();
+//	}
+
+
+
+
 
 
 	/**
