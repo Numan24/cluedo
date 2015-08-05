@@ -1,28 +1,19 @@
 package cluedo.action;
 
-import java.util.List;
-
 import cluedo.Game;
 import cluedo.Player;
 import cluedo.cards.Room;
 import cluedo.tile.DoorTile;
 import cluedo.tile.RoomTile;
-import cluedo.tile.Tile;
 
 public class Enter extends Action {
 
 	private DoorTile tile;
 
 
-	public Enter(Game game, Player player) {
+	public Enter(Game game, Player player, DoorTile tile) {
 		super(game, player);
-		List<Tile> tiles = player.adjacentTiles();
-		for(Tile t : tiles) {
-			if(t instanceof DoorTile) {
-				DoorTile dt = (DoorTile) t;
-				this.tile = dt;
-			}
-		}
+		this.tile = tile;
 	}
 
 	public void run() {
@@ -44,16 +35,7 @@ public class Enter extends Action {
 
 
 	public boolean isValid() {
-		List<Tile> tiles = player.adjacentTiles();
-		for(Tile t : tiles) {
-			if(t instanceof DoorTile) {
-				return true;
-			}
-		}
-		if(player.getRoll() > 0) return true;
-		return false;
-	}
-	public boolean endsTurn(){
-		return false;
+
+		return player.getRoll() > 0;
 	}
 }

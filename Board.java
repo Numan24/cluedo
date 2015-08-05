@@ -1,6 +1,7 @@
 package cluedo;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import cluedo.cards.Room;
@@ -9,13 +10,16 @@ import cluedo.tile.*;
 public class Board {
 
 
-	private static final int BOARD_LENGTH = 24;
-	private static final int BOARD_HEIGHT = 25;
 
 	private List<Player> players = new ArrayList<Player>(); // players in the current game
+
+
+
 	private Tile[][] board; // hard code board please
 	private Player[][] playerPositions;
+
 	private Game game;
+
 
 
 	/**
@@ -37,7 +41,7 @@ public class Board {
 	private Tile[][] createBoard() {
 		try {
 			Scanner scan = new Scanner(new File("board V2.txt"));
-			Tile[][] board = new Tile[BOARD_HEIGHT][BOARD_LENGTH];
+			Tile[][] board = new Tile[25][24];
 			int index = 0;
 			while(scan.hasNextLine()) {
 				String s = scan.nextLine();
@@ -89,7 +93,6 @@ public class Board {
 	}
 
 	public void redraw() {
-		System.out.println("");
 		for(int i = 0; i < board.length; i++){
 			for(int j = 0; j < getBoard()[0].length; j++){
 				if(playerPositions[i][j]==null){

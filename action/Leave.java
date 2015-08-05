@@ -2,6 +2,7 @@ package cluedo.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import cluedo.Game;
 import cluedo.Input;
@@ -14,9 +15,9 @@ import cluedo.tile.Tile;
 public class Leave extends Action{
 	private Room room;
 
-	public Leave(Game game, Player player) {
+	public Leave(Game game, Player player, Room room) {
 		super(game, player);
-		this.room = player.getRoom();
+		this.room = room;
 	}
 
 	public void run() {
@@ -26,13 +27,14 @@ public class Leave extends Action{
 		List<Tile> tiles = adjacentTiles(dt);
 		for(Tile t: tiles) {
 			if(t instanceof FloorTile) {
-				if(t.getPlayer()==null){
+				Move move = new Move(game, player, player.getCurrentPosition(), t.getPosition());
+				if(move.isValid()){
 					game.getBoard().move(player.getCurrentPosition(), t.getPosition());
 					player.setRoom(null);
 					room.removePlayer(player);
 					t.setPlayer(null);
 					return;
-				}
+				} 
 				else{
 					System.out.println("Invalid Move.");
 					run();
@@ -43,8 +45,10 @@ public class Leave extends Action{
 
 	private void displayDoors() {
 		String toPrint = "";
-		for(int i = 1; i <= room.getDoors().size(); i++) {
-			toPrint += "[Door "+i+"]";
+		int index = 1;
+		for(DoorTile d: room.getDoors()) {
+			toPrint += "[Door "+index+"]";
+			index++;
 		}
 		System.out.println(toPrint);
 	}
@@ -63,12 +67,6 @@ public class Leave extends Action{
 
 	@Override
 	public boolean isValid() {
-		if(player.getRoom() == null){return false;}
-
-		return false;
-	}
-
-	public boolean endsTurn(){
 		return false;
 	}
 

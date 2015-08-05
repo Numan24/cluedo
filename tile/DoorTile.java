@@ -1,5 +1,8 @@
 package cluedo.tile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cluedo.cards.Room;
 
 public class DoorTile extends Tile {

@@ -1,5 +1,7 @@
 package cluedo;
 
+import java.util.*;
+
 public class Main {
 
 	static boolean gameFinished = false;
