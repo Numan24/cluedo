@@ -103,7 +103,9 @@ public class Board {
 						DoorTile dt = (DoorTile) current;
 						System.out.print(dt.getRoom().getId());
 					}
-				} else{System.out.print(players.indexOf(playerPositions[i][j])+1 +"");}
+				} else if (!playerPositions[i][j].hasLost()){
+					System.out.print(players.indexOf(playerPositions[i][j])+1 +"");
+					}
 				System.out.print(" ");
 			}
 			System.out.print("\n");

@@ -142,6 +142,11 @@ public class Game {
 			}
 			option = Input.getString(toPrint);
 			act = calculatePlay(option);
+			while(act == null){ // while the action is null get another option
+				System.out.println("Invalid option");
+				option = Input.getString("Please enter a new option");
+				act = calculatePlay(option);
+			}
 		}
 	}
 
@@ -185,19 +190,19 @@ public class Game {
 
 	}
 
-	public Action doAccuse() {
-		Accuse playerAccusation = new Accuse(this, currentPlayer);
-		playerAccusation.run();
-		if(playerAccusation.isValid()) {
-			Main.gameFinished = true;
-			System.out.println("Correct accusation! \n"+currentPlayer.getName()+" wins!");
-
-		}
-		else {
-			currentPlayer.lost(true);
-		}
-		return playerAccusation;
-	}
+//	public Action doAccuse() {
+//		Accuse playerAccusation = new Accuse(this, currentPlayer);
+//		playerAccusation.run();
+//		if(playerAccusation.isValid()) {
+//			Main.gameFinished = true;
+//			System.out.println("Correct accusation! \n"+currentPlayer.getName()+" wins!");
+//
+//		}
+//		else {
+//			currentPlayer.lost(true);
+//		}
+//		return playerAccusation;
+//	}
 
 
 	/**

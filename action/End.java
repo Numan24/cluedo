@@ -11,7 +11,7 @@ public class End extends Action {
 
 	@Override
 	public boolean isValid() {
-		return player.getRoll() == 0;
+		return true;
 	}
 
 	@Override

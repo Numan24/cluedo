@@ -40,6 +40,7 @@ public class Enter extends Action {
 		game.getBoard().move(player.getCurrentPosition(), roomTile.getPosition());
 		System.out.println("You are now in the "+player.getRoom().getName());
 		player.setRoll(0);
+		game.getBoard().redraw();
 	}
 
 

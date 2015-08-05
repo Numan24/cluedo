@@ -19,19 +19,19 @@ public class Guess extends Action {
 	}
 
 	public void run(){
-		String weapon = Input.getString("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
+		String weapon = Input.getLine("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
 		Weapon weaponGuess = validWeapon(weapon);
 		while(weaponGuess==null){
 			System.out.println("Invalid Weapon.");
-			weapon = Input.getString("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
+			weapon = Input.getLine("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
 			weaponGuess = validWeapon(weapon);
 		}
 
-		String character = Input.getString("Guess a Character: [Miss Scarlett, Colonel Mustard, Mrs. White, The Reverand Green, Mrs. Peacock, Professor Plum]");
+		String character = Input.getLine("Guess a Character: [Miss Scarlett, Colonel Mustard, Mrs. White, The Reverand Green, Mrs. Peacock, Professor Plum]");
 		Character charGuess = validChar(character);
 		while(charGuess==null){
 			System.out.println("Invalid Character.");
-			character = Input.getString("Guess a Character: [Miss Scarlett, Colonel Mustard, Mrs. White, The Reverand Green, Mrs. Peacock, Professor Plum]");
+			character = Input.getLine("Guess a Character: [Miss Scarlett, Colonel Mustard, Mrs. White, The Reverand Green, Mrs. Peacock, Professor Plum]");
 			charGuess = validChar(character);
 		}
 		guess.add(player.getRoom());

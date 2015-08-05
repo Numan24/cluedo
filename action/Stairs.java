@@ -26,6 +26,7 @@ public class Stairs extends Action{
 		player.setRoom(room);
 		game.getBoard().move(player.getCurrentPosition(), roomTile.getPosition());
 		System.out.println("You are now in the "+player.getRoom().getName());
+		game.getBoard().redraw();
 	}
 	@Override
 	public boolean isValid() {

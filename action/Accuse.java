@@ -24,34 +24,37 @@ public class Accuse extends Action {
 	 * Saves resulting 3 cards into array.
 	 */
 	public void run(){
-		String weapon = Input.getString("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
+		String weapon = Input.getLine("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
 		Weapon weaponGuess = validWeapon(weapon);
 		while(weaponGuess==null){
 			System.out.println("Invalid Weapon.");
-			weapon = Input.getString("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
+			weapon = Input.getLine("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
 			weaponGuess = validWeapon(weapon);
 		}
 
 
-		String room = Input.getString("Guess a Room: [Library, Kitchen, Ball Room, Billiard Room, Conservatory, Study, Hall, Dining Room]");
+		String room = Input.getLine("Guess a Room: [Library, Kitchen, Ball Room, Billiard Room, Conservatory, Study, Hall, Dining Room]");
 		Room roomGuess = validRoom(room);
 		while(roomGuess==null){
 			System.out.println("Invalid Room.");
-			room = Input.getString("Guess a Room: [Library, Kitchen, Ball Room, Billiard Room, Conservatory, Study, Hall, Dining Room]");
+			room = Input.getLine("Guess a Room: [Library, Kitchen, Ball Room, Billiard Room, Conservatory, Study, Hall, Dining Room]");
 			roomGuess = validRoom(room);
 		}
 
-		String character = Input.getString("Guess a Character: [Miss Scarlett, Colonel Mustard, Mrs. White, The Reverand Green, Mrs. Peacock, Professor Plum]");
+		String character = Input.getLine("Guess a Character: [Miss Scarlett, Colonel Mustard, Mrs. White, The Reverand Green, Mrs. Peacock, Professor Plum]");
 		Character charGuess = validChar(character);
 		while(charGuess==null){
 			System.out.println("Invalid Character.");
-			character = Input.getString("Guess a Character: [Miss Scarlett, Colonel Mustard, Mrs. White, The Reverand Green, Mrs. Peacock, Professor Plum]");
+			character = Input.getLine("Guess a Character: [Miss Scarlett, Colonel Mustard, Mrs. White, The Reverand Green, Mrs. Peacock, Professor Plum]");
 			charGuess = validChar(character);
 		}
 
 		guess.add(roomGuess);
 		guess.add(weaponGuess);
 		guess.add(charGuess);
+		if(!outcome()) {
+			player.lost(true);
+		}
 	}
 
 	private Weapon validWeapon(String guess) {
@@ -74,18 +77,22 @@ public class Accuse extends Action {
 		}
 		return null;
 	}
+	
+	private boolean isValidGuess() {
+		return game.checkGuess(guess);
+	}
 
 	public boolean isValid() {
-		return game.checkGuess(guess);
+		return true;
 	}
 
 
 	public boolean outcome() {
-		if(isValid()){
+		if(isValidGuess()){
 			System.out.println("Correct accusation! \n"+player.getName()+" wins!");
 			return true;
 		} else{
-			System.out.println("Incorrect accusation! "+player.getName()+" loses");
+			System.out.println("Incorrect accusation! "+player.getName()+" loses!");
 			return false;
 		}
 
