@@ -33,10 +33,6 @@ public class Leave extends Action{
 					t.setPlayer(null);
 					return;
 				}
-				else{
-					System.out.println("Invalid Move.");
-					run();
-				}
 			}
 		}
 	}

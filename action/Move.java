@@ -32,7 +32,10 @@ public class Move extends Action {
 			newPosition = moveDirection(direction);
 			while(newPosition==null || !isValidMove()){
 					//System.out.println("Invalid Move.");
-					direction = Input.getString("Choose a direction to move. [N, S, W, E]");
+					direction = Input.getString("Choose a direction to move. [N, S, W, E] or X to stop moving.");
+					if(direction.equalsIgnoreCase("x")){
+						return;
+					}
 					newPosition = moveDirection(direction);
 			}
 			if(isValidMove()){
