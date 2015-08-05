@@ -4,6 +4,11 @@ import cluedo.Game;
 import cluedo.Player;
 
 public class End extends Action {
+	
+	/*
+	 * Represents an end turn action
+	 * used when a player want to (or has to) end their turn
+	 */
 
 	public End(Game game, Player player) {
 		super(game, player);

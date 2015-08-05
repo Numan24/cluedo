@@ -3,6 +3,11 @@ package cluedo;
 import java.util.Scanner;
 
 public class Input {
+	
+	/*
+	 * This class is used to read all the user input from System.in
+	 * Each method is passed a question string to print out before getting the input
+	 */
 
 	private static Scanner input = new Scanner(System.in);
 

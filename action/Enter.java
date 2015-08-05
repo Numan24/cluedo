@@ -11,8 +11,7 @@ import cluedo.tile.Tile;
 
 public class Enter extends Action {
 
-	private DoorTile tile;
-
+	private DoorTile tile; // the tile of the door to be entered
 
 	public Enter(Game game, Player player) {
 		super(game, player);
@@ -26,24 +25,30 @@ public class Enter extends Action {
 	}
 
 	public void run() {
-		Room room = tile.getRoom();
+		Room room = tile.getRoom(); // get the room the door is connected to
+		
 		int index = 0;
 		RoomTile roomTile = room.getRoomTiles().get(0);
+		// select a tile in the room that doesn't have a player on it
 		while(roomTile.getPlayer() != null) {
 			index++;
 			roomTile = room.getRoomTiles().get(index);
 		}
-		room.addPlayer(player);
-		roomTile.setPlayer(player);
-		player.setRoom(tile.getRoom());
-		player.setLastDoorEntered(tile);
-		game.getBoard().move(player.getCurrentPosition(), roomTile.getPosition());
+		
+		room.addPlayer(player); // add the player to the room
+		roomTile.setPlayer(player); // add the player to the tile in the room
+		player.setRoom(tile.getRoom()); //tell the player the are in the room 
+		game.getBoard().move(player.getCurrentPosition(), roomTile.getPosition()); // move the player to the room
+		
 		System.out.println("You are now in the "+player.getRoom().getName());
-		player.setRoll(0);
+		player.setRoll(0); // turn is over after entering a room so the roll is now 0
 		game.getBoard().redraw();
 	}
 
-
+/**
+ * Returns if the current player can enter a room.
+ * The player can enter a room if there is a floor tile adjacent to them and their roll is greater than 0.
+ */
 	public boolean isValid() {
 		List<Tile> tiles = player.adjacentTiles();
 		for(Tile t : tiles) {
@@ -54,6 +59,7 @@ public class Enter extends Action {
 		if(player.getRoll() > 0) return true;
 		return false;
 	}
+	
 	public boolean endsTurn(){
 		return false;
 	}

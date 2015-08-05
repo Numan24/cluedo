@@ -1,6 +1,8 @@
 package cluedo;
 
 public final class Position {
+	
+	//Represents a point on the board
 
 	int row;
 	int col;

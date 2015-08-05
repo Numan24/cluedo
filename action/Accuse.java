@@ -52,25 +52,39 @@ public class Accuse extends Action {
 		guess.add(roomGuess);
 		guess.add(weaponGuess);
 		guess.add(charGuess);
+		// if the outcome is that the guess was wrong then the player loses
 		if(!outcome()) {
 			player.lost(true);
 		}
 	}
 
+	/**
+	 * checks to see if the inputed weapon is a valid weapon
+	 * @param guess - inputed string
+	 * @return null if no weapon was found or the weapon object
+	 */
 	private Weapon validWeapon(String guess) {
 		for(Weapon w: game.getWeapons()){
 			if(w.getName().toLowerCase().equals(guess.toLowerCase())){return w;}
 		}
 		return null;
 	}
-
+	/**
+	 * checks to see if the inputed room is a valid room
+	 * @param guess - inputed string
+	 * @return null if no room was found or the room object
+	 */
 	private Room validRoom(String guess) {
 		for(Room r: game.getRooms()){
 			if(r.getName().toLowerCase().equals(guess.toLowerCase())){return r;}
 		}
 		return null;
 	}
-
+	/**
+	 * checks to see if the inputed character is a valid character
+	 * @param guess - inputed string
+	 * @return null if no character was found or the character object
+	 */
 	private Character validChar(String guess) {
 		for(Character c: game.getCharacters()){
 			if(c.getName().toLowerCase().equals(guess.toLowerCase())){return c;}
@@ -78,15 +92,26 @@ public class Accuse extends Action {
 		return null;
 	}
 	
+	/**
+	 * checks validity of the guess
+	 * @return
+	 */
 	private boolean isValidGuess() {
 		return game.checkGuess(guess);
 	}
 
+	/**
+	 * always returns true as an accuse action can be performed from anywhere
+	 */
 	public boolean isValid() {
 		return true;
 	}
 
-
+	/**
+	 * returns the outcome of the guess
+	 * 
+	 * @return true if the guess was correct and false if it wasn't
+	 */
 	public boolean outcome() {
 		if(isValidGuess()){
 			System.out.println("Correct accusation! \n"+player.getName()+" wins!");
@@ -98,6 +123,9 @@ public class Accuse extends Action {
 
 	}
 
+	/**
+	 * Always returns true as an accuse action ends your turn
+	 */
 	public boolean endsTurn(){
 		return true;
 	}

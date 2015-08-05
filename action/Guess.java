@@ -15,9 +15,13 @@ public class Guess extends Action {
 
 	public Guess(Game game, Player player) {
 		super(game, player);
-		run();
 	}
 
+	/**
+	 * asks the user for a weapon and a character to guess as the murderer
+	 * does not ask for a room as the room the player is in is used
+	 * Then checks to see if the other players have the cards
+	 */
 	public void run(){
 		String weapon = Input.getLine("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
 		Weapon weaponGuess = validWeapon(weapon);
@@ -37,21 +41,24 @@ public class Guess extends Action {
 		guess.add(player.getRoom());
 		guess.add(weaponGuess);
 		guess.add(charGuess);
-		
-		
-		
+		//checks the hands of the other players to see if they have any of the cards guessed
 		for(Player p : game.getPlayers()) {
 			if(p.equals(game.getCurrentPlayer())){continue;}
 			for(Card c : p.getHand()) {
 				for(Card card : guess) {
 					if(card.equals(c)) {
-						System.out.println(p.getName()+" has one of the cards\n");
+						System.out.println(p.getName()+" has one (or more) of the cards\n");
 					}
 				}
 			}
 		}
 	}
 
+	/**
+	 * checks if inputed weapon is valid
+	 * @param guess - the weapon
+	 * @return weapon object or null if it doesn't exist
+	 */
 	private Weapon validWeapon(String guess) {
 		for(Weapon w: game.getWeapons()){
 			if(w.getName().toLowerCase().equals(guess.toLowerCase())){return w;}
@@ -59,6 +66,11 @@ public class Guess extends Action {
 		return null;
 	}
 
+	/**
+	 * checks if inputed character is valid
+	 * @param guess - the character
+	 * @return character object or null if it doesn't exist
+	 */
 	private Character validChar(String guess) {
 		for(Character c: game.getCharacters()){
 			if(c.getName().toLowerCase().equals(guess.toLowerCase())){return c;}
@@ -66,12 +78,8 @@ public class Guess extends Action {
 		return null;
 	}
 
-	public List<Card> getCards() {
-		return guess;
-	}
-
 	public boolean isValid() {
-		return true;
+		return player.getRoom() != null;
 	}
 
 	public boolean endsTurn(){

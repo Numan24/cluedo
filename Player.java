@@ -7,15 +7,19 @@ import cluedo.cards.Room;
 import cluedo.tile.*;
 
 public class Player {
+	
+	/*
+	 * Represents a single user(player) in the game. 
+	 */
 
 	private String name;
-	private int roll;
 	private List<Card> hand = new ArrayList<Card>();
 	private Position currentPosition;
 	private Room room;
-	private DoorTile lastDoorEntered;
 	private final Game game;
 	private boolean hasLost;
+	
+	private int roll; // the dice roll the player got on their turn
 
 	public Player(String name, Game game) {
 		this.name = name;
@@ -23,34 +27,8 @@ public class Player {
 		this.hasLost = false;
 	}
 
-	public List<Card> getHand() {
-		return hand;
-	}
-
-	public void setHand(List<Card> hand) {
-		this.hand = hand;
-	}
-
-	public void addCard(Card card) {
-		this.hand.add(card);
-	}
-
-
-	public void move(Position p){
-		currentPosition = p;
-	}
-
-	public boolean hasLost() {
-		return hasLost;
-	}
-
-	public void lost(boolean b) {
-		hasLost = b;
-	}
-
-
 	/**
-	 * get the current options that the player has at their given position.
+	 * get the current options that are available to the player.
 	 * @return array of options
 	 */
 	public List<String> getOptions() {
@@ -84,6 +62,11 @@ public class Player {
 		return opts;
 	}
 
+	/**
+	 * returns the tiles that are adjacent to the player
+	 * not including the tiles that are at a diagonal to the player
+	 * @return
+	 */
 	public List<Tile> adjacentTiles() {
 		Tile[][] board = game.getBoardArray();
 		int x = currentPosition.col();
@@ -96,6 +79,9 @@ public class Player {
 		return tiles;
 	}
 
+	/**
+	 * prints out the hand of the player
+	 */
 	public void displayHand() {
 		String toPrint = "";
 		for(Card c: hand) {
@@ -103,6 +89,16 @@ public class Player {
 		}
 		System.out.println(toPrint);
 	}
+	public boolean equals(Object o) {
+		if(o instanceof Player) {
+			Player player = (Player) o;
+			return name.equals(player.getName());
+		}
+		return false;
+	}
+	/*
+	 * Getters and Setters
+	 */
 
 	public Position getCurrentPosition() {
 		return currentPosition;
@@ -122,14 +118,6 @@ public class Player {
 		return name;
 	}
 
-	public boolean equals(Object o) {
-		if(o instanceof Player) {
-			Player player = (Player) o;
-			return name.equals(player.getName());
-		}
-		return false;
-	}
-
 	public Room getRoom() {
 		return room;
 	}
@@ -137,13 +125,29 @@ public class Player {
 	public void setRoom(Room room) {
 		this.room = room;
 	}
-
-	public DoorTile getLastDoorEntered() {
-		return lastDoorEntered;
+	public List<Card> getHand() {
+		return hand;
 	}
 
-	public void setLastDoorEntered(DoorTile lastDoorEntered) {
-		this.lastDoorEntered = lastDoorEntered;
+	public void setHand(List<Card> hand) {
+		this.hand = hand;
+	}
+
+	public void addCard(Card card) {
+		this.hand.add(card);
+	}
+
+
+	public void move(Position p){
+		currentPosition = p;
+	}
+
+	public boolean hasLost() {
+		return hasLost;
+	}
+
+	public void lost(boolean b) {
+		hasLost = b;
 	}
 
 }

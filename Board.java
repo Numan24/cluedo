@@ -16,8 +16,9 @@ public class Board {
 
 
 
-	private Tile[][] board; // hard code board please
+	private Tile[][] board; 
 	private Player[][] playerPositions;
+	
 	private Game game;
 
 
@@ -42,12 +43,12 @@ public class Board {
 			Scanner scan = new Scanner(new File("board V2.txt"));
 			Tile[][] board = new Tile[BOARD_HEIGHT][BOARD_LENGTH];
 			int index = 0;
-			while(scan.hasNextLine()) {
+			while(scan.hasNextLine()) { // split file into lines
 				String s = scan.nextLine();
 				if(s.startsWith("#")){continue;} // skip commented lines
-				char[] line = s.toCharArray();
+				char[] line = s.toCharArray(); // for each char in the line
 				for(int i = 0; i < line.length; i++) {
-					board[index][i] = createTile(line[i], i, index);
+					board[index][i] = createTile(line[i], i, index); // create a tile from it
 				}
 				index++;
 			}
@@ -60,9 +61,18 @@ public class Board {
 	}
 
 
+	/**
+	 * create a tile. used with the createBoard method
+	 * 
+	 * @param c - char of the tile in the file
+	 * @param x - xpos in the file
+	 * @param y - ypos in the file
+	 * @return
+	 */
 	private Tile createTile(char c, int x, int y) {
-		if(c == 'O'){return new FloorTile(x,y);}
-		char[] roomID = {'X','S','H','L','D','K','B','C','I','A'};
+		if(c == 'O'){return new FloorTile(x,y);} // create floor tile from a 'O'
+		//creates the room tiles
+		char[] roomID = {'X','S','H','L','D','K','B','C','I','A'}; // Different room tiles 
 		for(char room: roomID) {
 			if(c == room) {
 				List<Room> rooms = game.getRooms();
@@ -75,7 +85,8 @@ public class Board {
 				}
 			}
 		}
-		char[] doorID = {'Z','Y','W','V','U','T','R','Q','P'};
+		// creates the door tiles
+		char[] doorID = {'Z','Y','W','V','U','T','R','Q','P'}; // different door tiles
 		for(char door: doorID) {
 			if(c == door) {
 				List<Room> rooms = game.getRooms();
@@ -91,6 +102,9 @@ public class Board {
 		return null;
 	}
 
+	/**
+	 * redraws the board
+	 */
 	public void redraw() {
 		System.out.println("");
 		for(int i = 0; i < board.length; i++){
@@ -110,11 +124,17 @@ public class Board {
 			}
 			System.out.print("\n");
 		}
+		System.out.println();
 	}
 
 
+	/**
+	 * sets the player positions at the start of the game
+	 * 
+	 * @return 2d array of players 
+	 */
 	public Player[][] setPlayerPositions(){
-		Player[][] board = new Player[25][25];
+		Player[][] board = new Player[BOARD_HEIGHT][BOARD_LENGTH];
 		Position[] positions = {
 				new Position(0,7), new Position(0,16), new Position(7,23),
 				new Position(17,23), new Position(24,9), new Position(18,0)
@@ -138,9 +158,15 @@ public class Board {
 		p.move(newPos);
 	}
 
+	/*
+	 * Getters and Setters
+	 */
+	
 	public Player playerAt(Position p){
 		return playerPositions[p.row()][p.col()];
 	}
+	
+	
 
 	public List<Player> getPlayers() {
 		return players;

@@ -21,19 +21,21 @@ public class Game {
 
 	
 
-	private Board board;
-	private List<Player> players;
-	private Player currentPlayer;
-	private List<Card> envelope = new ArrayList<Card>(); // the cards
+	private Board board; // the board for the game
+	private List<Player> players; // all players in the game (including players who have lost
+	private Player currentPlayer; // player who is having their turn
+	
+	private List<Card> envelope = new ArrayList<Card>(); // the cards of the murderer
 
 	private List<Room> rooms = new ArrayList<Room>();
 	private List<Weapon> weapons = new ArrayList<Weapon>();
 	private List<Character> characters = new ArrayList<Character>();
 
 	public Game() {
-		players = gameSetup();
-		currentPlayer = players.get(0);
+		players = gameSetup(); // start the game 
+		currentPlayer = players.get(0); // the first player to player is player 1
 
+		//construct cards
 		//weapons
 		weapons.add(new Weapon("Dagger"));
 		weapons.add(new Weapon("Revolver"));
@@ -66,12 +68,19 @@ public class Game {
 		characters.add(new Character("The Reverand Green"));
 		characters.add(new Character("Mrs. Peacock"));
 		characters.add(new Character("Professor Plum"));
-
+		
+		// deal cards to players and create murderer
 		distributeCards();
+		//set up the board
 		board = new Board(players,this);
 	}
 
 
+	/**
+	 * starts the game by asking for amount of players and their names
+	 * 
+	 * @return list of players in the game
+	 */
 	private ArrayList<Player> gameSetup() {
 		int numPlayers;
 		System.out.println("Cluedo");
@@ -95,6 +104,9 @@ public class Game {
 		return players;
 	}
 
+	/**
+	 * looped from the main class to run the game
+	 */
 	public void play() {
 		board.redraw();
 		haveNextTurn();
@@ -106,9 +118,8 @@ public class Game {
 
 	/**
 	 * Have turn for a player
-	 *
-	 * @param player - player that is having a turn
-	 * @return
+	 * roll the dice
+	 * display options
 	 */
 	public void haveNextTurn() {
 		System.out.println(currentPlayer.getName()+"'s turn.");
@@ -151,10 +162,10 @@ public class Game {
 	}
 
 	/**
-	 * Determine what happens for a given option.
+	 * Create the Action for the option then run it
 	 *
 	 * @param option - the option selected by the player
-	 * @return 0 is a fail 1 is a pass and 2 is display hand
+	 * @return null for invalid option otherwise the Action that was performed
 	 */
 	private Action calculatePlay(String option) {
 		option = option.toLowerCase();
@@ -179,7 +190,14 @@ public class Game {
 			return null; // an invalid option was passed so fail by returning 0
 		}
 	}
-
+	
+	
+	/**
+	 * runs the Action 
+	 * 
+	 * @param act
+	 * @return action that was ran or null if the action wasn't valid
+	 */
 	private Action doAction(Action act) {
 		if(act.isValid()) {
 			act.run();
@@ -187,26 +205,11 @@ public class Game {
 		}
 		return null;
 
-
 	}
-
-//	public Action doAccuse() {
-//		Accuse playerAccusation = new Accuse(this, currentPlayer);
-//		playerAccusation.run();
-//		if(playerAccusation.isValid()) {
-//			Main.gameFinished = true;
-//			System.out.println("Correct accusation! \n"+currentPlayer.getName()+" wins!");
-//
-//		}
-//		else {
-//			currentPlayer.lost(true);
-//		}
-//		return playerAccusation;
-//	}
 
 
 	/**
-	 * Find next player to have a turn.
+	 * Set currentPlayer to be the next player to have a turn
 	 *
 	 * @return the next player
 	 */
@@ -220,6 +223,12 @@ public class Game {
 		}
 	}
 
+	/**
+	 * find and return the player to have a turn after the given player
+	 * 
+	 * @param player
+	 * @return next player
+	 */
 	public Player nextPlayer(Player player) {
 		int index = players.indexOf(player);
 		if(index == players.size()-1) {
@@ -246,10 +255,6 @@ public class Game {
 		envelope.add(weapons.get(0));
 		envelope.add(characters.get(0));
 
-		for(Card c: envelope){
-			System.out.println(c);
-		}
-
 		allcards.addAll(rooms.subList(1, rooms.size()-1));
 		allcards.addAll(weapons.subList(1, weapons.size()-1));
 		allcards.addAll(characters.subList(1, characters.size()-1));
@@ -269,6 +274,10 @@ public class Game {
 	public boolean checkGuess(List<Card> guess) {
 		return envelope.containsAll(guess);
 	}
+	
+	/*
+	 * Getters and setters
+	 */
 
 	public Player getCurrentPlayer() {
 		return currentPlayer;
