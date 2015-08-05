@@ -1,10 +1,8 @@
 package cluedo.action;
 
-import java.util.List;
-import java.util.Scanner;
-
 import cluedo.Board;
 import cluedo.Game;
+import cluedo.Input;
 import cluedo.Player;
 import cluedo.Position;
 import cluedo.tile.*;
@@ -14,23 +12,11 @@ public class Move extends Action {
 	private Position newPosition;
 	private Position oldPosition;
 	private Board board;
-	
-	public Move(Game game, Player player, Board board, Position oldPosition) {
-		super(game, player);
-		this.oldPosition = oldPosition;
-		this.board = board;
-	}
 
-	
-	/**
-	 * This is the constructor used in the leave class for making a player leave a room. 
-	 * Idk if this is gross.
-	 */
-	public Move(Game game, Player player, Position oldPosition, Position newPosition){
+	public Move(Game game, Player player, Board board) {
 		super(game, player);
-		this.board= game.getBoard();
-		this.oldPosition = oldPosition;
-		this.newPosition = newPosition;
+		this.oldPosition = player.getCurrentPosition();
+		this.board = board;
 	}
 
 	/**
@@ -38,18 +24,15 @@ public class Move extends Action {
 	 * is a valid move.
 	 */
 	public void run(){
-		Scanner sc = new Scanner(System.in);
 		while(player.getRoll()!=0){
-			System.out.println("Choose a direction to move [N, S, W, E] or X to stop moving.");
-			String direction = sc.next();
+			String direction = Input.getString("Choose a direction to move [N, S, W, E] or X to stop moving.");
 			if(direction.equalsIgnoreCase("x")){
 				return;
 			}
 			newPosition = moveDirection(direction);
 			while(newPosition==null || !isValid()){
 					System.out.println("Invalid Move.");
-					System.out.println("Choose a direction to move. [N, S, W, E]");
-					direction = sc.next();
+					direction = Input.getString("Choose a direction to move. [N, S, W, E]");
 					newPosition = moveDirection(direction);
 			}
 			board.move(oldPosition, newPosition);
@@ -83,18 +66,16 @@ public class Move extends Action {
 	 */
 	public boolean isValid(){
 		if(newPosition.row()>=game.getBoardArray().length || newPosition.row()<0){
-			System.out.println("Please choose a valid position.");
 			return false;
 		}
 		if(newPosition.col()>=game.getBoardArray()[0].length || newPosition.col()<0){
-			System.out.println("Please choose a valid position.");
 			return false;
 		}
-		
+
 		if(!(game.getBoardArray()[newPosition.row()][newPosition.col()] instanceof FloorTile)) {
 			return false;
 		}
-		
+
 		if(game.getPlayerPositions()[newPosition.row()][newPosition.col()]!=null){
 			System.out.println("There is already a player in this position!");
 			return false;
@@ -116,6 +97,10 @@ public class Move extends Action {
 
 	public void setOldPosition(Position oldPosition) {
 		this.oldPosition = oldPosition;
+	}
+
+	public boolean endsTurn(){
+		return true;
 	}
 
 

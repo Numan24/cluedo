@@ -9,9 +9,9 @@ public class Stairs extends Action{
 
 	private Room room;
 
-	public Stairs(Game game, Player player,Room room) {
+	public Stairs(Game game, Player player) {
 		super(game, player);
-		this.room = room;
+		this.room = player.getRoom().getConnectedTo();
 	}
 
 	public void run() {
@@ -29,6 +29,10 @@ public class Stairs extends Action{
 	}
 	@Override
 	public boolean isValid() {
+		return room != null && room.getConnectedTo() != null;
+	}
+
+	public boolean endsTurn(){
 		return false;
 	}
 

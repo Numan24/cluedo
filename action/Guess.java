@@ -2,14 +2,12 @@ package cluedo.action;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-import cluedo.Board;
 import cluedo.Game;
+import cluedo.Input;
 import cluedo.Player;
 import cluedo.cards.Card;
 import cluedo.cards.Character;
-import cluedo.cards.Room;
 import cluedo.cards.Weapon;
 
 public class Guess extends Action {
@@ -17,54 +15,48 @@ public class Guess extends Action {
 
 	public Guess(Game game, Player player) {
 		super(game, player);
-		setup();
+		run();
 	}
-	
-	public void setup(){
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
-		String weapon = sc.nextLine();
+
+	public void run(){
+		String weapon = Input.getString("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
 		Weapon weaponGuess = validWeapon(weapon);
 		while(weaponGuess==null){
 			System.out.println("Invalid Weapon.");
-			System.out.println("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
-			weapon = sc.nextLine();
+			weapon = Input.getString("Guess a Weapon: [Dagger, Revolver, Candlestick, Rope, Spanner, Leadpipe] ");
 			weaponGuess = validWeapon(weapon);
 		}
-		
-		
-		System.out.println("Guess a Character: [Miss Scarlett, Colonel Mustard, Mrs. White, The Reverand Green, Mrs. Peacock, Professor Plum]");
-		String character = sc.nextLine();
+
+		String character = Input.getString("Guess a Character: [Miss Scarlett, Colonel Mustard, Mrs. White, The Reverand Green, Mrs. Peacock, Professor Plum]");
 		Character charGuess = validChar(character);
 		while(charGuess==null){
 			System.out.println("Invalid Character.");
-			System.out.println("Guess a Character: [Miss Scarlett, Colonel Mustard, Mrs. White, The Reverand Green, Mrs. Peacock, Professor Plum]");
-			character = sc.nextLine();
+			character = Input.getString("Guess a Character: [Miss Scarlett, Colonel Mustard, Mrs. White, The Reverand Green, Mrs. Peacock, Professor Plum]");
 			charGuess = validChar(character);
 		}
 		guess.add(player.getRoom());
 		guess.add(weaponGuess);
 		guess.add(charGuess);
 	}
-	
+
 	private Weapon validWeapon(String guess) {
 		for(Weapon w: game.getWeapons()){
 			if(w.getName().toLowerCase().equals(guess.toLowerCase())){return w;}
 		}
 		return null;
 	}
-	
+
 	private Character validChar(String guess) {
 		for(Character c: game.getCharacters()){
 			if(c.getName().toLowerCase().equals(guess.toLowerCase())){return c;}
 		}
 		return null;
 	}
-	
+
 	public List<Card> getCards() {
 		return guess;
 	}
-	
+
 	public boolean isValid() {
 		for(Player p : game.getPlayers()) {
 			if(p.equals(game.getCurrentPlayer())){continue;}
@@ -78,6 +70,10 @@ public class Guess extends Action {
 			}
 		}
 		return false;
+	}
+
+	public boolean endsTurn(){
+		return true;
 	}
 
 }
