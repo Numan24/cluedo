@@ -15,6 +15,7 @@ public class Stairs extends Action{
 
 	public Stairs(Game game, Player player) {
 		super(game, player);
+		if(player.getRoom() == null) {return;}
 		this.room = player.getRoom().getConnectedTo();
 	}
 
@@ -41,7 +42,7 @@ public class Stairs extends Action{
 	
 	@Override
 	public boolean isValid() {
-		return room != null && room.getConnectedTo() != null;
+		return room != null;
 	}
 
 	public boolean endsTurn(){

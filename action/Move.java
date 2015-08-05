@@ -30,11 +30,11 @@ public class Move extends Action {
 				return;
 			}
 			newPosition = moveDirection(direction);
-//			while(newPosition==null || !isValidMove()){
-//					System.out.println("Invalid Move.");
-//					direction = Input.getString("Choose a direction to move. [N, S, W, E]");
-//					newPosition = moveDirection(direction);
-//			}
+			while(newPosition==null || !isValidMove()){
+					//System.out.println("Invalid Move.");
+					direction = Input.getString("Choose a direction to move. [N, S, W, E]");
+					newPosition = moveDirection(direction);
+			}
 			if(isValidMove()){
 				board.move(oldPosition, newPosition);
 				player.setRoll(player.getRoll()-1);
