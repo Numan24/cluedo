@@ -185,25 +185,6 @@ public class Game {
 
 	}
 
-//	public Action doMove(){
-//		if(currentPlayer.getRoom() != null){return null;}
-//		Move move = new Move(this, currentPlayer, board, currentPlayer.getCurrentPosition());
-//		move.run();
-//		return move;
-//	}
-
-	public Action doGuess() {
-		if(currentPlayer.getRoom() != null) {
-			Action guess = new Guess(this, currentPlayer);
-			guess.isValid();
-			return guess;
-		}
-		else {
-			System.out.println("Must be in a room to make a suggestion!");
-			return null;
-		}
-	}
-
 	public Action doAccuse() {
 		Accuse playerAccusation = new Accuse(this, currentPlayer);
 		playerAccusation.run();
@@ -217,33 +198,6 @@ public class Game {
 		}
 		return playerAccusation;
 	}
-
-//	private Action doHand() {
-//		Hand hand = new Hand(this, currentPlayer);
-//		if(!hand.isValid()) {
-//
-//		}
-//		hand.run();
-//		return hand;
-//	}
-//
-//	public void doStairs(){
-//		if(currentPlayer.getRoom() == null){return;}
-//		Room current = currentPlayer.getRoom();
-//		Room destination = current.getConnectedTo();
-//		Stairs stairs = new Stairs(this, currentPlayer, destination);
-//		stairs.run();
-//	}
-//
-//	public void doLeave(){
-//		if(currentPlayer.getRoom() == null){return;}
-//		Leave leave = new Leave(this, currentPlayer, currentPlayer.getRoom());
-//		leave.run();
-//	}
-
-
-
-
 
 
 	/**

@@ -30,7 +30,7 @@ public class Move extends Action {
 				return;
 			}
 			newPosition = moveDirection(direction);
-			while(newPosition==null || !isValid()){
+			while(newPosition==null || !isValidMove()){
 					System.out.println("Invalid Move.");
 					direction = Input.getString("Choose a direction to move. [N, S, W, E]");
 					newPosition = moveDirection(direction);
@@ -59,12 +59,24 @@ public class Move extends Action {
 		}
 		return null;
 	}
+	
+
+	@Override
+	public boolean isValid() {
+		for(Tile t : player.adjacentTiles()) {
+			if(t instanceof FloorTile) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * checks if moving to new position is valid. (Can't move on rooms).
 	 * @return boolean. true if valid move, otherwise false.
 	 */
-	public boolean isValid(){
+	public boolean isValidMove(){
+		
 		if(newPosition.row()>=game.getBoardArray().length || newPosition.row()<0){
 			return false;
 		}
@@ -102,6 +114,7 @@ public class Move extends Action {
 	public boolean endsTurn(){
 		return true;
 	}
+
 
 
 }
