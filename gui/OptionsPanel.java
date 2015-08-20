@@ -56,6 +56,13 @@ public class OptionsPanel extends JPanel {
 		gbc_btnAccuse.gridy = 5;
 		add(btnAccuse, gbc_btnAccuse);
 		
+		JButton btnEndTurn = new JButton("End Turn");
+		GridBagConstraints gbc_btnEndTurn = new GridBagConstraints();
+		gbc_btnEndTurn.insets = new Insets(0, 0, 5, 5);
+		gbc_btnEndTurn.gridx = 0;
+		gbc_btnEndTurn.gridy = 6;
+		add(btnEndTurn, gbc_btnEndTurn);
+		
 		JTextArea textArea = new JTextArea(5,20);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);

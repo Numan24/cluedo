@@ -11,7 +11,6 @@ import javax.swing.border.LineBorder;
 
 import cluedo.Board;
 import cluedo.Game;
-import cluedo.Player;
 import cluedo.tile.FloorTile;
 import cluedo.tile.RoomTile;
 import cluedo.tile.Tile;
@@ -22,7 +21,7 @@ public class boardPanel extends JPanel {
 	
 	public static final int TILE_SIZE = 30;
 	private Tile[][] board;
-	private Player[][] players;
+	private JPanel[][] panels;
 	private final ImageIcon floor = new ImageIcon("floor.png");
 	private final ImageIcon room = new ImageIcon("room.jpg");
 	private final ImageIcon door = new ImageIcon("door.jpg");
@@ -35,22 +34,21 @@ public class boardPanel extends JPanel {
 		this.game = game;
 		setLayout(new GridLayout(Board.BOARD_HEIGHT, Board.BOARD_LENGTH));
 		board = game.getBoardArray();
-		
+		panels = new JPanel[Board.BOARD_HEIGHT][Board.BOARD_LENGTH];
 		for(int i = 0; i < Board.BOARD_HEIGHT; i++) {
 			for(int j = 0; j < Board.BOARD_LENGTH; j++) {
 				JPanel tile = new JPanel(); {
 					tile.setPreferredSize(new Dimension(TILE_SIZE,TILE_SIZE));
 					tile.setBackground(board[i][j].getColor());
-					//tile.setForeground(board[i][j].getColor());
 					if(board[i][j] instanceof RoomTile) {
 						calculateBorder(tile, i, j);
 					}
 					else {tile.setBorder(new LineBorder(Color.BLACK));}
 					add(tile);
+					panels[i][j] = tile;
 				}
 			}
 		}
-		
 		setBorder(new LineBorder(Color.black));
 	}
 
