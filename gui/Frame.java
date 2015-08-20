@@ -2,9 +2,12 @@ package cluedo.gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -84,7 +87,7 @@ public class Frame extends JFrame implements KeyListener{
 		outerMostPanel.add(board, BorderLayout.EAST);
 		
 		//create options panel (contains the option buttons and text area)
-		options = new OptionsPanel(game);
+		options = new OptionsPanel(this, game);
 		outerMostPanel.add(options, BorderLayout.WEST);
 		
 		//create hand panel (contains the current players hand)
@@ -93,19 +96,47 @@ public class Frame extends JFrame implements KeyListener{
 		
 		pack();
 		this.setLocationRelativeTo(null);
+		
+		addKeyListener(this);
+		setFocusable(true);
+		requestFocus();
 	}
 
+	public void buttonPressed(ActionEvent e){
+		String s = e.getActionCommand();
+		System.out.println(s);
+		switch(s){
+		case "Roll Dice":
+			game.diceRoll();
+			
+			break;
+		case "Guess":		
+			break;
+		case "Accuse":		
+			break;
+		case "End Turn":	
+			game.setCurrentPlayer(game.nextPlayer());
+			break;
+		}
+		requestFocus();
+	}
+	
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char c = e.getKeyChar();
 		switch(c){
 			case 'w': 
+				game.moveDetected("N");
 				break;
 			case 'a':
+				game.moveDetected("W");
 				break;
 			case 's':
+				game.moveDetected("S");
 				break;
 			case 'd':
+				game.moveDetected("E");
 				break;
 		}
 		

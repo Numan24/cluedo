@@ -3,6 +3,8 @@ package cluedo.gui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -19,12 +21,14 @@ public class OptionsPanel extends JPanel {
 	private JButton accuse;
 	private JButton endTurn;
 	private JTextArea textArea;
+	private Frame frame;
 
 
 	/**
 	 * Create the panel.
 	 */
-	public OptionsPanel(Game game) {
+	public OptionsPanel(Frame frame, Game game) {
+		this.frame = frame;
 		setBorder(new TitledBorder(null, "Options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
@@ -41,6 +45,16 @@ public class OptionsPanel extends JPanel {
 		gbc_btnRollDice.gridy = 3;
 		add(rollDice, gbc_btnRollDice);
 		
+		rollDice.addActionListener(new ActionListener()
+	    {
+		      public void actionPerformed(ActionEvent e)
+		      {
+		    	  rollDice.setEnabled(false);
+		    	  frame.buttonPressed(e);
+		      }
+		    });
+		
+		
 		guess = new JButton("Guess");
 		GridBagConstraints gbc_btnGuess = new GridBagConstraints();
 		gbc_btnGuess.insets = new Insets(0, 0, 5, 5);
@@ -49,12 +63,30 @@ public class OptionsPanel extends JPanel {
 		gbc_btnGuess.gridy = 4;
 		add(guess, gbc_btnGuess);
 		
+		guess.addActionListener(new ActionListener()
+	    {
+		      public void actionPerformed(ActionEvent e)
+		      {
+		    	  frame.buttonPressed(e);
+		      }
+		    });
+		
+		
 		accuse = new JButton("Accuse");
 		GridBagConstraints gbc_btnAccuse = new GridBagConstraints();
 		gbc_btnAccuse.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAccuse.fill = GridBagConstraints.BOTH;
 		gbc_btnAccuse.gridx = 0;
 		gbc_btnAccuse.gridy = 5;
+		
+		accuse.addActionListener(new ActionListener()
+	    {
+		      public void actionPerformed(ActionEvent e)
+		      {
+		    	  frame.buttonPressed(e);
+		      }
+		    });
+		
 		add(accuse, gbc_btnAccuse);
 		
 		endTurn = new JButton("End Turn");
@@ -63,6 +95,16 @@ public class OptionsPanel extends JPanel {
 		gbc_btnEndTurn.gridx = 0;
 		gbc_btnEndTurn.gridy = 6;
 		add(endTurn, gbc_btnEndTurn);
+		
+		endTurn.addActionListener(new ActionListener()
+	    {
+		      public void actionPerformed(ActionEvent e)
+		      {
+		    	  rollDice.setEnabled(true);
+		    	  frame.buttonPressed(e);
+		      }
+		    });
+		
 		
 		textArea = new JTextArea(5,20);
 		textArea.setLineWrap(true);
@@ -76,9 +118,6 @@ public class OptionsPanel extends JPanel {
 
 	}
 
-	public JTextArea getTextArea() {
-		return textArea;
-	}
 
 	
 	

@@ -44,7 +44,7 @@ public class Game {
 			//end game here
 		}
 		currentPlayer = players.get(0); // the first player to player is player 1
-
+		currentPlayer.roll();
 		//construct cards
 		//weapons
 		weapons.add(new Weapon("Dagger"));
@@ -171,10 +171,9 @@ public class Game {
 		System.out.println(currentPlayer.getName()+"'s turn.");
 
 		//Dice rolling
-		Random rand = new Random();
-		int roll = rand.nextInt(6)+1;
-		currentPlayer.setRoll(roll);
-		System.out.println("You rolled a "+roll);
+//
+//		currentPlayer.setRoll(roll);
+//		System.out.println("You rolled a "+roll);
 
 		List<String> options = currentPlayer.getOptions();
 
@@ -252,6 +251,12 @@ public class Game {
 		return null;
 
 	}
+	
+	
+	public void diceRoll() {
+		// MAY NEED TO ADD CONDITIONS HERE
+		currentPlayer.roll();
+	}
 
 
 	/**
@@ -323,8 +328,10 @@ public class Game {
 			move.setNewPosition(move.moveDirection(dir));
 			if(move.isValidMove()){
 				board.move(move.getOldPosition(), move.getNewPosition());	
+				currentPlayer.setRoll(currentPlayer.getRoll()-1);
+				System.out.println("new pos: "+currentPlayer.getCurrentPosition());
 			}
-		}
+		} else{System.out.println("out of rolls");}
 
 	}
 	
@@ -393,6 +400,9 @@ public class Game {
 	public Player[][] getPlayerPositions() {
 		return board.getPlayerPositions();
 	}
+
+
+
 
 
 }

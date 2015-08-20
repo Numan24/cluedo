@@ -104,6 +104,12 @@ public class Player {
 		}
 		return false;
 	}
+	
+	public void roll(){
+		Random rand = new Random();
+		roll = rand.nextInt(6)+1;
+	}
+	
 	/*
 	 * Getters and Setters
 	 */
