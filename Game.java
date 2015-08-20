@@ -1,6 +1,9 @@
 package cluedo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 
@@ -17,7 +20,7 @@ import cluedo.cards.Card;
 import cluedo.cards.Character;
 import cluedo.cards.Room;
 import cluedo.cards.Weapon;
-import cluedo.tile.*;
+import cluedo.tile.Tile;
 
 public class Game {
 

@@ -23,7 +23,7 @@ public class Frame extends JFrame implements KeyListener{
 	private JMenuItem menuNewGame;
 	private JMenuItem menuExit;
 	private JPanel board;
-	private JPanel options;
+	private OptionsPanel options;
 	private JPanel hand;
 	
 	private Game game;
@@ -48,6 +48,7 @@ public class Frame extends JFrame implements KeyListener{
 	 * Create the frame.
 	 */
 	public Frame() {
+		
 		//create and setup game
 		this.game = new Game();
 		
@@ -121,7 +122,5 @@ public class Frame extends JFrame implements KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
 
 }
