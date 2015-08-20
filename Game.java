@@ -2,6 +2,8 @@ package cluedo;
 
 import java.util.*;
 
+import javax.swing.JOptionPane;
+
 import cluedo.action.Accuse;
 import cluedo.action.Action;
 import cluedo.action.End;
@@ -32,7 +34,10 @@ public class Game {
 	private List<Character> characters = new ArrayList<Character>();
 
 	public Game() {
-		players = gameSetup(); // start the game 
+		players = setupGame(); // start the game
+		if(players == null) {
+			//end game here
+		}
 		currentPlayer = players.get(0); // the first player to player is player 1
 
 		//construct cards
@@ -73,6 +78,33 @@ public class Game {
 		distributeCards();
 		//set up the board
 		board = new Board(players,this);
+	}
+	
+	
+	public List<Player> setupGame() {
+		int amount = 0;
+		// repeat until a correct number is entered  
+		while(amount < 3 || amount > 6) {
+			//player number input dialog
+			String inputValue = (String)JOptionPane.showInputDialog(null, "Enter amount of players (3-6): ", "Cluedo", JOptionPane.QUESTION_MESSAGE, null, null, null);
+			//number not entered, end game
+			if(inputValue == null) {
+				return null;
+			}
+			// check for invalid input (ie not and integer)
+			try {
+				amount = Integer.parseInt(inputValue);
+			}catch(NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "Please enter an integer.");
+			}
+		}
+		List<Player> players = new ArrayList<Player>();
+		for(int i = 1; i < amount+1; i++) {
+			// get name for each player via dialog
+			String name = JOptionPane.showInputDialog("Enter player "+i+"'s name: ");
+			players.add(new Player(name, this));
+		}
+		return players;
 	}
 
 
@@ -326,4 +358,6 @@ public class Game {
 	public Player[][] getPlayerPositions() {
 		return board.getPlayerPositions();
 	}
+
+
 }

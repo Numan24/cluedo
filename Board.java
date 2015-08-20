@@ -8,8 +8,8 @@ import cluedo.tile.*;
 
 public class Board {
 
-	private static final int BOARD_LENGTH = 24;
-	private static final int BOARD_HEIGHT = 25;
+	public static final int BOARD_LENGTH = 24;
+	public static final int BOARD_HEIGHT = 25;
 
 
 	private List<Player> players = new ArrayList<Player>(); // players in the current game

@@ -1,5 +1,7 @@
 package cluedo.tile;
 
+import java.awt.Color;
+
 import cluedo.Player;
 import cluedo.Position;
 
@@ -8,10 +10,12 @@ public abstract class Tile {
 	protected final int x;
 	protected final int y;
 	private Player player;
+	protected Color color;
 
 	public Tile(int x, int y) {
 		this.x = x;
 		this.y = y;
+		this.color = Color.black;
 	}
 
 	public Player getPlayer() {
@@ -23,6 +27,10 @@ public abstract class Tile {
 
 	public Position getPosition(){
 		return new Position(y,x);
+	}
+	
+	public Color getColor() {
+		return color;
 	}
 
 

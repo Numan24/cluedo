@@ -1,5 +1,7 @@
 package cluedo.tile;
 
+import java.awt.Color;
+
 import cluedo.cards.Room;
 
 public class RoomTile extends Tile {
@@ -9,6 +11,7 @@ public class RoomTile extends Tile {
 	public RoomTile(int x, int y, Room room) {
 		super(x, y);
 		this.room = room;
+		color = Color.BLUE;
 	}
 
 
