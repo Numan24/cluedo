@@ -307,6 +307,27 @@ public class Game {
 			p = nextPlayer(p);
 		}
 	}
+	
+	
+	/**
+	 * Attempts to move player when a direction key is detected by making a
+	 * new move object and checking validity of move.
+	 * @param dir - direction detected by the keyListener in the Frame class
+	 */
+	public void moveDetected(String dir){
+		if(currentPlayer.getRoll()>0){
+			Move move = new Move(this, currentPlayer, board);
+			move.setNewPosition(move.moveDirection(dir));
+			if(move.isValidMove()){
+				board.move(move.getOldPosition(), move.getNewPosition());	
+			}
+		}
+
+	}
+	
+	
+	
+	
 
 	/**
 	 * Check to see if a guess was correct.

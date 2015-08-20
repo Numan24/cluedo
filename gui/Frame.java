@@ -2,22 +2,20 @@ package cluedo.gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import cluedo.Game;
-import cluedo.Player;
 
 
-public class Frame extends JFrame {
+public class Frame extends JFrame implements KeyListener{
 
 	private JPanel outerMostPanel;
 	private JMenuBar menuBar;
@@ -94,6 +92,34 @@ public class Frame extends JFrame {
 		
 		pack();
 		this.setLocationRelativeTo(null);
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		char c = e.getKeyChar();
+		switch(c){
+			case 'w': 
+				break;
+			case 'a':
+				break;
+			case 's':
+				break;
+			case 'd':
+				break;
+		}
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

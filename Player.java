@@ -1,10 +1,14 @@
 package cluedo;
 
-import java.util.*;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import cluedo.cards.Card;
 import cluedo.cards.Room;
-import cluedo.tile.*;
+import cluedo.tile.DoorTile;
+import cluedo.tile.Tile;
 
 public class Player {
 	
@@ -18,6 +22,7 @@ public class Player {
 	private Room room;
 	private final Game game;
 	private boolean hasLost;
+	private Color color;
 	
 	private int roll; // the dice roll the player got on their turn
 
@@ -25,6 +30,9 @@ public class Player {
 		this.name = name;
 		this.game = game;
 		this.hasLost = false;
+		
+		Random rand = new Random();
+		this.color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
 	}
 
 	/**
@@ -148,6 +156,14 @@ public class Player {
 
 	public void lost(boolean b) {
 		hasLost = b;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 }
