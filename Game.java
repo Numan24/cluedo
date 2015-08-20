@@ -32,6 +32,8 @@ public class Game {
 	private List<Room> rooms = new ArrayList<Room>();
 	private List<Weapon> weapons = new ArrayList<Weapon>();
 	private List<Character> characters = new ArrayList<Character>();
+	
+
 
 	public Game() {
 		players = setupGame(); // start the game
@@ -102,6 +104,15 @@ public class Game {
 		for(int i = 1; i < amount+1; i++) {
 			// get name for each player via dialog
 			String name = JOptionPane.showInputDialog("Enter player "+i+"'s name: ");
+			//shouldn't be able to enter the same name as another player
+			for(Player p: players) {
+				if(p.getName().equals(name)) {
+					while(p.getName().equals(name)) {
+						JOptionPane.showMessageDialog(null, "Name already in use!\nSelect a different name.");
+						name = (String)JOptionPane.showInputDialog(null, "Enter new name: ", "Cluedo", JOptionPane.QUESTION_MESSAGE, null, null, null);
+					}
+				}
+			}
 			players.add(new Player(name, this));
 		}
 		return players;
