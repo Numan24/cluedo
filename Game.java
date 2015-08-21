@@ -3,7 +3,6 @@ package cluedo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.JOptionPane;
 
@@ -20,6 +19,7 @@ import cluedo.cards.Card;
 import cluedo.cards.Character;
 import cluedo.cards.Room;
 import cluedo.cards.Weapon;
+import cluedo.tile.DoorTile;
 import cluedo.tile.Tile;
 
 public class Game {
@@ -329,9 +329,13 @@ public class Game {
 			Move move = new Move(this, currentPlayer, board);
 			move.setNewPosition(move.moveDirection(dir));
 			if(move.isValidMove()){
-				board.move(move.getOldPosition(), move.getNewPosition());	
+				board.move(move.getOldPosition(), move.getNewPosition());
 				currentPlayer.setRoll(currentPlayer.getRoll()-1);
+				if(board.getBoard()[currentPlayer.getCurrentPosition().row()][currentPlayer.getCurrentPosition().col()] instanceof DoorTile){
+					new Enter(this, currentPlayer).run();
+				}
 				System.out.println("new pos: "+currentPlayer.getCurrentPosition());
+				
 			}
 		} else{System.out.println("out of rolls");}
 

@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import cluedo.Game;
+import cluedo.action.Stairs;
 
 
 public class Frame extends JFrame implements KeyListener{
@@ -131,6 +132,11 @@ public class Frame extends JFrame implements KeyListener{
 		case "End Turn":	
 			game.setCurrentPlayer(game.nextPlayer());
 			break;
+		case "Use Stairs":
+			Stairs stairMove = new Stairs(game, game.getCurrentPlayer());
+			if(stairMove.isValid()){
+				stairMove.run();
+			}
 		}
 		requestFocus();
 	}
