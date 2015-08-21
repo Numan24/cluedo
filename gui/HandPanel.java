@@ -41,4 +41,5 @@ public class HandPanel extends JPanel {
 		return icon;
 	}
 
+	
 }

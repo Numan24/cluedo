@@ -75,7 +75,7 @@ public class Game {
 		characters.add(new Character("Miss Scarlett"));
 		characters.add(new Character("Colonel Mustard"));
 		characters.add(new Character("Mrs. White"));
-		characters.add(new Character("The Reverand Green"));
+		characters.add(new Character("The Reverend Green"));
 		characters.add(new Character("Mrs. Peacock"));
 		characters.add(new Character("Professor Plum"));
 		
@@ -337,6 +337,21 @@ public class Game {
 
 	}
 	
+	public void guess(String character, String weapon) {
+		List<Card> guess = new ArrayList<Card>();
+		for(Character c : characters) {
+			if(c.getName().equals(character)) {
+				guess.add(c);
+			}
+		}
+		for(Weapon w : weapons) {
+			if(w.getName().equals(weapon)) {
+				guess.add(w);
+			}
+		}
+		
+	}
+	
 	
 	
 	
@@ -350,6 +365,8 @@ public class Game {
 	public boolean checkGuess(List<Card> guess) {
 		return envelope.containsAll(guess);
 	}
+	
+	
 	
 	/*
 	 * Getters and setters
