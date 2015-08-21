@@ -33,6 +33,7 @@ public class boardPanel extends JPanel{
 	 */
 	public boardPanel(Game game) {
 		this.game = game;
+		
 		setLayout(new GridLayout(Board.BOARD_HEIGHT, Board.BOARD_LENGTH));
 		board = game.getBoardArray();
 		labels = new JLabel[Board.BOARD_HEIGHT][Board.BOARD_LENGTH];

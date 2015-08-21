@@ -41,7 +41,7 @@ public class Game {
 	public Game() {
 		players = setupGame(); // start the game
 		if(players == null) {
-			//end game here
+			System.exit(0);
 		}
 		currentPlayer = players.get(0); // the first player to player is player 1
 		currentPlayer.roll();
@@ -107,12 +107,14 @@ public class Game {
 		for(int i = 1; i < amount+1; i++) {
 			// get name for each player via dialog
 			String name = JOptionPane.showInputDialog("Enter player "+i+"'s name: ");
+			if(name == null){return null;}
 			//shouldn't be able to enter the same name as another player
 			for(Player p: players) {
 				if(p.getName().equals(name)) {
 					while(p.getName().equals(name)) {
 						JOptionPane.showMessageDialog(null, "Name already in use!\nSelect a different name.");
 						name = (String)JOptionPane.showInputDialog(null, "Enter new name: ", "Cluedo", JOptionPane.QUESTION_MESSAGE, null, null, null);
+						if(name == null){return null;}
 					}
 				}
 			}
