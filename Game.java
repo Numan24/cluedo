@@ -234,7 +234,6 @@ public class Game {
 	
 	
 	public void diceRoll() {
-		// MAY NEED TO ADD CONDITIONS HERE
 		int roll = currentPlayer.roll();
 		frame.getOptions().getTextArea().append("You rolled a "+roll+"\n");
 	}
@@ -313,11 +312,9 @@ public class Game {
 				if(board.getBoard()[currentPlayer.getCurrentPosition().row()][currentPlayer.getCurrentPosition().col()] instanceof DoorTile){
 					Enter ent = new Enter(this, currentPlayer);
 					ent.run();
-				}
-				System.out.println("new pos: "+currentPlayer.getCurrentPosition());
-				
+				}				
 			}
-		} else{System.out.println("out of rolls");}
+		} else{Output.appendText("You have no moves left!");}
 
 	}
 	
@@ -347,13 +344,12 @@ public class Game {
 					if(card.equals(c)) {
 						hasCards = true;
 						OptionsPanel panel = frame.getOptions();
-						panel.getTextArea().append("Player "+p.getName()+" has one (or more) of the cards\n");
-						System.out.println(p.getName()+" has one (or more) of the cards\n");
+						Output.appendText("Player "+p.getName()+" has one (or more) of the cards\n");
 					}
 				}
 			}
 		}
-		if(!hasCards){frame.getOptions().getTextArea().append("No one has any of the cards");}
+		if(!hasCards){Output.appendText("No one has any of the cards");}
 	}
 
 

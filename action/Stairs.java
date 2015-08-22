@@ -1,6 +1,7 @@
 package cluedo.action;
 
 import cluedo.Game;
+import cluedo.Output;
 import cluedo.Player;
 import cluedo.cards.Room;
 import cluedo.tile.RoomTile;
@@ -35,7 +36,7 @@ public class Stairs extends Action{
 		game.movePlayer(player, player.getCurrentPosition(), roomTile.getPosition());
 		
 		
-		System.out.println("You are now in the "+player.getRoom().getName());
+		Output.appendText("You are now in the "+player.getRoom().getName());
 		
 	}
 	

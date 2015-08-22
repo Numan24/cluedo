@@ -3,6 +3,7 @@ package cluedo.action;
 import cluedo.Board;
 import cluedo.Game;
 import cluedo.Input;
+import cluedo.Output;
 import cluedo.Player;
 import cluedo.Position;
 import cluedo.tile.*;
@@ -59,8 +60,6 @@ public class Move extends Action {
 				return new Position(player.getCurrentPosition().row(), player.getCurrentPosition().col()-1);
 			case  "E":
 				return new Position(player.getCurrentPosition().row(), player.getCurrentPosition().col()+1);
-			default:
-				System.out.println("Invalid direction.");
 		}
 		return null;
 	}
@@ -94,7 +93,7 @@ public class Move extends Action {
 		}
 
 		if(game.getPlayerPositions()[newPosition.row()][newPosition.col()]!=null){
-			System.out.println("There is already a player in this position!");
+			Output.appendText("There is already a player in this position!");
 			return false;
 		}
 		return true;
