@@ -308,19 +308,22 @@ public class Game {
 			Move move = new Move(this, currentPlayer, board);
 			move.setNewPosition(move.moveDirection(dir));
 			if(move.isValidMove()){
-				board.move(move.getOldPosition(), move.getNewPosition());
+				movePlayer(currentPlayer, move.getOldPosition(), move.getNewPosition());
 				currentPlayer.setRoll(currentPlayer.getRoll()-1);
 				if(board.getBoard()[currentPlayer.getCurrentPosition().row()][currentPlayer.getCurrentPosition().col()] instanceof DoorTile){
 					Enter ent = new Enter(this, currentPlayer);
 					ent.run();
-					frame.movePlayer(currentPlayer, move.getOldPosition(), ent.getRoomTile().getPosition());
 				}
-				else {frame.movePlayer(currentPlayer, move.getOldPosition(), move.getNewPosition());}
 				System.out.println("new pos: "+currentPlayer.getCurrentPosition());
 				
 			}
 		} else{System.out.println("out of rolls");}
 
+	}
+	
+	public void movePlayer(Player player, Position oldPos, Position newPos){
+		frame.movePlayer(player, oldPos, newPos);
+		board.move(oldPos, newPos);
 	}
 	
 	public void guess(String character, String weapon) {
