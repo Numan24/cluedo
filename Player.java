@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
+
 import cluedo.cards.Card;
 import cluedo.cards.Room;
 import cluedo.tile.DoorTile;
@@ -24,16 +26,28 @@ public class Player {
 	private boolean hasLost;
 	private Color color;
 	
+	private ImageIcon icon;
+	
 	private int roll; // the dice roll the player got on their turn
 
-	public Player(String name, Game game) {
+	public Player(String name, Game game, String icon) {
 		this.name = name;
 		this.game = game;
 		this.hasLost = false;
-		
+		this.icon = createImageIcon(icon);
 		Random rand = new Random();
 		this.color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
 	}
+	
+	private ImageIcon createImageIcon(String path) {
+        java.net.URL imgURL = Game.class.getResource("player-"+path+".png");
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
 
 	/**
 	 * get the current options that are available to the player.
@@ -105,9 +119,10 @@ public class Player {
 		return false;
 	}
 	
-	public void roll(){
+	public int roll(){
 		Random rand = new Random();
 		roll = rand.nextInt(6)+1;
+		return roll;
 	}
 	
 	/*
@@ -170,6 +185,10 @@ public class Player {
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+	
+	public ImageIcon getIcon(){
+		return icon;
 	}
 
 }

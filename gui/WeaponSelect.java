@@ -40,7 +40,7 @@ public class WeaponSelect extends JPanel implements ActionListener{
 		for(int i = 0; i < buttons.length; i++) {
 			buttons[i] = new JRadioButton(weapons.get(i));
 		}
-		
+		buttons[0].setSelected(true);
 		ButtonGroup bg = new ButtonGroup();
 		for(int i = 0; i < buttons.length; i++) {
 			bg.add(buttons[i]);

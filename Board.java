@@ -134,17 +134,19 @@ public class Board {
 	 * @return 2d array of players 
 	 */
 	public Player[][] setPlayerPositions(){
-		Player[][] board = new Player[BOARD_HEIGHT][BOARD_LENGTH];
+		Player[][] pBoard = new Player[BOARD_HEIGHT][BOARD_LENGTH];
 		Position[] positions = {
 				new Position(0,7), new Position(0,16), new Position(7,23),
 				new Position(17,23), new Position(24,9), new Position(18,0)
 		};
 
 		for(int i=0; i < players.size(); i++){
-			board[positions[i].row()][positions[i].col()] = players.get(i);
+			pBoard[positions[i].row()][positions[i].col()] = players.get(i);
+			board[positions[i].row()][positions[i].col()].setPlayer(players.get(i));
 			players.get(i).move(positions[i]);
+			
 		}
-		return board;
+		return pBoard;
 	}
 
 	/**

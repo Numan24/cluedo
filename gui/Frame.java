@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import cluedo.Game;
+import cluedo.Player;
+import cluedo.Position;
 
 
 public class Frame extends JFrame implements KeyListener{
@@ -24,8 +26,10 @@ public class Frame extends JFrame implements KeyListener{
 	private JMenu file;
 	private JMenuItem menuNewGame;
 	private JMenuItem menuExit;
-	private JPanel board;
+	private BoardPanel board;
 	private OptionsPanel options;
+
+
 	private JPanel hand;
 	
 	private Game game;
@@ -52,7 +56,7 @@ public class Frame extends JFrame implements KeyListener{
 	public Frame() {
 		
 		//create and setup game
-		this.game = new Game();
+		this.game = new Game(this);
 		
 		//set close operation
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,7 +86,7 @@ public class Frame extends JFrame implements KeyListener{
 		setContentPane(outerMostPanel);
 		
 		//create board panel (contains the board grid)
-		board = new boardPanel(game);
+		board = new BoardPanel(game);
 		outerMostPanel.add(board, BorderLayout.EAST);
 		
 		//create options panel (contains the option buttons and text area)
@@ -100,6 +104,12 @@ public class Frame extends JFrame implements KeyListener{
 		setFocusable(true);
 		requestFocus();
 	}
+	
+	
+	public void movePlayer(Player player, Position oldPos, Position newPos) {
+		board.movePlayer(player, oldPos, newPos);
+	}
+	
 
 	public void buttonPressed(ActionEvent e){
 		String s = e.getActionCommand();
@@ -110,6 +120,7 @@ public class Frame extends JFrame implements KeyListener{
 			
 			break;
 		case "Guess":
+			if(game.getCurrentPlayer().getRoom() == null){break;}
 			CharacterSelect cs = new CharacterSelect();
 			int i = JOptionPane.showOptionDialog(this, cs, "Character Select", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 			if(i == JOptionPane.CANCEL_OPTION || i == JOptionPane.CLOSED_OPTION) {
@@ -128,8 +139,10 @@ public class Frame extends JFrame implements KeyListener{
 			break;
 		case "Accuse":	
 			break;
-		case "End Turn":	
+		case "End Turn":
+			
 			game.setCurrentPlayer(game.nextPlayer());
+			options.getTextArea().append("Player "+game.getCurrentPlayer().getName()+"'s turn\n");
 			break;
 		}
 		requestFocus();
@@ -166,6 +179,10 @@ public class Frame extends JFrame implements KeyListener{
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public OptionsPanel getOptions() {
+		return options;
 	}
 
 }

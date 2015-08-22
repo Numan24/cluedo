@@ -12,11 +12,13 @@ import javax.swing.border.LineBorder;
 
 import cluedo.Board;
 import cluedo.Game;
+import cluedo.Player;
+import cluedo.Position;
 import cluedo.tile.FloorTile;
 import cluedo.tile.RoomTile;
 import cluedo.tile.Tile;
 
-public class boardPanel extends JPanel{
+public class BoardPanel extends JPanel{
 
 	private Game game;
 	
@@ -31,9 +33,8 @@ public class boardPanel extends JPanel{
 	/**
 	 * Create the panel.
 	 */
-	public boardPanel(Game game) {
+	public BoardPanel(Game game) {
 		this.game = game;
-		
 		setLayout(new GridLayout(Board.BOARD_HEIGHT, Board.BOARD_LENGTH));
 		board = game.getBoardArray();
 		labels = new JLabel[Board.BOARD_HEIGHT][Board.BOARD_LENGTH];
@@ -43,6 +44,10 @@ public class boardPanel extends JPanel{
 					tile.setPreferredSize(new Dimension(TILE_SIZE,TILE_SIZE));
 					tile.setBackground(board[i][j].getColor());
 					tile.setOpaque(true);
+					if(board[i][j].getPlayer() != null) {
+						tile.setIcon(board[i][j].getPlayer().getIcon());
+						//tile.setOpaque(false);
+					}
 					if(board[i][j] instanceof RoomTile) {
 						calculateBorder(tile, i, j);
 					}
@@ -85,4 +90,11 @@ public class boardPanel extends JPanel{
 		}else {top = 1;}
 		tile.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.black));
 	}
+
+
+	public void movePlayer(Player player, Position oldPos, Position newPos) {
+		labels[oldPos.row()][oldPos.col()].setIcon(null);
+		labels[newPos.row()][newPos.col()].setIcon(player.getIcon());
+	}
+	
 }

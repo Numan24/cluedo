@@ -3,7 +3,6 @@ package cluedo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.JOptionPane;
 
@@ -20,6 +19,8 @@ import cluedo.cards.Card;
 import cluedo.cards.Character;
 import cluedo.cards.Room;
 import cluedo.cards.Weapon;
+import cluedo.gui.Frame;
+import cluedo.gui.OptionsPanel;
 import cluedo.tile.Tile;
 
 public class Game {
@@ -36,14 +37,16 @@ public class Game {
 	private List<Weapon> weapons = new ArrayList<Weapon>();
 	private List<Character> characters = new ArrayList<Character>();
 	
+	private Frame frame;
 
 
-	public Game() {
+	public Game(Frame frame) {
+		this.frame = frame;
 		players = setupGame(); // start the game
 		if(players == null) {
 			System.exit(0);
 		}
-		currentPlayer = players.get(0); // the first player to player is player 1
+		currentPlayer = players.get(0); // the first player to play is player 1
 		currentPlayer.roll();
 		//construct cards
 		//weapons
@@ -118,36 +121,7 @@ public class Game {
 					}
 				}
 			}
-			players.add(new Player(name, this));
-		}
-		return players;
-	}
-
-
-	/**
-	 * starts the game by asking for amount of players and their names
-	 * 
-	 * @return list of players in the game
-	 */
-	private ArrayList<Player> gameSetup() {
-		int numPlayers;
-		System.out.println("Cluedo");
-		System.out.println("============\n");
-		numPlayers = Input.getInt("How many players? (3-6) ");
-		while(numPlayers > 6 || numPlayers < 3) {
-			numPlayers = Input.getInt("Please enter a number between 3 and 6.");
-		}
-		ArrayList<Player> players = new ArrayList<Player>();
-		for(int i = 1; i <= numPlayers; i++) {
-			String name = Input.getString("Enter name for player number "+i+":");
-			for(Player p : players) {
-				while(p.getName().equals(name)) {
-					System.out.println("Name already in use");
-					name = Input.getString("Enter new name: ");
-				}
-			}
-			Player player = new Player(name, this);
-			players.add(player);
+			players.add(new Player(name, this, i+""));
 		}
 		return players;
 	}
@@ -257,7 +231,8 @@ public class Game {
 	
 	public void diceRoll() {
 		// MAY NEED TO ADD CONDITIONS HERE
-		currentPlayer.roll();
+		int roll = currentPlayer.roll();
+		frame.getOptions().getTextArea().append("You rolled a "+roll+"\n");
 	}
 
 
@@ -332,6 +307,7 @@ public class Game {
 				board.move(move.getOldPosition(), move.getNewPosition());	
 				currentPlayer.setRoll(currentPlayer.getRoll()-1);
 				System.out.println("new pos: "+currentPlayer.getCurrentPosition());
+				frame.movePlayer(currentPlayer, move.getOldPosition(), move.getNewPosition());
 			}
 		} else{System.out.println("out of rolls");}
 
@@ -349,12 +325,24 @@ public class Game {
 				guess.add(w);
 			}
 		}
-		
+		guess.add(rooms.get(0));
+		boolean hasCards = false;
+		for(Player p : players) {
+			if(p.equals(currentPlayer)){continue;}
+			for(Card c : p.getHand()) {
+				for(Card card : guess) {
+					if(card.equals(c)) {
+						hasCards = true;
+						OptionsPanel panel = frame.getOptions();
+						panel.getTextArea().append("Player "+p.getName()+" has one (or more) of the cards\n");
+						System.out.println(p.getName()+" has one (or more) of the cards\n");
+					}
+				}
+			}
+		}
+		if(!hasCards){frame.getOptions().getTextArea().append("No one has any of the cards");}
 	}
-	
-	
-	
-	
+
 
 	/**
 	 * Check to see if a guess was correct.

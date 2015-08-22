@@ -21,6 +21,8 @@ public class OptionsPanel extends JPanel {
 	private JButton accuse;
 	private JButton endTurn;
 	private JTextArea textArea;
+
+
 	private Frame frame;
 	private JButton btnStairs;
 
@@ -125,6 +127,7 @@ public class OptionsPanel extends JPanel {
 		
 		
 		textArea = new JTextArea(5,20);
+		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		GridBagConstraints gbc_textArea = new GridBagConstraints();
@@ -136,7 +139,8 @@ public class OptionsPanel extends JPanel {
 
 	}
 
-
-	
+	public JTextArea getTextArea() {
+		return textArea;
+	}
 	
 }
