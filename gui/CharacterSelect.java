@@ -69,7 +69,7 @@ public class CharacterSelect extends JPanel implements ActionListener{
 		mrsPeacockButton.addActionListener(this);
 		professorPlumButton.addActionListener(this);
 		
-		characterPic = new JLabel(createImageIcon("card.png"));
+		characterPic = new JLabel(createImageIcon(missScarlett+".png"));
 		
 		JPanel buttonPanel = new JPanel(new GridLayout(0,1));
 		buttonPanel.add(missScarlettButton);
@@ -86,13 +86,13 @@ public class CharacterSelect extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		characterPic.setIcon(createImageIcon("card.png"));
+		characterPic.setIcon(createImageIcon(e.getActionCommand()+".png"));
 		selectedChar = e.getActionCommand();
 		
 	}
 	
 	private ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = Game.class.getResource(path);
+        java.net.URL imgURL = Game.class.getResource("images/cards/"+path);
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         } else {

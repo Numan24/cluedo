@@ -12,7 +12,7 @@ import cluedo.tile.Tile;
 public class Enter extends Action {
 
 	private DoorTile tile; // the tile of the door to be entered
-	private RoomTile roomTile;
+	private RoomTile roomTile; // the roomTile the player is moving to
 
 	public Enter(Game game, Player player) {
 		super(game, player);
@@ -24,7 +24,6 @@ public class Enter extends Action {
 		int index = 0;
 		roomTile = room.getRoomTiles().get(0);
 		// select a tile in the room that doesn't have a player on it
-		//if(roomTile == null){System.out.println("Roomtile is null");}
 		while(roomTile.getPlayer() != null) {
 			index++;
 			roomTile = room.getRoomTiles().get(index);

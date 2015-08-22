@@ -19,12 +19,9 @@ import cluedo.cards.Card;
 import cluedo.cards.Character;
 import cluedo.cards.Room;
 import cluedo.cards.Weapon;
-
 import cluedo.gui.Frame;
 import cluedo.gui.OptionsPanel;
-
 import cluedo.tile.DoorTile;
-
 import cluedo.tile.Tile;
 
 public class Game {
@@ -287,11 +284,15 @@ public class Game {
 		envelope.add(weapons.get(0));
 		envelope.add(characters.get(0));
 
-		allcards.addAll(rooms.subList(1, rooms.size()-1));
-		allcards.addAll(weapons.subList(1, weapons.size()-1));
-		allcards.addAll(characters.subList(1, characters.size()-1));
+		allcards.addAll(rooms.subList(1, rooms.size()));
+		allcards.addAll(weapons.subList(1, weapons.size()));
+		allcards.addAll(characters.subList(1, characters.size()));
 		Player p = currentPlayer;
 		for(Card c: allcards){
+			System.out.println(c.toString());
+			if(c.toString().equals("[Swimming Pool]")) {
+				System.out.println("removed swimming pool");
+				continue;} // dont add the swimming pool to a players hand
 			p.addCard(c);
 			p = nextPlayer(p);
 		}

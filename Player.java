@@ -40,7 +40,7 @@ public class Player {
 	}
 	
 	private ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = Game.class.getResource("player-"+path+".png");
+        java.net.URL imgURL = Game.class.getResource("images/players/player-"+path+".png");
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         } else {

@@ -23,17 +23,14 @@ import cluedo.action.Stairs;
 
 public class Frame extends JFrame implements KeyListener{
 
-	private JPanel outerMostPanel;
-	private JMenuBar menuBar;
-	private JMenu file;
-	private JMenuItem menuNewGame;
-	private JMenuItem menuExit;
-	private BoardPanel board;
-	private OptionsPanel options;
-
-
-	private JPanel hand;
-	
+	private JPanel outerMostPanel; // panel that contains all other components
+	private JMenuBar menuBar; // menu bar
+	private JMenu file; // File on menu
+	private JMenuItem menuNewGame; // new game under file 
+	private JMenuItem menuExit; // exit under file
+	private BoardPanel board; // displays the board
+	private OptionsPanel options; // panel that displays the options available to the player and also the text area
+	private HandPanel hand; // panel that displays the current players hand
 	private Game game;
 
 	/**
@@ -107,15 +104,18 @@ public class Frame extends JFrame implements KeyListener{
 		requestFocus();
 	}
 	
-	
+	/**
+	 * update the GUI with a players new position
+	 * 
+	 * @param player - player that moved
+	 * @param oldPos - old position of the player
+	 * @param newPos - new position of the player
+	 */
 	public void movePlayer(Player player, Position oldPos, Position newPos) {
 		board.movePlayer(player, oldPos, newPos);
 	}
 	
-	public void enterRoom(Player currentPlayer) {
-	}
 	
-
 	public void buttonPressed(ActionEvent e){
 		String s = e.getActionCommand();
 		System.out.println(s);
@@ -125,7 +125,7 @@ public class Frame extends JFrame implements KeyListener{
 			
 			break;
 		case "Guess":
-			if(game.getCurrentPlayer().getRoom() == null){break;}
+			//if(game.getCurrentPlayer().getRoom() == null){break;}
 			CharacterSelect cs = new CharacterSelect();
 			int i = JOptionPane.showOptionDialog(this, cs, "Character Select", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 			if(i == JOptionPane.CANCEL_OPTION || i == JOptionPane.CLOSED_OPTION) {
@@ -145,8 +145,8 @@ public class Frame extends JFrame implements KeyListener{
 		case "Accuse":	
 			break;
 		case "End Turn":
-			
 			game.setCurrentPlayer(game.nextPlayer());
+			hand.updateLabels();
 			options.getTextArea().append("Player "+game.getCurrentPlayer().getName()+"'s turn\n");
 			break;
 		case "Use Stairs":
@@ -178,6 +178,7 @@ public class Frame extends JFrame implements KeyListener{
 		}
 		
 	}
+	
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {

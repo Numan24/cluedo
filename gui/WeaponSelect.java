@@ -49,7 +49,7 @@ public class WeaponSelect extends JPanel implements ActionListener{
 			b.addActionListener(this);
 		}
 		
-		weaponPicture = new JLabel(createImageIcon("card.png"));
+		weaponPicture = new JLabel(createImageIcon(weapons.get(0)+".png"));
 		
 		JPanel buttonPanel = new JPanel(new GridLayout(0,1));
 		for(JRadioButton b : buttons) {
@@ -62,13 +62,14 @@ public class WeaponSelect extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		weaponPicture.setIcon(createImageIcon("card.png"));
 		selectedWeapon = e.getActionCommand();
+		weaponPicture.setIcon(createImageIcon(e.getActionCommand()+".png"));
+		
 		
 	}
 	
 	private ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = Game.class.getResource(path);
+        java.net.URL imgURL = Game.class.getResource("images/cards/"+path);
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         } else {
