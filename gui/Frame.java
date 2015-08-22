@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -15,13 +17,15 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import cluedo.Game;
+import cluedo.Output;
 import cluedo.Player;
 import cluedo.Position;
 import cluedo.action.Stairs;
+import cluedo.tile.Tile;
 
 
 
-public class Frame extends JFrame implements KeyListener{
+public class Frame extends JFrame implements KeyListener, MouseListener{
 
 	private JPanel outerMostPanel; // panel that contains all other components
 	private JMenuBar menuBar; // menu bar
@@ -41,6 +45,7 @@ public class Frame extends JFrame implements KeyListener{
 			public void run() {
 				try {
 					Frame frame = new Frame();
+					Output.setFrame(frame);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -100,6 +105,7 @@ public class Frame extends JFrame implements KeyListener{
 		this.setLocationRelativeTo(null);
 		
 		addKeyListener(this);
+		addMouseListener(this);
 		setFocusable(true);
 		requestFocus();
 	}
@@ -148,6 +154,7 @@ public class Frame extends JFrame implements KeyListener{
 			game.setCurrentPlayer(game.nextPlayer());
 			hand.updateLabels();
 			options.getTextArea().append("Player "+game.getCurrentPlayer().getName()+"'s turn\n");
+			Output.setText("Player "+game.getCurrentPlayer().getName()+"'s turn\n");
 			break;
 		case "Use Stairs":
 			Stairs stairMove = new Stairs(game, game.getCurrentPlayer());
@@ -194,6 +201,42 @@ public class Frame extends JFrame implements KeyListener{
 	
 	public OptionsPanel getOptions() {
 		return options;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		requestFocus();
+		Output.appendText(""+board.getX());
+		Output.appendText(""+board.getY());
+		int x = e.getX()-board.getX()-8;
+		int y = e.getY()-board.getY()-53;
+		Tile tile = board.checkMouseOnDoor(x, y);
+		Output.appendText("got a tile maybe? ");
+		if(tile!=null){	game.doorClicked(tile);}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

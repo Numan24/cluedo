@@ -3,6 +3,7 @@ package cluedo.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Point;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -12,8 +13,10 @@ import javax.swing.border.LineBorder;
 
 import cluedo.Board;
 import cluedo.Game;
+import cluedo.Output;
 import cluedo.Player;
 import cluedo.Position;
+import cluedo.tile.DoorTile;
 import cluedo.tile.FloorTile;
 import cluedo.tile.RoomTile;
 import cluedo.tile.Tile;
@@ -96,5 +99,25 @@ public class BoardPanel extends JPanel{
 		labels[oldPos.row()][oldPos.col()].setIcon(null);
 		labels[newPos.row()][newPos.col()].setIcon(player.getIcon());
 	}
+	
+	public Tile checkMouseOnDoor(int x, int y){
+		Output.appendText("X: "+x+"  Y: "+y);
+//		Output.appendText("door x: "+labels[3][6].getX()+"  door y: "+labels[3][6].getY());
+		for(int i = 0; i < Board.BOARD_HEIGHT; i++) {
+			for(int j = 0; j < Board.BOARD_LENGTH; j++) {
+				if(labels[i][j].getBounds().contains(x,y)){
+					//Output.appendText("DING FUCKING DING");
+					//Output.appendText("bounds: "+labels[i][j].getBounds());
+					//Output.appendText("i: "+i+"j: "+j);
+					if(board[i][j] instanceof DoorTile){
+						return board[i][j];
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	
 	
 }

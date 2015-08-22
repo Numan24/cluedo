@@ -3,6 +3,7 @@ package cluedo.action;
 import java.util.List;
 
 import cluedo.Game;
+import cluedo.Output;
 import cluedo.Player;
 import cluedo.cards.Room;
 import cluedo.tile.DoorTile;
@@ -33,11 +34,10 @@ public class Enter extends Action {
 		room.addPlayer(player);
 		roomTile.setPlayer(player); 
 		player.setRoom(tile.getRoom()); 
-		game.getBoard().move(player.getCurrentPosition(), roomTile.getPosition());
+		game.movePlayer(player, player.getCurrentPosition(), roomTile.getPosition());
 		
-		System.out.println("You are now in the "+player.getRoom().getName());
+		Output.appendText("You are now in the "+player.getRoom().getName());
 		player.setRoll(0); // turn is over after entering a room so the roll is now 0
-		//game.getBoard().redraw();
 	}
 
 /**
