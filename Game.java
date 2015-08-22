@@ -311,10 +311,13 @@ public class Game {
 				board.move(move.getOldPosition(), move.getNewPosition());
 				currentPlayer.setRoll(currentPlayer.getRoll()-1);
 				if(board.getBoard()[currentPlayer.getCurrentPosition().row()][currentPlayer.getCurrentPosition().col()] instanceof DoorTile){
-					new Enter(this, currentPlayer).run();
+					Enter ent = new Enter(this, currentPlayer);
+					ent.run();
+					frame.movePlayer(currentPlayer, move.getOldPosition(), ent.getRoomTile().getPosition());
 				}
+				else {frame.movePlayer(currentPlayer, move.getOldPosition(), move.getNewPosition());}
 				System.out.println("new pos: "+currentPlayer.getCurrentPosition());
-				frame.movePlayer(currentPlayer, move.getOldPosition(), move.getNewPosition());
+				
 			}
 		} else{System.out.println("out of rolls");}
 

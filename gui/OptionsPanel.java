@@ -12,6 +12,9 @@ import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 
 import cluedo.Game;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 public class OptionsPanel extends JPanel {
 	
@@ -25,6 +28,7 @@ public class OptionsPanel extends JPanel {
 
 	private Frame frame;
 	private JButton btnStairs;
+	private JScrollPane scrollPane;
 
 
 	/**
@@ -34,10 +38,10 @@ public class OptionsPanel extends JPanel {
 		this.frame = frame;
 		setBorder(new TitledBorder(null, "Options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.columnWidths = new int[]{0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gridBagLayout.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		rollDice = new JButton("Roll Dice");
@@ -46,7 +50,7 @@ public class OptionsPanel extends JPanel {
 		gbc_btnRollDice.anchor = GridBagConstraints.WEST;
 		gbc_btnRollDice.insets = new Insets(0, 0, 5, 5);
 		gbc_btnRollDice.gridx = 0;
-		gbc_btnRollDice.gridy = 3;
+		gbc_btnRollDice.gridy = 0;
 		add(rollDice, gbc_btnRollDice);
 		
 		rollDice.addActionListener(new ActionListener()
@@ -63,9 +67,9 @@ public class OptionsPanel extends JPanel {
 		GridBagConstraints gbc_btnGuess = new GridBagConstraints();
 		gbc_btnGuess.fill = GridBagConstraints.BOTH;
 		gbc_btnGuess.anchor = GridBagConstraints.WEST;
-		gbc_btnGuess.insets = new Insets(0, 0, 5, 5);
+		gbc_btnGuess.insets = new Insets(0, 0, 5, 0);
 		gbc_btnGuess.gridx = 1;
-		gbc_btnGuess.gridy = 3;
+		gbc_btnGuess.gridy = 0;
 		add(guess, gbc_btnGuess);
 		
 		guess.addActionListener(new ActionListener()
@@ -81,9 +85,9 @@ public class OptionsPanel extends JPanel {
 		GridBagConstraints gbc_btnAccuse = new GridBagConstraints();
 		gbc_btnAccuse.fill = GridBagConstraints.BOTH;
 		gbc_btnAccuse.anchor = GridBagConstraints.WEST;
-		gbc_btnAccuse.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAccuse.insets = new Insets(0, 0, 5, 0);
 		gbc_btnAccuse.gridx = 1;
-		gbc_btnAccuse.gridy = 4;
+		gbc_btnAccuse.gridy = 1;
 		
 		accuse.addActionListener(new ActionListener()
 	    {
@@ -103,7 +107,7 @@ public class OptionsPanel extends JPanel {
 		gbc_btnStairs.fill = GridBagConstraints.BOTH;
 		gbc_btnStairs.insets = new Insets(0, 0, 5, 5);
 		gbc_btnStairs.gridx = 0;
-		gbc_btnStairs.gridy = 4;
+		gbc_btnStairs.gridy = 1;
 		add(btnStairs, gbc_btnStairs);
 		
 		add(accuse, gbc_btnAccuse);
@@ -113,7 +117,7 @@ public class OptionsPanel extends JPanel {
 		gbc_btnEndTurn.fill = GridBagConstraints.BOTH;
 		gbc_btnEndTurn.insets = new Insets(0, 0, 5, 5);
 		gbc_btnEndTurn.gridx = 0;
-		gbc_btnEndTurn.gridy = 5;
+		gbc_btnEndTurn.gridy = 2;
 		add(endTurn, gbc_btnEndTurn);
 		
 		endTurn.addActionListener(new ActionListener()
@@ -125,17 +129,19 @@ public class OptionsPanel extends JPanel {
 		      }
 		    });
 		
+		scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridwidth = 2;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 3;
+		add(scrollPane, gbc_scrollPane);
+		
 		
 		textArea = new JTextArea(5,20);
+		scrollPane.setViewportView(textArea);
 		textArea.setEditable(false);
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
-		GridBagConstraints gbc_textArea = new GridBagConstraints();
-		gbc_textArea.gridwidth = 3;
-		gbc_textArea.fill = GridBagConstraints.BOTH;
-		gbc_textArea.gridx = 0;
-		gbc_textArea.gridy = 7;
-		add(textArea, gbc_textArea);
 
 	}
 

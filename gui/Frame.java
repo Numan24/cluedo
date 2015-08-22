@@ -112,6 +112,9 @@ public class Frame extends JFrame implements KeyListener{
 		board.movePlayer(player, oldPos, newPos);
 	}
 	
+	public void enterRoom(Player currentPlayer) {
+	}
+	
 
 	public void buttonPressed(ActionEvent e){
 		String s = e.getActionCommand();
@@ -191,5 +194,7 @@ public class Frame extends JFrame implements KeyListener{
 	public OptionsPanel getOptions() {
 		return options;
 	}
+
+
 
 }
