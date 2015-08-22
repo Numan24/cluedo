@@ -89,7 +89,7 @@ public class Move extends Action {
 			return false;
 		}
 
-		if(!(game.getBoardArray()[newPosition.row()][newPosition.col()] instanceof FloorTile)) {
+		if(!((game.getBoardArray()[newPosition.row()][newPosition.col()] instanceof FloorTile) ||(game.getBoardArray()[newPosition.row()][newPosition.col()] instanceof DoorTile))) {
 			return false;
 		}
 

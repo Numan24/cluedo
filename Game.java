@@ -19,8 +19,12 @@ import cluedo.cards.Card;
 import cluedo.cards.Character;
 import cluedo.cards.Room;
 import cluedo.cards.Weapon;
+
 import cluedo.gui.Frame;
 import cluedo.gui.OptionsPanel;
+
+import cluedo.tile.DoorTile;
+
 import cluedo.tile.Tile;
 
 public class Game {
@@ -304,8 +308,11 @@ public class Game {
 			Move move = new Move(this, currentPlayer, board);
 			move.setNewPosition(move.moveDirection(dir));
 			if(move.isValidMove()){
-				board.move(move.getOldPosition(), move.getNewPosition());	
+				board.move(move.getOldPosition(), move.getNewPosition());
 				currentPlayer.setRoll(currentPlayer.getRoll()-1);
+				if(board.getBoard()[currentPlayer.getCurrentPosition().row()][currentPlayer.getCurrentPosition().col()] instanceof DoorTile){
+					new Enter(this, currentPlayer).run();
+				}
 				System.out.println("new pos: "+currentPlayer.getCurrentPosition());
 				frame.movePlayer(currentPlayer, move.getOldPosition(), move.getNewPosition());
 			}

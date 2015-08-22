@@ -15,13 +15,8 @@ public class Enter extends Action {
 
 	public Enter(Game game, Player player) {
 		super(game, player);
-		List<Tile> tiles = player.adjacentTiles();
-		for(Tile t : tiles) {
-			if(t instanceof DoorTile) {
-				DoorTile dt = (DoorTile) t;
-				this.tile = dt;
-			}
-		}
+
+		tile =  (DoorTile) game.getBoardArray()[player.getCurrentPosition().row()][player.getCurrentPosition().col()];
 	}
 
 	public void run() {
@@ -43,7 +38,7 @@ public class Enter extends Action {
 		
 		System.out.println("You are now in the "+player.getRoom().getName());
 		player.setRoll(0); // turn is over after entering a room so the roll is now 0
-		game.getBoard().redraw();
+		//game.getBoard().redraw();
 	}
 
 /**
