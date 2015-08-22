@@ -203,12 +203,13 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		requestFocus();
-		int x = e.getX()-options.getWidth();
-		int y = e.getY()-menuBar.getHeight();
+		Output.appendText(""+board.getX());
+		Output.appendText(""+board.getY());
+		int x = e.getX()-board.getX()-8;
+		int y = e.getY()-board.getY()-53;
 		Tile tile = board.checkMouseOnDoor(x, y);
 		Output.appendText("got a tile maybe? ");
 		if(tile!=null){	game.doorClicked(tile);}
-
 	}
 
 	@Override
