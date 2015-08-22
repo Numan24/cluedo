@@ -19,12 +19,9 @@ import cluedo.cards.Card;
 import cluedo.cards.Character;
 import cluedo.cards.Room;
 import cluedo.cards.Weapon;
-
 import cluedo.gui.Frame;
 import cluedo.gui.OptionsPanel;
-
 import cluedo.tile.DoorTile;
-
 import cluedo.tile.Tile;
 
 public class Game {
@@ -296,6 +293,14 @@ public class Game {
 		}
 	}
 	
+	public void doorClicked(Tile tile) {
+		DoorTile door = (DoorTile) tile;
+		if(currentPlayer.getRoom()!=null && currentPlayer.getRoom().equals(door.getRoom())){
+			movePlayer(currentPlayer, currentPlayer.getCurrentPosition(), tile.getPosition());
+		} else{Output.appendText("up2 g");}
+		
+	}
+	
 	
 	/**
 	 * Attempts to move player when a direction key is detected by making a
@@ -416,6 +421,9 @@ public class Game {
 	public Player[][] getPlayerPositions() {
 		return board.getPlayerPositions();
 	}
+
+
+
 
 
 

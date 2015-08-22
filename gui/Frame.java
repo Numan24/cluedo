@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -19,10 +21,11 @@ import cluedo.Output;
 import cluedo.Player;
 import cluedo.Position;
 import cluedo.action.Stairs;
+import cluedo.tile.Tile;
 
 
 
-public class Frame extends JFrame implements KeyListener{
+public class Frame extends JFrame implements KeyListener, MouseListener{
 
 	private JPanel outerMostPanel;
 	private JMenuBar menuBar;
@@ -105,6 +108,7 @@ public class Frame extends JFrame implements KeyListener{
 		this.setLocationRelativeTo(null);
 		
 		addKeyListener(this);
+		addMouseListener(this);
 		setFocusable(true);
 		requestFocus();
 	}
@@ -194,6 +198,41 @@ public class Frame extends JFrame implements KeyListener{
 	
 	public OptionsPanel getOptions() {
 		return options;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		requestFocus();
+		int x = e.getX()-options.getWidth();
+		int y = e.getY()-menuBar.getHeight();
+		Tile tile = board.checkMouseOnDoor(x, y);
+		Output.appendText("got a tile maybe? ");
+		if(tile!=null){	game.doorClicked(tile);}
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
