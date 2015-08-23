@@ -41,8 +41,6 @@ public class Game {
 			System.exit(0);
 		}
 		currentPlayer = players.get(0); // the first player to play is player 1
-		currentPlayer.roll();
-		
 		
 		//construct cards
 		//weapons

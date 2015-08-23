@@ -149,4 +149,7 @@ public class OptionsPanel extends JPanel {
 		return textArea;
 	}
 	
+	public void rollEnabled(boolean enable){rollDice.setEnabled(enable);}
+
+	
 }
