@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cluedo.Game;
-import cluedo.Input;
 import cluedo.Player;
 import cluedo.cards.Room;
 import cluedo.tile.DoorTile;
-import cluedo.tile.FloorTile;
 import cluedo.tile.Tile;
 
 public class Leave extends Action{
@@ -31,13 +29,13 @@ public class Leave extends Action{
 		}
 	}
 
-	private void displayDoors() {
-		String toPrint = "";
-		for(int i = 1; i <= room.getDoors().size(); i++) {
-			toPrint += "[Door "+i+"]";
-		}
-		System.out.println(toPrint);
-	}
+//	private void displayDoors() {
+//		String toPrint = "";
+//		for(int i = 1; i <= room.getDoors().size(); i++) {
+//			toPrint += "[Door "+i+"]";
+//		}
+//		System.out.println(toPrint);
+//	}
 
 	public List<Tile> adjacentTiles(DoorTile dt) {
 		Tile[][] board = game.getBoardArray();

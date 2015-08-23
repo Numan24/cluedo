@@ -17,6 +17,11 @@ import cluedo.gui.Frame;
 import cluedo.tile.DoorTile;
 import cluedo.tile.Tile;
 
+/**
+ * 
+ * Hold all the logic for playing a game of Cluedo
+ *
+ */
 public class Game {
 
 	
@@ -82,7 +87,10 @@ public class Game {
 		board = new Board(players,this);
 	}
 	
-	
+	/**
+	 * get user to input amount of players and names for the players
+	 * @return list of players that are in the game
+	 */
 	public List<Player> setupGame() {
 		int amount = 0;
 		// repeat until a correct number is entered  
@@ -120,43 +128,18 @@ public class Game {
 		return players;
 	}	
 	
-//	/**
-//	 * runs the Action 
-//	 * 
-//	 * @param act
-//	 * @return action that was ran or null if the action wasn't valid
-//	 */
-//	private Action doAction(Action act) {
-//		if(act.isValid()) {
-//			act.run();
-//			return act;
-//		}
-//		return null;
-//
-//	}
-	
-	
+	/**
+	 * roll the dice for the current player
+	 */
 	public void diceRoll() {
 		int roll = currentPlayer.roll();
 		frame.getOptions().getTextArea().append("You rolled a "+roll+"\n");
 	}
 
-
 	/**
-	 * Set currentPlayer to be the next player to have a turn
-	 *
-	 * @return the next player
+	 * set the current player to the next player in the list to have their turn
+	 * @return the player that is currently having their turn
 	 */
-//	public Player nextPlayer() {
-//		int index = players.indexOf(currentPlayer);
-//		if(index == players.size()-1) {
-//			return players.get(0);
-//		}
-//		else {
-//			return players.get(index+1);
-//		}
-//	}
-	
 	public Player nextPlayer() {
 		int i = players.indexOf(currentPlayer);
 		System.out.println(i);
@@ -220,6 +203,11 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * called when a door is clicked for the current player to leave the room they are in
+	 * 
+	 * @param tile the tile that was clicked on the board
+	 */
 	public void doorClicked(Tile tile) {
 		DoorTile door = (DoorTile) tile;
 		if(currentPlayer.getRoom()!=null && currentPlayer.getRoom().equals(door.getRoom())){
@@ -252,6 +240,13 @@ public class Game {
 
 	}
 	
+	/**
+	 * move a player to a new position
+	 * 
+	 * @param player to move
+	 * @param oldPos - old position of the player
+	 * @param newPos - position that the player is moving to
+	 */
 	public void movePlayer(Player player, Position oldPos, Position newPos){
 		frame.movePlayer(player, oldPos, newPos);
 		board.move(oldPos, newPos);
@@ -259,10 +254,10 @@ public class Game {
 
 	/**
 	 * do an accuse or guess
-	 * @param character
-	 * @param room
-	 * @param weapon
-	 * @param isAccuse
+	 * @param character that was guessed
+	 * @param room that was guessed
+	 * @param weapon that was guesses
+	 * @param isAccuse - is it an accuse
 	 */
 	public void guessAccuse(String character, String room, String weapon, boolean isAccuse) {
 		List<Card> guess = new ArrayList<Card>();
@@ -330,6 +325,21 @@ public class Game {
 		return envelope.containsAll(guess);
 	}
 	
+	/**
+	 * check to see if the current player has won the game
+	 * 
+	 * @return
+	 */
+	public boolean hasWon() {
+		for(Player p : players) {
+			if(p.equals(currentPlayer)) {continue;}
+			if(!p.hasLost()){
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	
 	
 	/*
@@ -385,15 +395,7 @@ public class Game {
 	}
 
 
-	public boolean hasWon() {
-		for(Player p : players) {
-			if(p.equals(currentPlayer)) {continue;}
-			if(!p.hasLost()){
-				return false;
-			}
-		}
-		return true;
-	}
+	
 
 
 

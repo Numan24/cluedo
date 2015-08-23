@@ -8,25 +8,26 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.border.TitledBorder;
-
-import cluedo.Game;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.TitledBorder;
 
 public class OptionsPanel extends JPanel {
 	
-	private Game game;
+	private static final long serialVersionUID = -4996704209191555984L;
+	
+	//the buttons on the panel
 	private JButton rollDice;
 	private JButton guess;
 	private JButton accuse;
 	private JButton endTurn;
+	
+	//text area
 	private JTextArea textArea;
 
 
-	private Frame frame;
+	//private Frame frame;
 	private JButton btnStairs;
 	private JScrollPane scrollPane;
 
@@ -34,8 +35,7 @@ public class OptionsPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public OptionsPanel(Frame frame, Game game) {
-		this.frame = frame;
+	public OptionsPanel(Frame frame) {
 		setBorder(new TitledBorder(null, "Options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
@@ -44,6 +44,7 @@ public class OptionsPanel extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
+		//create the buttons and text area, position them and add them to the panel
 		rollDice = new JButton("Roll Dice");
 		GridBagConstraints gbc_btnRollDice = new GridBagConstraints();
 		gbc_btnRollDice.fill = GridBagConstraints.BOTH;

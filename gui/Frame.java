@@ -27,7 +27,6 @@ import cluedo.action.Stairs;
 import cluedo.tile.Tile;
 
 
-
 public class Frame extends JFrame implements KeyListener, MouseListener, WindowListener{
 
 	private static final long serialVersionUID = 8535747294298615874L;
@@ -49,7 +48,6 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 		
 		//create and setup game
 		this.game = new Game(this);
-		
 		//set close operation
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
@@ -60,9 +58,9 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 		// create file in menu bar
 		file = new JMenu("File");
 		menuBar.add(file);
-		
 		//add new game to file
 		menuNewGame = new JMenuItem("New Game");
+		// action listener to create a new game
 		menuNewGame.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent e)
 		      {
@@ -71,50 +69,38 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 		      }
 		    });
 		file.add(menuNewGame);
-		
 		// add exit to file
 		menuExit = new JMenuItem("Exit");
+		//action listener to exit program
 		menuExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exitGame();
 			}
-			
 		});
 		file.add(menuExit);
-		
 		// create outer most panel
 		outerMostPanel = new JPanel();
 		outerMostPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		outerMostPanel.setLayout(new BorderLayout(0, 0));
-		
 		//add panel to frame
 		setContentPane(outerMostPanel);
-		
 		//create board panel (contains the board grid)
 		board = new BoardPanel(game);
 		outerMostPanel.add(board, BorderLayout.EAST);
-		
 		//create options panel (contains the option buttons and text area)
-		options = new OptionsPanel(this, game);
+		options = new OptionsPanel(this);
 		outerMostPanel.add(options, BorderLayout.WEST);
-		
 		//create hand panel (contains the current players hand)
 		hand = new HandPanel(game);
 		outerMostPanel.add(hand, BorderLayout.SOUTH);
 		
 		pack();
 		this.setLocationRelativeTo(null);
-		
 		addKeyListener(this);
 		addMouseListener(this);
 		setFocusable(true);
 		requestFocus();
 	}
-	
-	
-	
-	
-	
 	
 	
 	/**
@@ -129,6 +115,11 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 	}
 	
 	
+	/**
+	 * get the event that a button was pressed from the options panel and performs the correct action for the button pressed
+	 * 
+	 * @param e
+	 */
 	public void buttonPressed(ActionEvent e){
 		String s = e.getActionCommand();
 		System.out.println(s);
@@ -137,7 +128,7 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 			game.diceRoll();
 			break;
 		case "Guess":
-			//if(game.getCurrentPlayer().getRoom() == null){break;}
+			if(game.getCurrentPlayer().getRoom() == null){break;}
 			String[] guess = createGuessAccuseGUI(true);
 			if(guess == null){break;}
 			game.guessAccuse(guess[0], null, guess[1], false);
@@ -203,7 +194,7 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 	/**
 	 * the game has finished
 	 * 
-	 * @param player - player that won
+	 * @param player that won
 	 */
 	public void gameOver(Player player) {
 		int option = JOptionPane.showOptionDialog(this,player.getName()+" has Won!", "Winner!",JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,new String[]{"New Game","Exit"},"New Game");
@@ -222,6 +213,9 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 		
 	}
 	
+	/**
+	 * exits the game by showing a confirm exit dialog
+	 */
 	public void exitGame() {
 		int option = JOptionPane.showOptionDialog(this, "Are you sure you want to exit?", "Confirm Exit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,null, null);
 		if(option == JOptionPane.YES_OPTION) {System.exit(0);}
@@ -237,7 +231,6 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 		hand.updateLabels();
 		Output.appendText("Player "+game.getCurrentPlayer().getName()+"'s turn\n");
 	}
-	
 	
 	
 	@Override
@@ -259,7 +252,28 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 		}
 		
 	}
-
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		requestFocus();
+		int x = e.getX()-board.getX()-8;
+		int y = e.getY()-board.getY()-53;
+		Tile tile = board.checkMouseOnDoor(x, y);
+		if(tile!=null){	game.doorClicked(tile);}
+	}
+	
+	@Override
+	public void windowClosing(WindowEvent arg0) {	
+		exitGame();
+	}
+	
+	
+	public BoardPanel getBoard(){
+		return this.board;
+	}
+	
+	
+	// other methods from KeyListener
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 	}
@@ -270,16 +284,8 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 	public OptionsPanel getOptions() {
 		return options;
 	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		requestFocus();
-		int x = e.getX()-board.getX()-8;
-		int y = e.getY()-board.getY()-53;
-		Tile tile = board.checkMouseOnDoor(x, y);
-		if(tile!=null){	game.doorClicked(tile);}
-	}
-
+	
+	// other methods from MouseListener
 	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
@@ -293,18 +299,7 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 	public void mouseReleased(MouseEvent e) {
 	}
 
-
-
-	public BoardPanel getBoard(){
-		return this.board;
-	}
-	
-	@Override
-	public void windowClosing(WindowEvent arg0) {	
-		exitGame();
-	}
-
-
+	// other WindowListener methods
 	@Override
 	public void windowActivated(WindowEvent arg0) {
 	}

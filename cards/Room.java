@@ -91,9 +91,6 @@ public class Room implements Card {
 		}
 		return icon;
 	}
-	
-	
-	
 
 	public char getId() {
 		return id;
