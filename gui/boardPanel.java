@@ -3,10 +3,8 @@ package cluedo.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Point;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -28,9 +26,9 @@ public class BoardPanel extends JPanel{
 	public static final int TILE_SIZE = 30;
 	private Tile[][] board;
 	private JLabel[][] labels;
-	private final ImageIcon floor = new ImageIcon("floor.png");
-	private final ImageIcon room = new ImageIcon("room.jpg");
-	private final ImageIcon door = new ImageIcon("door.jpg");
+	//private final ImageIcon floor = new ImageIcon("floor.png");
+	//private final ImageIcon room = new ImageIcon("room.jpg");
+	//private final ImageIcon door = new ImageIcon("door.jpg");
 
 	
 	/**

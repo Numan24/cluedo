@@ -132,21 +132,9 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 			break;
 		case "Guess":
 			//if(game.getCurrentPlayer().getRoom() == null){break;}
-			CharacterSelect cs = new CharacterSelect();
-			int i = JOptionPane.showOptionDialog(this, cs, "Character Select", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-			if(i == JOptionPane.CANCEL_OPTION || i == JOptionPane.CLOSED_OPTION) {
-				break;
-			}
-			String character = cs.getSelectedChar();
-			WeaponSelect ws = new WeaponSelect(game);
-			int j = JOptionPane.showOptionDialog(this, ws, "Weapon Select", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-			if(j == JOptionPane.CANCEL_OPTION || j == JOptionPane.CLOSED_OPTION) {
-				break;
-			}
-			String weapon = ws.getSelectedWeapon();
-			System.out.println(character);
-			System.out.println(weapon);
-			game.guess(character, weapon);
+			String[] answers = createGuessGUI();
+			if(answers == null){break;}
+			game.guess(answers[0], answers[1]);
 			break;
 		case "Accuse":	
 			break;
@@ -166,6 +154,25 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 	}
 	
 	
+	private String[] createGuessGUI() {
+		String[] answers = new String[2];
+		CharacterSelect cs = new CharacterSelect();
+		int i = JOptionPane.showOptionDialog(this, cs, "Character Select", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+		if(i == JOptionPane.CANCEL_OPTION || i == JOptionPane.CLOSED_OPTION) {
+			return null;
+		}
+		String character = cs.getSelectedChar();
+		WeaponSelect ws = new WeaponSelect(game);
+		int j = JOptionPane.showOptionDialog(this, ws, "Weapon Select", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+		if(j == JOptionPane.CANCEL_OPTION || j == JOptionPane.CLOSED_OPTION) {
+			return null;
+		}
+		String weapon = ws.getSelectedWeapon();
+		System.out.println(character);
+		System.out.println(weapon);
+		return answers;
+	}
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char c = e.getKeyChar();
