@@ -1,8 +1,8 @@
 package cluedo.gui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import cluedo.Game;
+import cluedo.Main;
 import cluedo.Output;
 import cluedo.Player;
 import cluedo.Position;
@@ -38,22 +39,6 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 	private HandPanel hand; // panel that displays the current players hand
 	private Game game;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Frame frame = new Frame();
-					Output.setFrame(frame);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -76,6 +61,13 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 		
 		//add new game to file
 		menuNewGame = new JMenuItem("New Game");
+		menuNewGame.addActionListener(new ActionListener(){
+		      public void actionPerformed(ActionEvent e)
+		      {
+		    	  newGame();
+		    	  return;
+		      }
+		    });
 		file.add(menuNewGame);
 		
 		// add exit to file
@@ -210,7 +202,10 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 	 * create a new game
 	 */
 	private void newGame() {
-		// create new game here
+		Main.restart();
+		//this.game = new Game(this);
+		this.dispose();
+		
 	}
 	
 	/**

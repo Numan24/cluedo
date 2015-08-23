@@ -80,7 +80,6 @@ public class Move extends Action {
 	 * @return boolean. true if valid move, otherwise false.
 	 */
 	public boolean isValidMove(){
-		
 		if(newPosition.row()>=game.getBoardArray().length || newPosition.row()<0){
 			return false;
 		}
