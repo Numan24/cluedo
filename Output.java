@@ -14,8 +14,8 @@ public class Output {
 		frame.getOptions().getTextArea().setText(text+"\n");
 	}
 
-	public static void setFrame(Frame yeah) {
-		frame = yeah;
+	public static void setFrame(Frame f) {
+		frame = f;
 	}
 
 }

@@ -27,6 +27,7 @@ import cluedo.tile.Tile;
 
 public class Frame extends JFrame implements KeyListener, MouseListener{
 
+	private static final long serialVersionUID = 8535747294298615874L;
 	private JPanel outerMostPanel; // panel that contains all other components
 	private JMenuBar menuBar; // menu bar
 	private JMenu file; // File on menu
@@ -128,21 +129,20 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 		switch(s){
 		case "Roll Dice":
 			game.diceRoll();
-			
 			break;
 		case "Guess":
 			//if(game.getCurrentPlayer().getRoom() == null){break;}
-			String[] answers = createGuessGUI();
-			if(answers == null){break;}
-			game.guess(answers[0], answers[1]);
+			String[] guess = createGuessAccuseGUI(true);
+			if(guess == null){break;}
+			game.guessAccuse(guess[0], null, guess[1], false);
 			break;
 		case "Accuse":	
+			String[] accuse = createGuessAccuseGUI(true);
+			if(accuse == null){break;}
+			game.guessAccuse(accuse[0], accuse[1], accuse[2], true);
 			break;
 		case "End Turn":
-			game.setCurrentPlayer(game.nextPlayer());
-			hand.updateLabels();
-			options.getTextArea().append("Player "+game.getCurrentPlayer().getName()+"'s turn\n");
-			Output.setText("Player "+game.getCurrentPlayer().getName()+"'s turn\n");
+			endTurn();
 			break;
 		case "Use Stairs":
 			Stairs stairMove = new Stairs(game, game.getCurrentPlayer());
@@ -154,25 +154,77 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 	}
 	
 	
-	private String[] createGuessGUI() {
-		String[] answers = new String[2];
+	/**
+	 * creates the GUI for a guess or an accuse and returns the selected options for them.
+	 * 
+	 * @param isAccuse - is this an accuse for a guess
+	 * @return string array holding the selected options (character-> room -> weapon)
+	 */
+	private String[] createGuessAccuseGUI(boolean isAccuse) {
+		String[] answers;
+		//create correct length array
+		if(isAccuse){answers = new String[3];} 
+		else {answers = new String[2];} // a guess does not need to have a room
+		
+		//create character select GUI
 		CharacterSelect cs = new CharacterSelect();
 		int i = JOptionPane.showOptionDialog(this, cs, "Character Select", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		if(i == JOptionPane.CANCEL_OPTION || i == JOptionPane.CLOSED_OPTION) {
 			return null;
 		}
-		String character = cs.getSelectedChar();
+		answers[0] = cs.getSelectedChar();
+		//if is an accuse get a room
+		if(isAccuse){
+			// create Room select GUI
+			RoomSelect rs = new RoomSelect(game);
+			int k = JOptionPane.showOptionDialog(this, rs, "Room Select", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+			if(k == JOptionPane.CANCEL_OPTION || k == JOptionPane.CLOSED_OPTION) {
+				return null;
+			}
+			answers[1] = rs.getSelectedRoom();
+		}
+		// create weapon select GUI
 		WeaponSelect ws = new WeaponSelect(game);
 		int j = JOptionPane.showOptionDialog(this, ws, "Weapon Select", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		if(j == JOptionPane.CANCEL_OPTION || j == JOptionPane.CLOSED_OPTION) {
 			return null;
 		}
-		String weapon = ws.getSelectedWeapon();
-		System.out.println(character);
-		System.out.println(weapon);
+		answers[answers.length-1] = ws.getSelectedWeapon();
 		return answers;
 	}
 
+	
+	/**
+	 * the game has finished
+	 * 
+	 * @param player - player that won
+	 */
+	public void gameOver(Player player) {
+		int option = JOptionPane.showOptionDialog(this,player.getName()+" has Won!", "Winner!",JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,new String[]{"New Game","Exit"},"New Game");
+		if(option == JOptionPane.OK_OPTION){newGame();}
+		else {System.exit(0);}
+	}
+	
+
+	/**
+	 * create a new game
+	 */
+	private void newGame() {
+		// create new game here
+	}
+	
+	/**
+	 * end the current turn
+	 */
+	public void endTurn() {
+		game.nextPlayer();
+		if(game.hasWon()){gameOver(game.getCurrentPlayer());}
+		hand.updateLabels();
+		Output.appendText("Player "+game.getCurrentPlayer().getName()+"'s turn\n");
+	}
+	
+	
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char c = e.getKeyChar();
@@ -192,20 +244,14 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 		}
 		
 	}
-	
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	}
+	@Override
+	public void keyTyped(KeyEvent arg0) {	
 	}
 
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public OptionsPanel getOptions() {
 		return options;
 	}
@@ -221,27 +267,22 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
-
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
-
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
-
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
+
+
+
+
+
+
 
 
 

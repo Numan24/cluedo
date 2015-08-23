@@ -6,21 +6,14 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import cluedo.action.Accuse;
-import cluedo.action.Action;
-import cluedo.action.End;
 import cluedo.action.Enter;
-import cluedo.action.Guess;
-import cluedo.action.Hand;
 import cluedo.action.Leave;
 import cluedo.action.Move;
-import cluedo.action.Stairs;
 import cluedo.cards.Card;
 import cluedo.cards.Character;
 import cluedo.cards.Room;
 import cluedo.cards.Weapon;
 import cluedo.gui.Frame;
-import cluedo.gui.OptionsPanel;
 import cluedo.tile.DoorTile;
 import cluedo.tile.Tile;
 
@@ -49,6 +42,8 @@ public class Game {
 		}
 		currentPlayer = players.get(0); // the first player to play is player 1
 		currentPlayer.roll();
+		
+		
 		//construct cards
 		//weapons
 		weapons.add(new Weapon("Dagger"));
@@ -127,20 +122,20 @@ public class Game {
 		return players;
 	}	
 	
-	/**
-	 * runs the Action 
-	 * 
-	 * @param act
-	 * @return action that was ran or null if the action wasn't valid
-	 */
-	private Action doAction(Action act) {
-		if(act.isValid()) {
-			act.run();
-			return act;
-		}
-		return null;
-
-	}
+//	/**
+//	 * runs the Action 
+//	 * 
+//	 * @param act
+//	 * @return action that was ran or null if the action wasn't valid
+//	 */
+//	private Action doAction(Action act) {
+//		if(act.isValid()) {
+//			act.run();
+//			return act;
+//		}
+//		return null;
+//
+//	}
 	
 	
 	public void diceRoll() {
@@ -154,14 +149,31 @@ public class Game {
 	 *
 	 * @return the next player
 	 */
+//	public Player nextPlayer() {
+//		int index = players.indexOf(currentPlayer);
+//		if(index == players.size()-1) {
+//			return players.get(0);
+//		}
+//		else {
+//			return players.get(index+1);
+//		}
+//	}
+	
 	public Player nextPlayer() {
-		int index = players.indexOf(currentPlayer);
-		if(index == players.size()-1) {
-			return players.get(0);
+		int i = players.indexOf(currentPlayer);
+		System.out.println(i);
+		do{
+			i++;
+			if(i >= players.size()){i = 0;}
 		}
-		else {
-			return players.get(index+1);
+		while(players.get(i).hasLost());
+		System.out.println(i);
+		Player play = players.get(i);
+		if(play.equals(currentPlayer)){
+			return null;
 		}
+		currentPlayer = play;
+		return play;
 	}
 
 	/**
@@ -217,6 +229,7 @@ public class Game {
 			leave.run();
 		} 
 		
+		
 	}
 	
 	
@@ -245,20 +258,45 @@ public class Game {
 		frame.movePlayer(player, oldPos, newPos);
 		board.move(oldPos, newPos);
 	}
-	
-	public void guess(String character, String weapon) {
+
+	/**
+	 * do an accuse or guess
+	 * @param character
+	 * @param room
+	 * @param weapon
+	 * @param isAccuse
+	 */
+	public void guessAccuse(String character, String room, String weapon, boolean isAccuse) {
 		List<Card> guess = new ArrayList<Card>();
+		//get character
 		for(Character c : characters) {
-			if(c.getName().equals(character)) {
-				guess.add(c);
+			if(c.getName().equals(character)) {guess.add(c);}
+		}
+		
+		if(isAccuse){
+			// get room
+			for(Room r : rooms) {
+				if(r.getName().equals(room)) {guess.add(r);}
 			}
 		}
+		else {guess.add(currentPlayer.getRoom());}
+		// get weapon
 		for(Weapon w : weapons) {
-			if(w.getName().equals(weapon)) {
-				guess.add(w);
+			if(w.getName().equals(weapon)) {guess.add(w);}
+		}
+		// if accuse do accuse logic
+		if(isAccuse) {
+			if(checkGuess(guess)) {
+				frame.gameOver(currentPlayer);
+				return;
+			}
+			else{
+				Output.appendText("Player "+currentPlayer.getName()+" has lost\n");
+				lost();
+				return;
 			}
 		}
-		guess.add(rooms.get(0));
+		// else guess logic
 		boolean hasCards = false;
 		for(Player p : players) {
 			if(p.equals(currentPlayer)){continue;}
@@ -266,13 +304,20 @@ public class Game {
 				for(Card card : guess) {
 					if(card.equals(c)) {
 						hasCards = true;
-						OptionsPanel panel = frame.getOptions();
 						Output.appendText("Player "+p.getName()+" has one (or more) of the cards\n");
 					}
 				}
 			}
 		}
 		if(!hasCards){Output.appendText("No one has any of the cards");}
+	}
+	
+	/**
+	 * make the current player lose and end the turn
+	 */
+	public void lost() {
+		currentPlayer.lost(true);
+		frame.endTurn();
 	}
 
 
@@ -340,6 +385,16 @@ public class Game {
 		return board.getPlayerPositions();
 	}
 
+
+	public boolean hasWon() {
+		for(Player p : players) {
+			if(p.equals(currentPlayer)) {continue;}
+			if(!p.hasLost()){
+				return false;
+			}
+		}
+		return true;
+	}
 
 
 
