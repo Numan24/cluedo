@@ -16,6 +16,8 @@ import cluedo.Game;
 
 public class CharacterSelect extends JPanel implements ActionListener{
 	
+	private static final long serialVersionUID = -2930990384432294892L;
+	
 	private static String missScarlett = "Miss Scarlett";
 	private static String colonelMustard = "Colonel Mustard";
 	private static String mrsWhite = "Mrs. White";

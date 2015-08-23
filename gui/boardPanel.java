@@ -11,7 +11,6 @@ import javax.swing.border.LineBorder;
 
 import cluedo.Board;
 import cluedo.Game;
-import cluedo.Output;
 import cluedo.Player;
 import cluedo.Position;
 import cluedo.tile.DoorTile;
@@ -20,6 +19,9 @@ import cluedo.tile.RoomTile;
 import cluedo.tile.Tile;
 
 public class BoardPanel extends JPanel{
+
+
+	private static final long serialVersionUID = 8198083347466113567L;
 
 	private Game game;
 	
