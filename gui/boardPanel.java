@@ -101,14 +101,9 @@ public class BoardPanel extends JPanel{
 	}
 	
 	public Tile checkMouseOnDoor(int x, int y){
-		Output.appendText("X: "+x+"  Y: "+y);
-//		Output.appendText("door x: "+labels[3][6].getX()+"  door y: "+labels[3][6].getY());
 		for(int i = 0; i < Board.BOARD_HEIGHT; i++) {
 			for(int j = 0; j < Board.BOARD_LENGTH; j++) {
 				if(labels[i][j].getBounds().contains(x,y)){
-					//Output.appendText("DING FUCKING DING");
-					//Output.appendText("bounds: "+labels[i][j].getBounds());
-					//Output.appendText("i: "+i+"j: "+j);
 					if(board[i][j] instanceof DoorTile){
 						return board[i][j];
 					}

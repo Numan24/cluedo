@@ -211,8 +211,7 @@ public class Game {
 		if(currentPlayer.getRoom()!=null && currentPlayer.getRoom().equals(door.getRoom())){
 			Leave leave = new Leave(this,currentPlayer, door);
 			leave.run();
-			//movePlayer(currentPlayer, currentPlayer.getCurrentPosition(), tile.getPosition());
-		} else{Output.appendText("up2 g");}
+		} 
 		
 	}
 	
