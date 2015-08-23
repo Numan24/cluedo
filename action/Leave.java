@@ -13,27 +13,21 @@ import cluedo.tile.Tile;
 
 public class Leave extends Action{
 	private Room room;
+	private DoorTile door;
 
-	public Leave(Game game, Player player) {
+	public Leave(Game game, Player player, DoorTile door) {
 		super(game, player);
 		this.room = player.getRoom();
+		this.door = door;
 	}
 
 	public void run() {
-		displayDoors();
-		int door = Input.getInt("Which door would you like to leave from? ");
-		DoorTile dt = room.getDoors().get(door-1);
-		List<Tile> tiles = adjacentTiles(dt);
-		for(Tile t: tiles) {
-			if(t instanceof FloorTile) {
-				if(t.getPlayer()==null){
-					game.getBoard().move(player.getCurrentPosition(), t.getPosition());
-					player.setRoom(null);
-					room.removePlayer(player);
-					t.setPlayer(null);
-					return;
-				}
-			}
+		Move move = new Move(game, player, game.getBoard());
+		move.setNewPosition(door.getPosition());
+		if(move.isValidMove()){
+			game.movePlayer(player, player.getCurrentPosition(), door.getPosition());
+			player.setRoom(null);
+			room.removePlayer(player);
 		}
 	}
 

@@ -125,94 +125,7 @@ public class Game {
 			players.add(new Player(name, this, i+""));
 		}
 		return players;
-	}
-
-	/**
-	 * looped from the main class to run the game
-	 */
-	public void play() {
-		board.redraw();
-		haveNextTurn();
-		currentPlayer = nextPlayer();
-		while(currentPlayer.hasLost()) {
-			currentPlayer = nextPlayer();
-		}
-	}
-
-	/**
-	 * Have turn for a player
-	 * roll the dice
-	 * display options
-	 */
-	public void haveNextTurn() {
-		System.out.println(currentPlayer.getName()+"'s turn.");
-
-		//Dice rolling
-//
-//		currentPlayer.setRoll(roll);
-//		System.out.println("You rolled a "+roll);
-
-		List<String> options = currentPlayer.getOptions();
-
-		String toPrint = "Please select an option: ";
-		for(String option : options) {
-			toPrint += "["+option+"] ";
-		}
-		String option;
-		option = Input.getString(toPrint);
-
-		Action act = calculatePlay(option);
-		while(act == null){ // while the action is null get another option
-			System.out.println("Invalid option");
-			option = Input.getString("Please enter a new option");
-			act = calculatePlay(option);
-		}
-		while(!act.endsTurn()) { // if the action does not end the turn then get another option
-			options = currentPlayer.getOptions();
-			toPrint = "Please select an option: ";
-			for(String option2 : options) {
-				toPrint += "["+option2+"] ";
-			}
-			option = Input.getString(toPrint);
-			act = calculatePlay(option);
-			while(act == null){ // while the action is null get another option
-				System.out.println("Invalid option");
-				option = Input.getString("Please enter a new option");
-				act = calculatePlay(option);
-			}
-		}
-	}
-
-	/**
-	 * Create the Action for the option then run it
-	 *
-	 * @param option - the option selected by the player
-	 * @return null for invalid option otherwise the Action that was performed
-	 */
-	private Action calculatePlay(String option) {
-		option = option.toLowerCase();
-		switch(option) {
-		case "move":
-			return doAction(new Move(this, currentPlayer, board));
-		case "guess":
-			return doAction(new Guess(this, currentPlayer));
-		case "accuse":
-			return doAction(new Accuse(this, currentPlayer));
-		case "hand":
-			return doAction(new Hand(this, currentPlayer));
-		case "enter":
-			return doAction(new Enter(this, currentPlayer));
-		case "leave":
-			return doAction(new Leave(this, currentPlayer));
-		case "stairs":
-			return doAction(new Stairs(this, currentPlayer));
-		case "end":
-			return doAction(new End(this, currentPlayer));
-		default:
-			return null; // an invalid option was passed so fail by returning 0
-		}
-	}
-	
+	}	
 	
 	/**
 	 * runs the Action 
@@ -300,8 +213,9 @@ public class Game {
 	public void doorClicked(Tile tile) {
 		DoorTile door = (DoorTile) tile;
 		if(currentPlayer.getRoom()!=null && currentPlayer.getRoom().equals(door.getRoom())){
-			movePlayer(currentPlayer, currentPlayer.getCurrentPosition(), tile.getPosition());
-		} else{Output.appendText("up2 g");}
+			Leave leave = new Leave(this,currentPlayer, door);
+			leave.run();
+		} 
 		
 	}
 	
