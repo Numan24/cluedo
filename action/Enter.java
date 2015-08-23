@@ -25,7 +25,6 @@ public class Enter extends Action {
 		int index = 0;
 		roomTile = room.getRoomTiles().get(0);
 		// select a tile in the room that doesn't have a player on it
-		//if(roomTile == null){System.out.println("Roomtile is null");}
 		while(roomTile.getPlayer() != null) {
 			index++;
 			roomTile = room.getRoomTiles().get(index);
