@@ -111,6 +111,10 @@ public class BoardPanel extends JPanel{
 		return null;
 	}
 	
+	public void removePlayer(Player player){
+		labels[player.getCurrentPosition().row()][player.getCurrentPosition().col()].setIcon(null);
+	}
+	
 	
 	
 }

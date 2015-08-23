@@ -281,7 +281,9 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 
 
 
-
+	public BoardPanel getBoard(){
+		return this.board;
+	}
 
 
 

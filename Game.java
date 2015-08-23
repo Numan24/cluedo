@@ -315,6 +315,7 @@ public class Game {
 	 */
 	public void lost() {
 		currentPlayer.lost(true);
+		frame.getBoard().removePlayer(currentPlayer);;
 		frame.endTurn();
 	}
 
