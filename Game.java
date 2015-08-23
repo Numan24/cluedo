@@ -97,7 +97,7 @@ public class Game {
 			try {
 				amount = Integer.parseInt(inputValue);
 			}catch(NumberFormatException e) {
-				JOptionPane.showMessageDialog(null, "Please enter an integer.");
+				JOptionPane.showMessageDialog(null,"Please enter an integer.", "Error", JOptionPane.OK_OPTION);
 			}
 		}
 		List<Player> players = new ArrayList<Player>();

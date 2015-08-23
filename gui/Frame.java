@@ -7,6 +7,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -26,7 +28,7 @@ import cluedo.tile.Tile;
 
 
 
-public class Frame extends JFrame implements KeyListener, MouseListener{
+public class Frame extends JFrame implements KeyListener, MouseListener, WindowListener{
 
 	private static final long serialVersionUID = 8535747294298615874L;
 	private JPanel outerMostPanel; // panel that contains all other components
@@ -49,8 +51,8 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 		this.game = new Game(this);
 		
 		//set close operation
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(this);
 		//create menu bar
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -72,6 +74,12 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 		
 		// add exit to file
 		menuExit = new JMenuItem("Exit");
+		menuExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				exitGame();
+			}
+			
+		});
 		file.add(menuExit);
 		
 		// create outer most panel
@@ -102,6 +110,12 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 		setFocusable(true);
 		requestFocus();
 	}
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * update the GUI with a players new position
@@ -208,6 +222,11 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 		
 	}
 	
+	public void exitGame() {
+		int option = JOptionPane.showOptionDialog(this, "Are you sure you want to exit?", "Confirm Exit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,null, null);
+		if(option == JOptionPane.YES_OPTION) {System.exit(0);}
+	}
+	
 	/**
 	 * end the current turn
 	 */
@@ -278,6 +297,31 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 
 	public BoardPanel getBoard(){
 		return this.board;
+	}
+	
+	@Override
+	public void windowClosing(WindowEvent arg0) {	
+		exitGame();
+	}
+
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+	}
+	@Override
+	public void windowClosed(WindowEvent arge0) {	
+	}
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {	
+	}
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+	}
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+	}
+	@Override
+	public void windowOpened(WindowEvent arg0) {
 	}
 
 
