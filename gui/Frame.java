@@ -221,7 +221,7 @@ public class Frame extends JFrame implements KeyListener, MouseListener{
 		options.rollEnabled(true);
 		if(game.hasWon()){gameOver(game.getCurrentPlayer());}
 		hand.updateLabels();
-		Output.setText("Player "+game.getCurrentPlayer().getName()+"'s turn\n");
+		Output.appendText("Player "+game.getCurrentPlayer().getName()+"'s turn\n");
 	}
 	
 	
