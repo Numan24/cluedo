@@ -21,10 +21,14 @@ public class Leave extends Action{
 		this.door = door;
 	}
 
-	public void run() {	
-		game.movePlayer(player, player.getCurrentPosition(), door.getPosition());
-		player.setRoom(null);
-		room.removePlayer(player);				
+	public void run() {
+		Move move = new Move(game, player, game.getBoard());
+		move.setNewPosition(door.getPosition());
+		if(move.isValidMove()){
+			game.movePlayer(player, player.getCurrentPosition(), door.getPosition());
+			player.setRoom(null);
+			room.removePlayer(player);
+		}
 	}
 
 	private void displayDoors() {
