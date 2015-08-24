@@ -164,7 +164,7 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 		else {answers = new String[2];} // a guess does not need to have a room
 		
 		//create character select GUI
-		CharacterSelect cs = new CharacterSelect();
+		CharacterSelect cs = new CharacterSelect(game);
 		int i = JOptionPane.showOptionDialog(this, cs, "Character Select", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		if(i == JOptionPane.CANCEL_OPTION || i == JOptionPane.CLOSED_OPTION) {
 			return null;

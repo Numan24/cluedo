@@ -290,7 +290,7 @@ public class Game {
 				return;
 			}
 			else{
-				JOptionPane.showMessageDialog(null, currentPlayer.getName()+" has lost!", "Lost", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, currentPlayer.getName()+" has lost!", "Incorrect", JOptionPane.INFORMATION_MESSAGE);
 				//Output.appendText("Player "+currentPlayer.getName()+" has lost\n");
 				lost();
 				return;
