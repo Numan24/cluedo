@@ -129,7 +129,7 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 			break;
 		case "Guess":
 			if(game.getCurrentPlayer().getRoom() == null){break;}
-			String[] guess = createGuessAccuseGUI(true);
+			String[] guess = createGuessAccuseGUI(false);
 			if(guess == null){break;}
 			game.guessAccuse(guess[0], null, guess[1], false);
 			break;
@@ -208,7 +208,6 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 	 */
 	private void newGame() {
 		Main.restart();
-		//this.game = new Game(this);
 		this.dispose();
 		
 	}
@@ -225,11 +224,10 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 	 * end the current turn
 	 */
 	public void endTurn() {
-		game.nextPlayer();
+		game.endTurn();
 		options.rollEnabled(true);
-		if(game.hasWon()){gameOver(game.getCurrentPlayer());}
 		hand.updateLabels();
-		Output.appendText("Player "+game.getCurrentPlayer().getName()+"'s turn\n");
+		Output.setText("Player "+game.getCurrentPlayer().getName()+"'s turn\n");
 	}
 	
 	

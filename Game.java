@@ -111,7 +111,7 @@ public class Game {
 		List<Player> players = new ArrayList<Player>();
 		for(int i = 1; i < amount+1; i++) {
 			// get name for each player via dialog
-			String name = JOptionPane.showInputDialog("Enter player "+i+"'s name: ");
+			String name = JOptionPane.showInputDialog(null,"Enter player "+i+"'s name: ", "Player "+i, JOptionPane.QUESTION_MESSAGE);
 			if(name == null){return null;}
 			//shouldn't be able to enter the same name as another player
 			for(Player p: players) {
@@ -128,12 +128,20 @@ public class Game {
 		return players;
 	}	
 	
+	public void endTurn() {
+		nextPlayer();
+		if(hasWon()) {frame.gameOver(currentPlayer);}
+	}
+	
+	
+	
+	
 	/**
 	 * roll the dice for the current player
 	 */
 	public void diceRoll() {
 		int roll = currentPlayer.roll();
-		frame.getOptions().getTextArea().append("You rolled a "+roll+"\n");
+		Output.appendText("You rolled a "+roll+"\n");
 	}
 
 	/**
@@ -142,13 +150,11 @@ public class Game {
 	 */
 	public Player nextPlayer() {
 		int i = players.indexOf(currentPlayer);
-		System.out.println(i);
 		do{
 			i++;
 			if(i >= players.size()){i = 0;}
 		}
 		while(players.get(i).hasLost());
-		System.out.println(i);
 		Player play = players.get(i);
 		if(play.equals(currentPlayer)){
 			return null;
@@ -284,7 +290,8 @@ public class Game {
 				return;
 			}
 			else{
-				Output.appendText("Player "+currentPlayer.getName()+" has lost\n");
+				JOptionPane.showMessageDialog(null, currentPlayer.getName()+" has lost!", "Lost", JOptionPane.INFORMATION_MESSAGE);
+				//Output.appendText("Player "+currentPlayer.getName()+" has lost\n");
 				lost();
 				return;
 			}

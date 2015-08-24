@@ -22,6 +22,7 @@ public class Stairs extends Action{
 
 	public void run() {
 		int index = 0;
+		room.removePlayer(player); // remove player from old room
 		RoomTile roomTile = room.getRoomTiles().get(0);
 		// get a tile in the room that doesn't have a player on it
 		while(roomTile.getPlayer() != null) {
@@ -29,6 +30,7 @@ public class Stairs extends Action{
 			roomTile = room.getRoomTiles().get(index);
 		}
 		//update player, room and room tiles
+		
 		room.addPlayer(player);
 		roomTile.setPlayer(player);
 		player.setRoom(room);
