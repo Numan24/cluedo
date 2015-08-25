@@ -1,9 +1,11 @@
 package cluedo.cards;
 
 import javax.swing.ImageIcon;
-
 import cluedo.Game;
 
+/**
+ * represents a weapon card
+ */
 public class Weapon implements Card{
 
 	private String name;

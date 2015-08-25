@@ -11,6 +11,10 @@ import javax.swing.JPanel;
 import cluedo.Game;
 import cluedo.cards.Card;
 
+/**
+ *panel that displays the hand of the current player
+ *
+ */
 public class HandPanel extends JPanel {
 	
 	private static final long serialVersionUID = -6086777099635929213L;

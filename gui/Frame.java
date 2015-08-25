@@ -27,6 +27,10 @@ import cluedo.action.Stairs;
 import cluedo.tile.Tile;
 
 
+/**
+ * frame of the GUI
+ *
+ */
 public class Frame extends JFrame implements KeyListener, MouseListener, WindowListener{
 
 	private static final long serialVersionUID = 8535747294298615874L;

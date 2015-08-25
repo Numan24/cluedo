@@ -16,6 +16,11 @@ import javax.swing.JRadioButton;
 
 import cluedo.Game;
 
+
+/**
+ * character select panel for the dialog that is used when performing a guess or accuse
+ *
+ */
 public class CharacterSelect extends JPanel implements ActionListener{
 	
 	private static final long serialVersionUID = -2930990384432294892L;

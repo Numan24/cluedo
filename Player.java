@@ -39,12 +39,18 @@ public class Player {
 		this.color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
 	}
 	
-	private ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = Game.class.getResource("images/players/player-"+path+".png");
+	/**
+	 * create the icon for the player
+	 * 
+	 * @param name - number of the player
+	 * @return
+	 */
+	private ImageIcon createImageIcon(String name) {
+        java.net.URL imgURL = Game.class.getResource("images/players/player-"+name+".png");
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         } else {
-            System.err.println("Couldn't find file: " + path);
+            System.err.println("Couldn't find file: " + name);
             return null;
         }
     }

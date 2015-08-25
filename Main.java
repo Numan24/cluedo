@@ -4,6 +4,10 @@ import java.awt.EventQueue;
 
 import cluedo.gui.Frame;
 
+/**
+ * the main class for running the game
+ *
+ */
 public class Main {
 
 	static boolean gameFinished = false;

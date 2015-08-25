@@ -17,7 +17,10 @@ import javax.swing.JRadioButton;
 import cluedo.Game;
 import cluedo.cards.Weapon;
 
-
+/**
+ * panel that is used in a guess or accuse to display the weapons
+ *
+ */
 public class WeaponSelect extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = -5878345777929474786L;

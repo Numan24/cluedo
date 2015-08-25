@@ -18,6 +18,11 @@ import cluedo.tile.FloorTile;
 import cluedo.tile.RoomTile;
 import cluedo.tile.Tile;
 
+
+/**
+ * panel used to display the board on
+ *
+ */
 public class BoardPanel extends JPanel{
 
 
@@ -28,9 +33,6 @@ public class BoardPanel extends JPanel{
 	public static final int TILE_SIZE = 30;
 	private Tile[][] board;
 	private JLabel[][] labels;
-	//private final ImageIcon floor = new ImageIcon("floor.png");
-	//private final ImageIcon room = new ImageIcon("room.jpg");
-	//private final ImageIcon door = new ImageIcon("door.jpg");
 
 	
 	/**
@@ -86,6 +88,13 @@ public class BoardPanel extends JPanel{
 		
 	}
 
+	/**
+	 * calculate what side the border should be on
+	 * 
+	 * @param tile - tile that the border is being created for
+	 * @param y - y pos of the tile on the board
+	 * @param x - x pos of the tile on the board
+	 */
 	private void calculateBorder(JLabel tile, int y, int x) {
 		Tile[][] board  = game.getBoardArray();
 		int top = 0;
@@ -116,12 +125,26 @@ public class BoardPanel extends JPanel{
 	}
 
 
+	/**
+	 * moves a player from the old position to the new position
+	 * 
+	 * @param player - player to move
+	 * @param oldPos - old position
+	 * @param newPos - new position
+	 */
 	public void movePlayer(Player player, Position oldPos, Position newPos) {
 		labels[oldPos.row()][oldPos.col()].setIcon(null);
 		labels[newPos.row()][newPos.col()].setIcon(player.getIcon());
 		setMouseover();
 	}
 	
+	/**
+	 * check if a x and y position is on a door tile
+	 * 
+	 * @param x - x position
+	 * @param y - y position
+	 * @return
+	 */
 	public Tile checkMouseOnDoor(int x, int y){
 		for(int i = 0; i < Board.BOARD_HEIGHT; i++) {
 			for(int j = 0; j < Board.BOARD_LENGTH; j++) {
@@ -135,6 +158,11 @@ public class BoardPanel extends JPanel{
 		return null;
 	}
 	
+	/**
+	 * remove a player icon from a tile
+	 * 
+	 * @param player - player that is being removed
+	 */
 	public void removePlayer(Player player){
 		labels[player.getCurrentPosition().row()][player.getCurrentPosition().col()].setIcon(null);
 		setMouseover();

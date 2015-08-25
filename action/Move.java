@@ -1,23 +1,22 @@
 package cluedo.action;
 
-import cluedo.Board;
 import cluedo.Game;
-import cluedo.Input;
 import cluedo.Output;
 import cluedo.Player;
 import cluedo.Position;
-import cluedo.tile.*;
+import cluedo.tile.DoorTile;
+import cluedo.tile.FloorTile;
+import cluedo.tile.RoomTile;
+import cluedo.tile.Tile;
 
 public class Move extends Action {
 
 	private Position newPosition;
 	private Position oldPosition;
-	private Board board;
 
-	public Move(Game game, Player player, Board board) {
+	public Move(Game game, Player player) {
 		super(game, player);
 		this.oldPosition = player.getCurrentPosition();
-		this.board = board;
 	}
 
 	/**
@@ -25,27 +24,7 @@ public class Move extends Action {
 	 * is a valid move.
 	 */
 	public void run(){
-		while(player.getRoll()!=0){
-			String direction = Input.getString("Choose a direction to move [N, S, W, E] or X to stop moving.");
-			if(direction.equalsIgnoreCase("x")){
-				return;
-			}
-			newPosition = moveDirection(direction);
-			while(newPosition==null || !isValidMove()){
-					//System.out.println("Invalid Move.");
-					direction = Input.getString("Choose a direction to move. [N, S, W, E] or X to stop moving.");
-					if(direction.equalsIgnoreCase("x")){
-						return;
-					}
-					newPosition = moveDirection(direction);
-			}
-			if(isValidMove()){
-				board.move(oldPosition, newPosition);
-				player.setRoll(player.getRoll()-1);
-				oldPosition = newPosition;
-				board.redraw();
-			}
-		}
+		
 	}
 
 

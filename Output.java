@@ -2,6 +2,10 @@ package cluedo;
 
 import cluedo.gui.Frame;
 
+/**
+ * used to output to the text area
+ *
+ */
 public class Output {
 	
 	private static Frame frame;

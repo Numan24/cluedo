@@ -9,6 +9,11 @@ import cluedo.Game;
 import cluedo.Player;
 import cluedo.tile.*;
 
+
+/**
+ * Represents a room card
+ *
+ */
 public class Room implements Card {
 
 	private Room connectedTo;

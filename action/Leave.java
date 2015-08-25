@@ -20,7 +20,7 @@ public class Leave extends Action{
 	}
 
 	public void run() {
-		Move move = new Move(game, player, game.getBoard());
+		Move move = new Move(game, player);
 		move.setNewPosition(door.getPosition());
 		if(move.isValidMove()){
 			game.movePlayer(player, player.getCurrentPosition(), door.getPosition());
@@ -28,14 +28,6 @@ public class Leave extends Action{
 			room.removePlayer(player);
 		}
 	}
-
-//	private void displayDoors() {
-//		String toPrint = "";
-//		for(int i = 1; i <= room.getDoors().size(); i++) {
-//			toPrint += "[Door "+i+"]";
-//		}
-//		System.out.println(toPrint);
-//	}
 
 	public List<Tile> adjacentTiles(DoorTile dt) {
 		Tile[][] board = game.getBoardArray();

@@ -13,6 +13,11 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.TitledBorder;
 
+
+/**
+ * panel that displays the buttons and text area
+ *
+ */
 public class OptionsPanel extends JPanel {
 	
 	private static final long serialVersionUID = -4996704209191555984L;

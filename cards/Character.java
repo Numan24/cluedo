@@ -1,9 +1,12 @@
 package cluedo.cards;
 
 import javax.swing.ImageIcon;
-
 import cluedo.Game;
 
+/**
+ * represents a character card
+ *
+ */
 public class Character implements Card {
 
 	private String name;
@@ -14,6 +17,7 @@ public class Character implements Card {
 		
 		icon = makeImageIcon(name);
 	}
+	
 
 	/**
 	 * name of the character.
@@ -43,6 +47,11 @@ public class Character implements Card {
 		return icon;
 	}
 	
+	/**
+	 * create image character card
+	 * @param filename
+	 * @return
+	 */
 	private static ImageIcon makeImageIcon(String filename) {
 		filename = filename.toLowerCase();
 		java.net.URL imageURL = Game.class.getResource("images/cards/"+filename+".png");

@@ -17,6 +17,10 @@ import javax.swing.JRadioButton;
 import cluedo.Game;
 import cluedo.cards.Room;
 
+/**
+ * panel that is used in a guess or accuse to display the rooms
+ *
+ */
 public class RoomSelect extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 7779188616359149755L;
@@ -30,17 +34,18 @@ public class RoomSelect extends JPanel implements ActionListener{
 	public RoomSelect(Game game) {
 		super(new BorderLayout());
 		rooms = new ArrayList<String>();
-		
+		//get all different rooms from the game
 		for(Room r : game.getRooms()) {
 			if(r.getName().equals("Swimming Pool")){continue;}
 			rooms.add(r.getName());
 		}
-		
+		//create a button for each room
 		JRadioButton[] buttons = new JRadioButton[rooms.size()];
 		for(int i = 0; i < buttons.length; i++) {
 			buttons[i] = new JRadioButton(rooms.get(i));
 		}
 		buttons[0].setSelected(true);
+		//add action listener to each button
 		for(JRadioButton b : buttons) {
 			b.addActionListener(this);
 		}
@@ -49,9 +54,9 @@ public class RoomSelect extends JPanel implements ActionListener{
 		for(int i = 0; i < buttons.length; i++) {
 			bg.add(buttons[i]);
 		}
-		
+		//set initial room picture
 		roomPicture = new JLabel(createImageIcon(rooms.get(0)+".png"));
-		
+		//add buttons to panel
 		JPanel buttonPanel = new JPanel(new GridLayout(0,1));
 		for(JRadioButton b : buttons) {
 			buttonPanel.add(b);

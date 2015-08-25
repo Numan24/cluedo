@@ -11,10 +11,7 @@ public class Board {
 	public static final int BOARD_LENGTH = 24;
 	public static final int BOARD_HEIGHT = 25;
 
-
 	private List<Player> players = new ArrayList<Player>(); // players in the current game
-
-
 
 	private Tile[][] board; 
 	private Player[][] playerPositions;
@@ -103,32 +100,6 @@ public class Board {
 	}
 
 	/**
-	 * redraws the board
-	 */
-	public void redraw() {
-		System.out.println("");
-		for(int i = 0; i < board.length; i++){
-			for(int j = 0; j < getBoard()[0].length; j++){
-				if(playerPositions[i][j]==null){
-					Tile current = board[i][j];
-					if(current instanceof FloorTile) {System.out.print(" ");}
-					else if(current instanceof RoomTile){System.out.print("X");}
-					else if(current instanceof DoorTile) {
-						DoorTile dt = (DoorTile) current;
-						System.out.print(dt.getRoom().getId());
-					}
-				} else if (!playerPositions[i][j].hasLost()){
-					System.out.print(players.indexOf(playerPositions[i][j])+1 +"");
-					}
-				System.out.print(" ");
-			}
-			System.out.print("\n");
-		}
-		System.out.println();
-	}
-
-
-	/**
 	 * sets the player positions at the start of the game
 	 * 
 	 * @return 2d array of players 
@@ -169,7 +140,8 @@ public class Board {
 	}
 	
 	
-
+	// getters setters
+	
 	public List<Player> getPlayers() {
 		return players;
 	}

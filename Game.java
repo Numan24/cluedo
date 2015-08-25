@@ -128,6 +128,9 @@ public class Game {
 		return players;
 	}	
 	
+	/**
+	 * ends the current players turn
+	 */
 	public void endTurn() {
 		nextPlayer();
 		if(hasWon()) {frame.gameOver(currentPlayer);}
@@ -232,7 +235,7 @@ public class Game {
 	 */
 	public void moveDetected(String dir){
 		if(currentPlayer.getRoll()>0){
-			Move move = new Move(this, currentPlayer, board);
+			Move move = new Move(this, currentPlayer);
 			move.setNewPosition(move.moveDirection(dir));
 			if(move.isValidMove()){
 				movePlayer(currentPlayer, move.getOldPosition(), move.getNewPosition());
@@ -272,7 +275,6 @@ public class Game {
 		for(Character c : characters) {
 			if(c.getName().equals(character)) {guess.add(c);}
 		}
-		
 		if(isAccuse){
 			// get room
 			for(Room r : rooms) {
