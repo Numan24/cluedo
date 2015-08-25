@@ -80,12 +80,18 @@ public class Move extends Action {
 	 * @return boolean. true if valid move, otherwise false.
 	 */
 	public boolean isValidMove(){
-		if(player.getRoom() != null){return false;}
 		if(newPosition.row()>=game.getBoardArray().length || newPosition.row()<0){
 			return false;
 		}
 		if(newPosition.col()>=game.getBoardArray()[0].length || newPosition.col()<0){
 			return false;
+		}
+		
+		if(game.getBoardArray()[newPosition.row()][newPosition.col()] instanceof FloorTile){
+			if(game.getBoardArray()[oldPosition.row()][oldPosition.col()] instanceof RoomTile){
+				Output.appendText("Must leave room via door!");
+				return false;
+			}
 		}
 
 		if(!((game.getBoardArray()[newPosition.row()][newPosition.col()] instanceof FloorTile) ||(game.getBoardArray()[newPosition.row()][newPosition.col()] instanceof DoorTile))) {

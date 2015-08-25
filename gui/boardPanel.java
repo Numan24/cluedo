@@ -61,9 +61,30 @@ public class BoardPanel extends JPanel{
 			}
 		}
 		setBorder(new LineBorder(Color.black));
+		setMouseover();
 		
 	}
 
+	
+	/**
+	 * Sets text for mousing over tiles on board. 
+	 * Prioritises player names followed by room name.
+	 */
+	private void setMouseover() {
+		for(int i =0; i < labels.length; i++){
+			for(int j = 0; j < labels[i].length; j++){
+				if(game.getPlayerPositions()[i][j]!=null){
+					labels[i][j].setToolTipText(game.getPlayerPositions()[i][j].getName());
+				}
+				else if(board[i][j] instanceof RoomTile){
+					RoomTile r = (RoomTile) board[i][j];
+					labels[i][j].setToolTipText(r.getRoom().getName());
+				}
+				else{labels[i][j].setToolTipText(null);}
+			}
+		}
+		
+	}
 
 	private void calculateBorder(JLabel tile, int y, int x) {
 		Tile[][] board  = game.getBoardArray();
@@ -98,6 +119,7 @@ public class BoardPanel extends JPanel{
 	public void movePlayer(Player player, Position oldPos, Position newPos) {
 		labels[oldPos.row()][oldPos.col()].setIcon(null);
 		labels[newPos.row()][newPos.col()].setIcon(player.getIcon());
+		setMouseover();
 	}
 	
 	public Tile checkMouseOnDoor(int x, int y){
@@ -115,6 +137,7 @@ public class BoardPanel extends JPanel{
 	
 	public void removePlayer(Player player){
 		labels[player.getCurrentPosition().row()][player.getCurrentPosition().col()].setIcon(null);
+		setMouseover();
 	}
 	
 	

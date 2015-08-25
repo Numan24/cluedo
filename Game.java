@@ -254,8 +254,9 @@ public class Game {
 	 * @param newPos - position that the player is moving to
 	 */
 	public void movePlayer(Player player, Position oldPos, Position newPos){
-		frame.movePlayer(player, oldPos, newPos);
 		board.move(oldPos, newPos);
+		frame.movePlayer(player, oldPos, newPos);
+		
 	}
 
 	/**
