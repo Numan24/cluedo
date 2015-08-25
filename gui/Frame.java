@@ -132,6 +132,7 @@ public class Frame extends JFrame implements KeyListener, MouseListener, WindowL
 			String[] guess = createGuessAccuseGUI(false);
 			if(guess == null){break;}
 			game.guessAccuse(guess[0], null, guess[1], false);
+			options.guessEnabled(false);
 			break;
 		case "Accuse":	
 			String[] accuse = createGuessAccuseGUI(true);

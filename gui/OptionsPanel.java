@@ -125,6 +125,7 @@ public class OptionsPanel extends JPanel {
 	    {
 		      public void actionPerformed(ActionEvent e)
 		      {
+		    	  guess.setEnabled(true);
 		    	  rollDice.setEnabled(true);
 		    	  frame.buttonPressed(e);
 		      }
@@ -151,6 +152,6 @@ public class OptionsPanel extends JPanel {
 	}
 	
 	public void rollEnabled(boolean enable){rollDice.setEnabled(enable);}
-
+	public void guessEnabled(boolean enable){guess.setEnabled(enable);}
 	
 }
