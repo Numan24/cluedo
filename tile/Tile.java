@@ -5,6 +5,10 @@ import java.awt.Color;
 import cluedo.Player;
 import cluedo.Position;
 
+/**
+ * used to represent different tiles on the board
+ *
+ */
 public abstract class Tile {
 
 	protected final int x;
